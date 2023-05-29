@@ -1,0 +1,22 @@
+{
+  "name": "relister",
+  "version": "1.0.0",
+  "description": "Relisting items on peer selling sites",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "mocha index.js",
+    "test": "mocha index.js",
+    "debug": "mocha --inspect index.js && echo \"click 'open dedicated DevTools for node' in chrome from page chrome://inspect. In dedicated DevTools window add connection localhost:9229 to connect automatically.\""
+  },
+  "author": "Cary Meskell",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "selenium-webdriver": "^4.9.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
+}
