@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 import fs from 'fs';
+import { By } from 'selenium-webdriver';
 const promiseFs = fs.promises;
 
 async function createDirectory(directoryName = __dirname) {
@@ -15,8 +16,7 @@ async function createDirectory(directoryName = __dirname) {
   }
 }
 
-async function downloadImage(url, filepath) {
-  debugger;
+async function downloadImage(url: string, filepath: string) {
   const writer = fs.createWriteStream(filepath);
 
   console.log(`Downloading ${filepath.split('/').pop()}`);
@@ -29,7 +29,7 @@ async function downloadImage(url, filepath) {
 
   response.data.pipe(writer);
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     writer.on('finish', () => {
       resolve();
     });
@@ -50,7 +50,7 @@ async function waitForPageLoad() {
   });
 }
 
-async function getTextFromElement(by) {
+async function getTextFromElement(by: By) {
   let element;
   let elementText;
 

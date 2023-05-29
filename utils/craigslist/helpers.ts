@@ -1,4 +1,6 @@
-import webdriver from 'selenium-webdriver';
+import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
+import { By } from 'selenium-webdriver';
+import { expect } from 'chai';
 import crypto from 'crypto';
 import fs from 'fs';
 
@@ -10,6 +12,7 @@ import {
   getTextFromElement,
 } from '../general.js';
 import { IMAGE_DIRECTORY_PATH, FOR_SALE_BY_OWNER } from '../../constants.js';
+import { PostInfo } from './../types';
 
 const {
   USERNAME,
@@ -20,10 +23,9 @@ const {
   NEIGHBORHOOD,
   ZIP_CODE,
 } = process.env;
-const { By } = webdriver;
 
 class NoActivePostingsFoundError extends Error {
-  constructor(message = '', ...args) {
+  constructor(message = '', ...args: any) {
     super(message, ...args);
   }
 }
@@ -74,6 +76,7 @@ export const extractAndDeleteActivePosts = async () => {
     )
   );
   const numActivePosts = activePosts.length;
+  expect(numActivePosts).to.be.greaterThan(0, "There weren't any active postings found! Check your account to see if you have any postings that are active.");
 
   while (posts.length < numActivePosts) {
     const postInfo = await getInfoAndDeleteFirstPost();
@@ -98,12 +101,13 @@ export const getInfoAndDeleteFirstPost = async () => {
   const category = await getCategory();
   const imagePaths = await downloadPostingImages(title);
 
-  const postInfo = {
+  const postInfo: PostInfo = {
     body,
     price,
     category,
     title,
     imagePaths,
+    city: CITY,
     name: SELLER_NAME,
     phoneNumber: PHONE_NUMBER,
     neighborhood: NEIGHBORHOOD,
@@ -119,8 +123,8 @@ export const getInfoAndDeleteFirstPost = async () => {
   return postInfo;
 };
 
-export const downloadPostingImages = async (postTitle) => {
-  const localImagePaths = [];
+export const downloadPostingImages = async (postTitle: string) => {
+  const localImagePaths: string[] = [];
   const titleHash = crypto.createHash('md5').update(postTitle).digest('hex');
 
   const gallery = await driver.findElement(By.className('gallery'));
@@ -210,11 +214,11 @@ export const selectForSaleByOwner = async (
   await selectRadio(forSaleByOwnerLabel);
 };
 
-export const selectCategory = async (category) => {
+export const selectCategory = async (category: string) => {
   await selectRadio(category);
 };
 
-export const selectRadio = async (labelText) => {
+export const selectRadio = async (labelText: string) => {
   let radio;
 
   try {
@@ -229,39 +233,39 @@ export const selectRadio = async (labelText) => {
   await radio.click();
 };
 
-export const setInputField = async (by, value) => {
+export const setInputField = async (by: By, value: string) => {
   const inputField = await driver.findElement(by);
   await inputField.sendKeys(value);
 };
 
-export const setTitle = async (title) => {
+export const setTitle = async (title: string) => {
   await setInputField(By.id('PostingTitle'), title);
 };
 
-export const setPrice = async (price) => {
+export const setPrice = async (price: string) => {
   await setInputField(By.css("input[type='number'][name='price']"), price);
 };
 
-export const setNeighborhood = async (neighborhood) => {
+export const setNeighborhood = async (neighborhood: string) => {
   await setInputField(By.id('geographic_area'), neighborhood);
 };
 
-export const setZipCode = async (zipCode) => {
+export const setZipCode = async (zipCode: string) => {
   await setInputField(By.id('postal_code'), zipCode);
 };
 
-export const setBody = async (postingBody) => {
+export const setBody = async (postingBody: string) => {
   await setInputField(By.id('PostingBody'), postingBody);
 };
 
-export const setManufacturer = async (manufacturer) => {
+export const setManufacturer = async (manufacturer: string) => {
   await setInputField(
     By.css("input[type='text'][name='sale_manufacturer']"),
     manufacturer
   );
 };
 
-export const setCondition = async (condition) => {
+export const setCondition = async (condition: string) => {
   const conditionDropdown = await driver.findElement(
     By.css('label.condition span.ui-selectmenu-button')
   );
@@ -274,7 +278,7 @@ export const setCondition = async (condition) => {
   await conditionOption.click();
 };
 
-export const setPhoneNumber = async (phoneNumber, contactName) => {
+export const setPhoneNumber = async (phoneNumber: string, contactName: string) => {
   if (!phoneNumber || !contactName) return;
 
   const phoneNumberCheckbox = await driver.findElement(
@@ -298,7 +302,7 @@ export const setPhoneNumber = async (phoneNumber, contactName) => {
   await contactNameField.sendKeys(contactName);
 };
 
-export const completeDetailsForm = async (postInfo) => {
+export const completeDetailsForm = async (postInfo: PostInfo) => {
   const {
     body,
     price,
@@ -327,7 +331,7 @@ export const completeDetailsForm = async (postInfo) => {
   await waitForPageLoad();
 };
 
-export const uploadImages = async (imagePaths) => {
+export const uploadImages = async (imagePaths: string[]) => {
   const imageUploadInput = await driver.findElement(
     By.css("input[type='file'][multiple][accept]")
   );

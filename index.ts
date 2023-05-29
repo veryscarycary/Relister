@@ -4,11 +4,9 @@ import { WebElement, Builder, Capabilities } from 'selenium-webdriver';
 import { HUMAN_DELAY_TIME } from './constants.js';
 import { relistAllActivePostings } from './utils/craigslist/index.js';
 
-import { CustomNodeJsGlobal } from './types';
-
-declare const global: CustomNodeJsGlobal;
-
-const driver = global.driver = new Builder().withCapabilities(Capabilities.chrome()).build();
+global.driver = new Builder()
+  .withCapabilities(Capabilities.chrome())
+  .build();
 
 // SD Craiglist Relist
 
@@ -25,7 +23,8 @@ WebElement.prototype.click = async function (...args) {
 };
 
 describe('CL', () => {
-  it("should relist all active postings", async () => {
+  it('should relist all active postings', async () => {
+    debugger;
     await relistAllActivePostings();
 
     driver.quit();

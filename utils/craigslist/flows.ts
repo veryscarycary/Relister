@@ -1,3 +1,5 @@
+import assert from 'assert';
+
 import {
   login,
   extractAndDeleteActivePosts,
@@ -10,9 +12,11 @@ import {
   clickSubmit,
   cleanupImages,
 } from './helpers.js';
-import { SD_CRAIGLIST_ACCOUNT_URL } from '../../constants.js';
+import { SD_CRAIGLIST_ACCOUNT_URL, SD_CRAIGLIST_HOME_URL } from '../../constants.js';
+import { PostInfo } from '../types.js';
+import { expect } from 'chai';
 
-export const createNewPosting = async (postInfo) => {
+export const createNewPosting = async (postInfo: PostInfo) => {
   await driver.get(SD_CRAIGLIST_ACCOUNT_URL);
 
   await clickNewPostButton();
@@ -36,6 +40,7 @@ export const createNewPosting = async (postInfo) => {
 
 export const relistAllActivePostings = async () => {
     await login();
+    expect(await driver.getCurrentUrl()).to.equal(SD_CRAIGLIST_HOME_URL);
 
     const postsInfo = await extractAndDeleteActivePosts();
 
