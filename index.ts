@@ -1,12 +1,14 @@
 import './dotenv.js';
-import webdriver, { WebElement } from 'selenium-webdriver';
+import { WebElement, Builder, Capabilities } from 'selenium-webdriver';
 
 import { HUMAN_DELAY_TIME } from './constants.js';
 import { relistAllActivePostings } from './utils/craigslist/index.js';
 
-const { Builder, Capabilities } = webdriver;
+import { CustomNodeJsGlobal } from './types';
 
-global.driver = new Builder().withCapabilities(Capabilities.chrome()).build();
+declare const global: CustomNodeJsGlobal;
+
+const driver = global.driver = new Builder().withCapabilities(Capabilities.chrome()).build();
 
 // SD Craiglist Relist
 

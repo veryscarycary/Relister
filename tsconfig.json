@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2022", 
+    "module": "es2022", 
+    "allowJs": true,
+    "sourceMap": true, 
+    "outDir": "./built", 
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+  }
+}
