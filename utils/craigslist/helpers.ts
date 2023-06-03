@@ -272,7 +272,7 @@ export const setCondition = async (condition: string) => {
   await conditionDropdown.click();
   const conditionOption = await driver.findElement(
     By.xpath(
-      `//li[contains(@class, 'ui-menu-item')][role='option'][contains(text(), '${condition}')]`
+      `//li[contains(@class, 'ui-menu-item') and contains(text(), '${condition}')]`
     )
   );
   await conditionOption.click();
