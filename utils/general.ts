@@ -69,7 +69,7 @@ async function getTextFromElement(by: By) {
   return null;
 };
 
-export const setInputField = async (by: By, value: string) => {
+const setInputField = async (by: By, value: string) => {
   const inputField = await driver.findElement(by);
   await inputField.sendKeys(value);
 };

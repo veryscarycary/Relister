@@ -27,7 +27,7 @@ export const login = async () => {
   }
 };
 
-export const nagivateToMarketplace = async () => {
+export const nagivateToNewListingInMarketplace = async () => {
   await driver.get(FACEBOOK_MARKETPLACE_URL);
   waitForPageLoad();
 };
