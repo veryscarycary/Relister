@@ -67,11 +67,17 @@ async function getTextFromElement(by: By) {
   }
 
   return null;
-}
+};
+
+export const setInputField = async (by: By, value: string) => {
+  const inputField = await driver.findElement(by);
+  await inputField.sendKeys(value);
+};
 
 export {
   createDirectory,
   downloadImage,
   waitForPageLoad,
   getTextFromElement,
+  setInputField,
 };

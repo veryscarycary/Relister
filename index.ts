@@ -3,6 +3,7 @@ import { WebElement, Builder, Capabilities } from 'selenium-webdriver';
 
 import { HUMAN_DELAY_TIME } from './constants.js';
 import { relistAllActivePostings } from './utils/craigslist/index.js';
+import { login } from './utils/facebook/helpers.js';
 
 global.driver = new Builder()
   .withCapabilities(Capabilities.chrome())
@@ -22,10 +23,18 @@ WebElement.prototype.click = async function (...args) {
   return originalClick.apply(this, args);
 };
 
-describe('CL', () => {
+// describe('CL', () => {
+//   it('should relist all active postings', async () => {
+//     await relistAllActivePostings();
+
+//     driver.quit();
+//   }).timeout(900000);
+// });
+
+describe('FB', () => {
   it('should relist all active postings', async () => {
     debugger;
-    await relistAllActivePostings();
+    await login();
 
     driver.quit();
   }).timeout(900000);

@@ -10,13 +10,14 @@ import {
   createDirectory,
   waitForPageLoad,
   getTextFromElement,
+  setInputField,
 } from '../general.js';
 import { IMAGE_DIRECTORY_PATH, FOR_SALE_BY_OWNER } from '../../constants.js';
 import { PostInfo } from './../types';
 
 const {
-  USERNAME,
-  PASSWORD,
+  USERNAME_CL,
+  PASSWORD_CL,
   CITY,
   SELLER_NAME,
   PHONE_NUMBER,
@@ -34,9 +35,9 @@ export const login = async () => {
   await driver.get(SD_CRAIGLIST_ACCOUNT_URL);
 
   const usernameField = await driver.findElement(By.id('inputEmailHandle'));
-  await usernameField.sendKeys(USERNAME);
+  await usernameField.sendKeys(USERNAME_CL);
   const passwordField = await driver.findElement(By.id('inputPassword'));
-  await passwordField.sendKeys(PASSWORD);
+  await passwordField.sendKeys(PASSWORD_CL);
   const loginButton = await driver.findElement(By.id('login'));
 
   await loginButton.click();
@@ -231,11 +232,6 @@ export const selectRadio = async (labelText: string) => {
     );
   }
   await radio.click();
-};
-
-export const setInputField = async (by: By, value: string) => {
-  const inputField = await driver.findElement(by);
-  await inputField.sendKeys(value);
 };
 
 export const setTitle = async (title: string) => {
