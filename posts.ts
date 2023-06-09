@@ -20,8 +20,10 @@ Asking $395
 
 kw: amd, geforce, nvidia, ray tracing, overclock, overclocked, hdmi, mini displayport`,
     condition: 'Used - Good',
-    category: 'Computer parts',
-    imagePaths: ['imagePaths/IMG_2725.HEIC', 'imagePaths/IMG_2726.HEIC'].map(chunk => path.resolve(__dirname + '/..', chunk)),
+    category: 'Video Cards & Video Devices',
+    imagePaths: ['imagePaths/IMG_2725.HEIC', 'imagePaths/IMG_2726.HEIC'].map(
+      (chunk) => path.resolve(__dirname + '/..', chunk)
+    ),
   },
 ] as PostInfo[];
 

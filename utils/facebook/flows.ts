@@ -19,14 +19,14 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await login();
   await nagivateToNewListingInMarketplace();
   await uploadImages(postInfo.imagePaths);
-
   await setTitle(postInfo.title);
   await setPrice(postInfo.price);
-  debugger;
   await setCategory(postInfo.category);
+  debugger;
   await setCondition(postInfo.condition);
   await setHideFromFriends(true);
   await clickNext();
   await setCity(CITY);
+  await clickNext();
   // await clickPublish();
 };

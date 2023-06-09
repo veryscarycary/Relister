@@ -7,7 +7,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const IMAGE_DIRECTORY_PATH = path.join(__dirname, IMAGE_DIRECTORY);
 export const HUMAN_DELAY_TIME = 1000;
-export const IMAGE_LOADING_DELAY_TIME = 20000;
+export const IMAGE_LOADING_DELAY_TIME = 60000;
+export const DEFAULT_ELEMENT_TIMEOUT = 5000;
 export const FOR_SALE_BY_OWNER = 'for sale by owner';
 
 // Craigslist

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 import fs from 'fs';
-import { By } from 'selenium-webdriver';
+import { By, WebElement } from 'selenium-webdriver';
+import { DEFAULT_ELEMENT_TIMEOUT } from '../constants.js';
 const promiseFs = fs.promises;
 
 async function createDirectory(directoryName = __dirname) {
@@ -69,6 +70,20 @@ async function getTextFromElement(by: By) {
   return null;
 };
 
+async function waitForElement(by: By, timeout: number = DEFAULT_ELEMENT_TIMEOUT): Promise<WebElement> {
+  let element;
+  const checkForOptions = async () => {
+    try {
+      element = await driver.findElement(by);
+    } catch (err) {
+      return false;
+    }
+    return true;
+  };
+  await driver.wait(checkForOptions, timeout);
+  return element;
+}
+
 const setInputField = async (by: By, value: string) => {
   const inputField = await driver.findElement(by);
   await inputField.sendKeys(value);
@@ -80,4 +95,5 @@ export {
   waitForPageLoad,
   getTextFromElement,
   setInputField,
+  waitForElement,
 };

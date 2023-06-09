@@ -35,7 +35,6 @@ WebElement.prototype.click = async function (...args) {
 describe('FB', () => {
   it('should create a new post', async () => {
     const post = posts[0];
-    debugger;
     await createNewPosting(post);
 
     driver.quit();
