@@ -11,6 +11,7 @@ import {
   waitForPageLoad,
   getTextFromElement,
   setInputField,
+  NoActivePostingsFoundError,
 } from '../general.js';
 import { IMAGE_DIRECTORY_PATH, FOR_SALE_BY_OWNER } from '../../constants.js';
 import { PostInfo } from './../types';
@@ -24,12 +25,6 @@ const {
   NEIGHBORHOOD,
   ZIP_CODE,
 } = process.env;
-
-class NoActivePostingsFoundError extends Error {
-  constructor(message = '', ...args: any) {
-    super(message, ...args);
-  }
-}
 
 export const login = async () => {
   await driver.get(SD_CRAIGLIST_ACCOUNT_URL);

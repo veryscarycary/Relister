@@ -5,6 +5,12 @@ import { By, WebElement } from 'selenium-webdriver';
 import { DEFAULT_ELEMENT_TIMEOUT } from '../constants.js';
 const promiseFs = fs.promises;
 
+export class NoActivePostingsFoundError extends Error {
+  constructor(message = '', ...args: any) {
+    super(message, ...args);
+  }
+}
+
 async function createDirectory(directoryName = __dirname) {
   try {
     await promiseFs.mkdir(directoryName);
@@ -70,6 +76,25 @@ async function getTextFromElement(by: By) {
   return null;
 };
 
+async function getValueFromElement(by: By) {
+  let element;
+  let elementValue;
+
+  try {
+    element = await driver.findElement(by);
+  } catch (error) {
+    if (error instanceof NoSuchElementError)
+      console.error(error.message);
+  }
+
+  if (element) {
+    elementValue = await element.getAttribute('value');
+    return elementValue.trim();
+  }
+
+  return null;
+};
+
 async function waitForElement(by: By, timeout: number = DEFAULT_ELEMENT_TIMEOUT): Promise<WebElement> {
   let element;
   const checkForOptions = async () => {
@@ -94,6 +119,7 @@ export {
   downloadImage,
   waitForPageLoad,
   getTextFromElement,
+  getValueFromElement,
   setInputField,
   waitForElement,
 };

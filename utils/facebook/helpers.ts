@@ -1,10 +1,20 @@
 import { By, Key } from 'selenium-webdriver';
+import { expect } from 'chai';
+
 import {
-  FACEBOOK_MARKETPLACE_URL,
+  FACEBOOK_MARKETPLACE_CREATE_URL,
   FACEBOOK_URL,
   IMAGE_LOADING_DELAY_TIME,
 } from '../../constants.js';
-import { setInputField, waitForElement, waitForPageLoad } from '../general.js';
+import {
+  NoActivePostingsFoundError,
+  getTextFromElement,
+  getValueFromElement,
+  setInputField,
+  waitForElement,
+  waitForPageLoad,
+} from '../general.js';
+import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 
 const { USERNAME_FB, PASSWORD_FB } = process.env;
 
@@ -28,7 +38,7 @@ export const login = async () => {
 };
 
 export const nagivateToNewListingInMarketplace = async () => {
-  await driver.get(FACEBOOK_MARKETPLACE_URL);
+  await driver.get(FACEBOOK_MARKETPLACE_CREATE_URL);
   waitForPageLoad();
 };
 
@@ -114,27 +124,148 @@ export const clickNext = async () => {
 };
 
 export const setCity = async (city: string) => {
-  const input = await driver.findElement(By.css("input[aria-label='Enter a city']"));
+  const input = await driver.findElement(
+    By.css("input[aria-label='Enter a city']")
+  );
   const inputValue = await input.getAttribute('value');
 
   if (inputValue) {
     await input.sendKeys(Key.COMMAND + 'a');
     await input.sendKeys(Key.DELETE);
   }
-  
+
   await setInputField(By.css("input[aria-label='Enter a city']"), city);
 
-    const cityOption = await waitForElement(
-      By.xpath(
-        `//ul/li//span[contains(text(), '${city}')]/ancestor::li[@role='option']`
-      )
-    );
-    await cityOption.click();
+  const cityOption = await waitForElement(
+    By.xpath(
+      `//ul/li//span[contains(text(), '${city}')]/ancestor::li[@role='option']`
+    )
+  );
+  await cityOption.click();
 };
 
 export const clickPublish = async () => {
   const publishButton = await driver.findElement(
-    By.xpath("//div[@role='main']//button[@aria-label='Publish'][@role='button']")
+    By.xpath(
+      "//div[@role='main']//button[@aria-label='Publish'][@role='button']"
+    )
   );
   await publishButton.click();
+};
+
+export const extractAndDeleteActivePosts = async () => {
+  const posts = [];
+
+  const activePosts = await driver.findElements(
+    By.xpath(
+      "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[0]"
+    )
+  );
+  const numActivePosts = activePosts.length;
+  expect(numActivePosts).to.be.greaterThan(
+    0,
+    "There weren't any active postings found! Check your account to see if you have any postings that are active."
+  );
+
+  while (posts.length < numActivePosts) {
+    const postInfo = await getInfoAndDeleteFirstPost();
+    posts.push(postInfo);
+  }
+
+  return posts;
+};
+
+export const getInfoAndDeleteFirstPost = async () => {
+  // visit live post and gather info
+  await viewFirstActivePosting();
+
+  const title = await getPostingTitle();
+  const price = await getPostingPrice();
+  const body = await getDescription();
+  const condition = await getCondition();
+  const category = await getCategory();
+  const isHiddenFromFriends = await getHideFromFriends();
+  const imagePaths = await downloadPostingImages(title);
+
+  // TO-DO
+
+  // const postInfo: PostInfo = {
+  //   body,
+  //   price,
+  //   category,
+  //   title,
+  //   imagePaths,
+  //   city: CITY,
+  //   name: SELLER_NAME,
+  //   phoneNumber: PHONE_NUMBER,
+  //   neighborhood: NEIGHBORHOOD,
+  //   zipCode: ZIP_CODE,
+  // };
+
+  // if (condition) postInfo.condition = condition;
+
+  // // delete old posting before making a new one
+  // await clickDeletePostingButton();
+
+  // return postInfo;
+};
+
+export const getPostingTitle = async () =>
+  getValueFromElement(
+    By.xpath("//span[contains(text(), 'Title')]/following-sibling::input")
+  );
+
+export const getPostingPrice = async () =>
+  getValueFromElement(
+    By.xpath("//span[contains(text(), 'Price')]/following-sibling::input")
+  );
+
+export const getCategory = async () =>
+  getValueFromElement(
+    By.xpath("//span[contains(text(), 'Category')]/following-sibling::input")
+  );
+
+export const getCondition = async () =>
+  getTextFromElement(
+    By.xpath("//span[contains(text(), 'Condition')]/following-sibling::div")
+  );
+
+export const getDescription = async () =>
+  getTextFromElement(
+    By.xpath(
+      "//span[contains(text(), 'Description')]/following-sibling::textarea"
+    )
+  );
+
+export const getHideFromFriends = async () => {
+  const hideFromFriends = await driver.findElement(
+    By.xpath(
+      "//span[contains(text(), 'Hide from friends')]/ancestor::div[@role='switch']"
+    )
+  );
+  return hideFromFriends.getAttribute('aria-checked');
+};
+
+export const getLocation = async () =>
+  getValueFromElement(
+    By.xpath("//span[contains(text(), 'Location')]/following-sibling::input")
+  );
+
+export const viewFirstActivePosting = async () => {
+  try {
+    const firstActivePost = await driver.findElement(
+      By.xpath(
+        "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[0]"
+      )
+    );
+    await firstActivePost.click();
+    const editListingButton = await waitForElement(
+      By.css("a[href^='/marketplace/edit/?listing_id=']")
+    );
+    await editListingButton.click();
+    await waitForPageLoad();
+  } catch (error) {
+    if (error instanceof NoSuchElementError)
+      throw new NoActivePostingsFoundError();
+  }
 };

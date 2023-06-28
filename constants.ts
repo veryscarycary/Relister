@@ -18,4 +18,5 @@ export const SD_CRAIGLIST_HOME_URL = 'https://accounts.craigslist.org/login/home
 
 // Facebook Marketplace
 export const FACEBOOK_URL = 'https://facebook.com';
-export const FACEBOOK_MARKETPLACE_URL = 'https://facebook.com/marketplace/create/item';
+export const FACEBOOK_MARKETPLACE_CREATE_URL = 'https://facebook.com/marketplace/create/item';
+export const FACEBOOK_MARKETPLACE_SELLING_URL = 'https://www.facebook.com/marketplace/you/selling';
