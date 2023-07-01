@@ -45,5 +45,5 @@ describe('FB', () => {
     await relistAllActiveFBPostings();
 
     driver.quit();
-  }).timeout(900000);
+  }).timeout(9000000);
 });

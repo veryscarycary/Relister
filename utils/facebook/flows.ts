@@ -39,6 +39,8 @@ export const relistAllActivePostings = async () => {
 
   const postsInfo = await extractAndDeleteActivePosts();
 
+  await driver.sleep(3000) // the post-sale popup goes away
+
   while (postsInfo.length) {
     await createNewPosting(postsInfo.shift());
   }

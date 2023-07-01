@@ -161,7 +161,7 @@ export const clickConfirmDelete = async () => {
 };
 
 export const setCity = async (city: string) => {
-  const input = await driver.findElement(
+  const input = await waitForElement(
     By.css("input[aria-label='Enter a city']")
   );
   const inputValue = await input.getAttribute('value');
