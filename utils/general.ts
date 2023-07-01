@@ -114,7 +114,7 @@ async function getValueFromElement(by: By) {
   let elementValue;
 
   try {
-    element = await driver.findElement(by);
+    element = await waitForElement(by);
   } catch (error) {
     if (error instanceof NoSuchElementError)
       console.error(error.message);
@@ -142,6 +142,20 @@ async function waitForElement(by: By, timeout: number = DEFAULT_ELEMENT_TIMEOUT)
   return element;
 }
 
+async function waitForElements(by: By, timeout: number = DEFAULT_ELEMENT_TIMEOUT): Promise<WebElement[]> {
+  let elements;
+  const checkForOptions = async () => {
+    try {
+      elements = await driver.findElements(by);
+    } catch (err) {
+      return false;
+    }
+    return true;
+  };
+  await driver.wait(checkForOptions, timeout);
+  return elements;
+}
+
 const setInputField = async (by: By, value: string) => {
   const inputField = await driver.findElement(by);
   await inputField.sendKeys(value);
@@ -156,4 +170,5 @@ export {
   getValueFromElement,
   setInputField,
   waitForElement,
+  waitForElements,
 };

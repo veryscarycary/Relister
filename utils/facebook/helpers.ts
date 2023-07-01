@@ -18,6 +18,7 @@ import {
   getValueFromElement,
   setInputField,
   waitForElement,
+  waitForElements,
   waitForPageLoad,
 } from '../general.js';
 import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
@@ -123,24 +124,39 @@ export const setHideFromFriends = async (doHideFromFriends: boolean) => {
 };
 
 export const clickNext = async () => {
-  const nextButton = await driver.findElement(
+  const nextButton = await waitForElement(
     By.css("div[aria-label='Next'][role='button']")
   );
   await nextButton.click();
 };
 
 export const clickClose = async () => {
-  const closeButton = await driver.findElement(By.css("div[aria-label='Close'][role='button']"));
+  const closeButton = await waitForElement(
+    By.css("div[aria-label='Close'][role='button']")
+  );
   await closeButton.click();
 };
 
 export const clickLeavePage = async () => {
-  const leavePageButton = await driver.findElement(By.css("div[aria-label='Leave Page'][role='button']"));
+  const leavePageButton = await waitForElement(
+    By.css("div[aria-label='Leave Page'][role='button'][tabindex='0']")
+  );
   await leavePageButton.click();
 };
 
 export const clickDeletePost = async () => {
-  const deleteButton = await driver.findElement(By.css("div[aria-label='Delete'][role='button']"));
+  const deleteButton = await waitForElement(
+    By.css("div[aria-label='Delete'][role='button']")
+  );
+  await deleteButton.click();
+};
+
+export const clickConfirmDelete = async () => {
+  const deleteButton = await waitForElement(
+    By.css(
+      "div[aria-label='Delete listing'][role='dialog'] div[aria-label='Delete'][role='button'][tabindex='0']"
+    )
+  );
   await deleteButton.click();
 };
 
@@ -166,10 +182,8 @@ export const setCity = async (city: string) => {
 };
 
 export const clickPublish = async () => {
-  const publishButton = await driver.findElement(
-    By.xpath(
-      "//div[@role='main']//button[@aria-label='Publish'][@role='button']"
-    )
+  const publishButton = await waitForElement(
+    By.css("div[aria-label='Publish'][role='button']")
   );
   await publishButton.click();
 };
@@ -177,7 +191,7 @@ export const clickPublish = async () => {
 export const extractAndDeleteActivePosts = async () => {
   const posts = [];
 
-  const activePosts = await driver.findElements(
+  const activePosts = await waitForElements(
     By.xpath(
       "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[1]"
     )
@@ -234,8 +248,8 @@ export const getInfoAndDeleteFirstPost = async () => {
   await clickClose();
   await clickLeavePage();
 
-  await clickDeletePost(); // first delete button
-  await clickDeletePost(); // confirmation button
+  await clickDeletePost();
+  await clickConfirmDelete();
 
   return postInfo;
 };
@@ -268,12 +282,15 @@ export const getDescription = async () =>
   );
 
 export const getHideFromFriends = async () => {
-  const hideFromFriends = await driver.findElement(
+  const hideFromFriends = await waitForElement(
     By.xpath(
       "//span[contains(text(), 'Hide from friends')]/ancestor::div[@role='switch']"
     )
   );
-  return hideFromFriends.getAttribute('aria-checked');
+  const hideFromFriendsAttr = await hideFromFriends.getAttribute(
+    'aria-checked'
+  );
+  return hideFromFriendsAttr === 'true';
 };
 
 export const getLocation = async () =>
@@ -284,23 +301,38 @@ export const getLocation = async () =>
 export const downloadPostingImages = async (postTitle: string) => {
   const titleHash = crypto.createHash('md5').update(postTitle).digest('hex');
 
-  const imageElements = await driver.findElements(
-    By.css("img[alt^='Product photo'][src^='https://scontent']")
+  const thumbnails = await waitForElements(
+    By.css("div[aria-label^='Thumbnail '][role='button']")
   );
 
-  const sourceUrlDups = await Promise.all(
-    imageElements.map(async (img) => await img.getAttribute('src'))
-  );
+  const sourceUrlDups = [];
+
+  for (const thumbnail of thumbnails) {
+    await thumbnail.click();
+
+    const imageElement = await waitForElement(
+      By.css("img[alt^='Product photo'][src^='https://scontent']")
+    );
+
+    const url = await imageElement.getAttribute('src');
+    sourceUrlDups.push(url);
+  }
 
   const sourceUrls = [...new Set(sourceUrlDups)];
-  const localImagePaths = await downloadImages(sourceUrls, IMAGE_DIRECTORY_PATH, titleHash);
+  const localImagePaths = await downloadImages(
+    sourceUrls,
+    IMAGE_DIRECTORY_PATH,
+    titleHash
+  );
+
+  localImagePaths.sort();
 
   return localImagePaths;
 };
 
 export const viewFirstActivePosting = async () => {
   try {
-    const activePosts = await driver.findElements(
+    const activePosts = await waitForElements(
       By.xpath(
         "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[1]"
       )
@@ -309,16 +341,16 @@ export const viewFirstActivePosting = async () => {
 
     for (const post of activePosts) {
       const isDisplayed = await post.isDisplayed();
-      if (isDisplayed)
-        displayedActivePosts.push(post);
+      if (isDisplayed) displayedActivePosts.push(post);
     }
     const firstActivePost = displayedActivePosts[0];
     await firstActivePost.click();
     const editListingButton = await waitForElement(
-      By.css("a[href^='/marketplace/edit/?listing_id=']")
+      By.css(
+        "a[aria-label='Edit Listing'][href^='/marketplace/edit/?listing_id=']"
+      )
     );
     await editListingButton.click();
-    await waitForPageLoad();
   } catch (error) {
     if (error instanceof NoSuchElementError)
       throw new NoActivePostingsFoundError();

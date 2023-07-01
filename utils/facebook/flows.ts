@@ -30,14 +30,13 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await clickNext();
   await setCity(CITY);
   await clickNext();
-  // await clickPublish();
+  await clickPublish();
 };
 
 export const relistAllActivePostings = async () => {
   await login();
   await driver.get(FACEBOOK_MARKETPLACE_SELLING_URL);
 
-  debugger;
   const postsInfo = await extractAndDeleteActivePosts();
 
   while (postsInfo.length) {

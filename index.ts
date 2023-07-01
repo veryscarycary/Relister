@@ -7,8 +7,13 @@ import { relistAllActivePostings as relistAllActiveFBPostings } from './utils/fa
 import { createNewPosting } from './utils/facebook/flows.js';
 import posts from './posts.js';
 
+const chromeCapabilities = Capabilities.chrome();
+const chromeOptions = {
+  args: ['--disable-notifications', '--disable-plugins', '--start-maximized'],
+};
+chromeCapabilities.set('goog:chromeOptions', chromeOptions);
 global.driver = new Builder()
-  .withCapabilities(Capabilities.chrome())
+  .withCapabilities(chromeCapabilities)
   .build();
 
 // SD Craiglist Relist
