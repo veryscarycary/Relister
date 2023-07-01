@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 import fs from 'fs';
 import { By, WebElement } from 'selenium-webdriver';
-import { DEFAULT_ELEMENT_TIMEOUT } from '../constants.js';
+import { DEFAULT_ELEMENT_TIMEOUT, IMAGE_DIRECTORY_PATH } from '../constants.js';
 const promiseFs = fs.promises;
 
 export class NoActivePostingsFoundError extends Error {
@@ -45,6 +45,39 @@ async function downloadImage(url: string, filepath: string) {
       reject();
     });
   });
+}
+
+async function downloadImages(
+  sourceUrls: string[],
+  filepath: string,
+  titleHash: string,
+) {
+  const localImagePaths: string[] = [];
+
+  // base image folder
+  await createDirectory(filepath);
+  // per-post image folder
+  await createDirectory(`${filepath}/${titleHash}`);
+
+  // images are downloaded to desktop
+  await Promise.all(
+    sourceUrls.map(async (url: string, i: number) => {
+      try {
+        const localImagePath = `${filepath}/${titleHash}/image_${i + 1}.jpg`;
+        await downloadImage(url, localImagePath);
+        localImagePaths.push(localImagePath);
+        console.log(
+          `File ${i + 1} of ${sourceUrls.length} downloaded successfully`
+        );
+      } catch (e) {
+        console.error(
+          `Encountered an error while downloading one of the image files: ${e.message}`
+        );
+      }
+    })
+  );
+
+  return localImagePaths;
 }
 
 async function waitForPageLoad() {
@@ -117,6 +150,7 @@ const setInputField = async (by: By, value: string) => {
 export {
   createDirectory,
   downloadImage,
+  downloadImages,
   waitForPageLoad,
   getTextFromElement,
   getValueFromElement,

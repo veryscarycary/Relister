@@ -1,13 +1,19 @@
 import { By, Key } from 'selenium-webdriver';
 import { expect } from 'chai';
+import crypto from 'crypto';
+import fs from 'fs';
 
 import {
   FACEBOOK_MARKETPLACE_CREATE_URL,
   FACEBOOK_URL,
+  IMAGE_DIRECTORY_PATH,
   IMAGE_LOADING_DELAY_TIME,
 } from '../../constants.js';
 import {
   NoActivePostingsFoundError,
+  createDirectory,
+  downloadImage,
+  downloadImages,
   getTextFromElement,
   getValueFromElement,
   setInputField,
@@ -123,6 +129,21 @@ export const clickNext = async () => {
   await nextButton.click();
 };
 
+export const clickClose = async () => {
+  const closeButton = await driver.findElement(By.css("div[aria-label='Close'][role='button']"));
+  await closeButton.click();
+};
+
+export const clickLeavePage = async () => {
+  const leavePageButton = await driver.findElement(By.css("div[aria-label='Leave Page'][role='button']"));
+  await leavePageButton.click();
+};
+
+export const clickDeletePost = async () => {
+  const deleteButton = await driver.findElement(By.css("div[aria-label='Delete'][role='button']"));
+  await deleteButton.click();
+};
+
 export const setCity = async (city: string) => {
   const input = await driver.findElement(
     By.css("input[aria-label='Enter a city']")
@@ -158,10 +179,18 @@ export const extractAndDeleteActivePosts = async () => {
 
   const activePosts = await driver.findElements(
     By.xpath(
-      "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[0]"
+      "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[1]"
     )
   );
-  const numActivePosts = activePosts.length;
+
+  const displayedActivePosts = [];
+
+  for (const post of activePosts) {
+    const isDisplayed = await post.isDisplayed();
+    if (isDisplayed) displayedActivePosts.push(post);
+  }
+
+  const numActivePosts = displayedActivePosts.length;
   expect(numActivePosts).to.be.greaterThan(
     0,
     "There weren't any active postings found! Check your account to see if you have any postings that are active."
@@ -187,27 +216,28 @@ export const getInfoAndDeleteFirstPost = async () => {
   const isHiddenFromFriends = await getHideFromFriends();
   const imagePaths = await downloadPostingImages(title);
 
-  // TO-DO
+  const postInfo: any = {
+    body,
+    price,
+    category,
+    title,
+    condition,
+    imagePaths,
+    isHiddenFromFriends,
+  };
 
-  // const postInfo: PostInfo = {
-  //   body,
-  //   price,
-  //   category,
-  //   title,
-  //   imagePaths,
-  //   city: CITY,
-  //   name: SELLER_NAME,
-  //   phoneNumber: PHONE_NUMBER,
-  //   neighborhood: NEIGHBORHOOD,
-  //   zipCode: ZIP_CODE,
-  // };
+  await clickNext();
 
-  // if (condition) postInfo.condition = condition;
+  const location = await getLocation();
+  postInfo.location = location;
 
-  // // delete old posting before making a new one
-  // await clickDeletePostingButton();
+  await clickClose();
+  await clickLeavePage();
 
-  // return postInfo;
+  await clickDeletePost(); // first delete button
+  await clickDeletePost(); // confirmation button
+
+  return postInfo;
 };
 
 export const getPostingTitle = async () =>
@@ -251,13 +281,38 @@ export const getLocation = async () =>
     By.xpath("//span[contains(text(), 'Location')]/following-sibling::input")
   );
 
+export const downloadPostingImages = async (postTitle: string) => {
+  const titleHash = crypto.createHash('md5').update(postTitle).digest('hex');
+
+  const imageElements = await driver.findElements(
+    By.css("img[alt^='Product photo'][src^='https://scontent']")
+  );
+
+  const sourceUrlDups = await Promise.all(
+    imageElements.map(async (img) => await img.getAttribute('src'))
+  );
+
+  const sourceUrls = [...new Set(sourceUrlDups)];
+  const localImagePaths = await downloadImages(sourceUrls, IMAGE_DIRECTORY_PATH, titleHash);
+
+  return localImagePaths;
+};
+
 export const viewFirstActivePosting = async () => {
   try {
-    const firstActivePost = await driver.findElement(
+    const activePosts = await driver.findElements(
       By.xpath(
-        "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[0]"
+        "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[1]"
       )
     );
+    const displayedActivePosts = [];
+
+    for (const post of activePosts) {
+      const isDisplayed = await post.isDisplayed();
+      if (isDisplayed)
+        displayedActivePosts.push(post);
+    }
+    const firstActivePost = displayedActivePosts[0];
     await firstActivePost.click();
     const editListingButton = await waitForElement(
       By.css("a[href^='/marketplace/edit/?listing_id=']")
@@ -268,4 +323,8 @@ export const viewFirstActivePosting = async () => {
     if (error instanceof NoSuchElementError)
       throw new NoActivePostingsFoundError();
   }
+};
+
+export const cleanupImages = () => {
+  fs.rmSync(IMAGE_DIRECTORY_PATH, { recursive: true, force: true });
 };

@@ -13,6 +13,7 @@ import {
   setCity,
   clickPublish,
   extractAndDeleteActivePosts,
+  cleanupImages,
 } from './helpers.js';
 
 const { CITY } = process.env;
@@ -36,6 +37,7 @@ export const relistAllActivePostings = async () => {
   await login();
   await driver.get(FACEBOOK_MARKETPLACE_SELLING_URL);
 
+  debugger;
   const postsInfo = await extractAndDeleteActivePosts();
 
   while (postsInfo.length) {

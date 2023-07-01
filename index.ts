@@ -3,6 +3,7 @@ import { WebElement, Builder, Capabilities } from 'selenium-webdriver';
 
 import { HUMAN_DELAY_TIME } from './constants.js';
 import { relistAllActivePostings } from './utils/craigslist/index.js';
+import { relistAllActivePostings as relistAllActiveFBPostings } from './utils/facebook/index.js';
 import { createNewPosting } from './utils/facebook/flows.js';
 import posts from './posts.js';
 
@@ -34,8 +35,9 @@ WebElement.prototype.click = async function (...args) {
 
 describe('FB', () => {
   it('should create a new post', async () => {
-    const post = posts[0];
-    await createNewPosting(post);
+    // const post = posts[0];
+    // await createNewPosting(post);
+    await relistAllActiveFBPostings();
 
     driver.quit();
   }).timeout(900000);
