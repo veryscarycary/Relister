@@ -1,7 +1,7 @@
 import './dotenv.js';
 import { WebElement, Builder, Capabilities } from 'selenium-webdriver';
 
-import { HUMAN_DELAY_TIME } from './constants.js';
+import { DEFAULT_TEST_TIMEOUT, HUMAN_DELAY_TIME } from './constants.js';
 import { relistAllActivePostings } from './utils/craigslist/index.js';
 import { relistAllActivePostings as relistAllActiveFBPostings } from './utils/facebook/index.js';
 import { createNewPosting } from './utils/facebook/flows.js';
@@ -30,20 +30,27 @@ WebElement.prototype.click = async function (...args) {
   return originalClick.apply(this, args);
 };
 
-// describe('CL', () => {
-//   it('should relist all active postings', async () => {
-//     await relistAllActivePostings();
+describe('Relister', async () => {
+  // describe('CL', () => {
+  //   it('should relist all active postings', async () => {
+  //     await relistAllActivePostings();
+  //     await relistAllActivePostings();
 
-//     driver.quit();
-//   }).timeout(900000);
-// });
+  //     driver.quit();
+  //   }).timeout(DEFAULT_TEST_TIMEOUT);
+  // });
 
-describe('FB', () => {
-  it('should create a new post', async () => {
-    // const post = posts[0];
-    // await createNewPosting(post);
-    await relistAllActiveFBPostings();
+  describe('FB', async () => {
+    // it('should create a new post', async () => {
+    //   const post = posts[0];
+    //   await createNewPosting(post);
+    //   driver.quit();
+    // }).timeout(DEFAULT_TEST_TIMEOUT);
 
-    driver.quit();
-  }).timeout(9000000);
+    it('should relist all active postings', async () => {
+      await relistAllActiveFBPostings('10%');
+      driver.quit();
+    }).timeout(DEFAULT_TEST_TIMEOUT);
+  });
 });
+

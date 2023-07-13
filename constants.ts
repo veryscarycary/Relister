@@ -6,9 +6,11 @@ const { IMAGE_DIRECTORY } = process.env;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const IMAGE_DIRECTORY_PATH = path.join(__dirname, IMAGE_DIRECTORY);
-export const HUMAN_DELAY_TIME = 1000;
-export const IMAGE_LOADING_DELAY_TIME = 60000;
-export const DEFAULT_ELEMENT_TIMEOUT = 5000;
+export const IMAGE_DOWNLOAD_ATTEMPT_LIMIT = 1;
+export const HUMAN_DELAY_TIME = 1000; // 1 Second
+export const IMAGE_LOADING_DELAY_TIME = 60000; // 1 Minute
+export const DEFAULT_ELEMENT_TIMEOUT = 10000; // 10 Seconds
+export const DEFAULT_TEST_TIMEOUT = 1000 * 60 * 5; // 5 Minutes
 export const FOR_SALE_BY_OWNER = 'for sale by owner';
 
 // Craigslist

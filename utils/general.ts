@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 import fs from 'fs';
 import { By, WebElement } from 'selenium-webdriver';
-import { DEFAULT_ELEMENT_TIMEOUT, IMAGE_DIRECTORY_PATH } from '../constants.js';
+import { DEFAULT_ELEMENT_TIMEOUT } from '../constants.js';
 const promiseFs = fs.promises;
 
 export class NoActivePostingsFoundError extends Error {
@@ -139,6 +139,9 @@ async function waitForElement(by: By, timeout: number = DEFAULT_ELEMENT_TIMEOUT)
     return true;
   };
   await driver.wait(checkForOptions, timeout);
+
+  if (!element) throw new NoSuchElementError(`The selector: ${by.toString()} did not locate an element within the time.`);
+
   return element;
 }
 

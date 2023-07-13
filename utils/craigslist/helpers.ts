@@ -316,8 +316,6 @@ export const completeDetailsForm = async (postInfo: PostInfo) => {
   if (manufacturer) await setManufacturer(manufacturer);
   if (condition) await setCondition(condition);
 
-  debugger;
-
   await clickSubmit();
   await waitForPageLoad();
 };

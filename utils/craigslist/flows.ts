@@ -26,7 +26,6 @@ export const createNewPosting = async (postInfo: PostInfo) => {
 
   // now on the edit page, with form fields
   await completeDetailsForm(postInfo);
-  debugger;
 
   // area page, where we accept the preloaded zipcode area
   await clickSubmit();

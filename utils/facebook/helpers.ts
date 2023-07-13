@@ -1,3 +1,4 @@
+import { PostInfo } from './../types';
 import { By, Key } from 'selenium-webdriver';
 import { expect } from 'chai';
 import crypto from 'crypto';
@@ -7,12 +8,11 @@ import {
   FACEBOOK_MARKETPLACE_CREATE_URL,
   FACEBOOK_URL,
   IMAGE_DIRECTORY_PATH,
+  IMAGE_DOWNLOAD_ATTEMPT_LIMIT,
   IMAGE_LOADING_DELAY_TIME,
 } from '../../constants.js';
 import {
   NoActivePostingsFoundError,
-  createDirectory,
-  downloadImage,
   downloadImages,
   getTextFromElement,
   getValueFromElement,
@@ -107,6 +107,14 @@ export const setCondition = async (condition: string) => {
   await conditionOption.click();
 };
 
+export const setDescription = async (description: string) =>
+  await setInputField(
+    By.xpath(
+      "//span[contains(text(), 'Description')]/following-sibling::textarea"
+    ),
+    description
+  );
+
 export const setHideFromFriends = async (doHideFromFriends: boolean) => {
   const hideFromFriendsCheckbox = await driver.findElement(
     By.xpath(
@@ -193,7 +201,7 @@ export const extractAndDeleteActivePosts = async () => {
 
   const activePosts = await waitForElements(
     By.xpath(
-      "//div[@aria-label='Collection of your marketplace items']//span[contains(text(), 'Active')]/ancestor::div[1]"
+      "//div[@aria-label='Collection of your marketplace items']//span[text()='Active']/ancestor::div[1]"
     )
   );
 
@@ -319,11 +327,18 @@ export const downloadPostingImages = async (postTitle: string) => {
   }
 
   const sourceUrls = [...new Set(sourceUrlDups)];
-  const localImagePaths = await downloadImages(
-    sourceUrls,
-    IMAGE_DIRECTORY_PATH,
-    titleHash
-  );
+
+  let localImagePaths: string[] = [];
+  let imgDownloadAttemptNum = 0;
+
+  while (localImagePaths.length === 0 && imgDownloadAttemptNum < IMAGE_DOWNLOAD_ATTEMPT_LIMIT) {
+    localImagePaths = await downloadImages(
+      sourceUrls,
+      IMAGE_DIRECTORY_PATH,
+      titleHash
+    );
+    imgDownloadAttemptNum++;
+  }
 
   localImagePaths.sort();
 
@@ -359,4 +374,24 @@ export const viewFirstActivePosting = async () => {
 
 export const cleanupImages = () => {
   fs.rmSync(IMAGE_DIRECTORY_PATH, { recursive: true, force: true });
+};
+
+export const dropPrice = (post: PostInfo, priceDrop: number | string) => {
+  const roundToNearest5 = (num: number) => Math.ceil(num / 5) * 5;
+
+  const price = Number(post.price.slice(1));
+  let newPrice;
+
+  if (typeof priceDrop === 'number') {
+    newPrice = price - priceDrop;
+  } else if (typeof priceDrop === 'string') {
+    // percent drop
+    const percentNum = Number(priceDrop.slice(0, priceDrop.length - 1)) / 100;
+    const unroundedNewPrice = price * (1 - percentNum);
+    newPrice = roundToNearest5(unroundedNewPrice);
+  }
+
+  const newPriceString = `${newPrice}`;
+
+  return { ...post, price: newPriceString };
 };

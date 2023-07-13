@@ -14,6 +14,8 @@ import {
   clickPublish,
   extractAndDeleteActivePosts,
   cleanupImages,
+  setDescription,
+  dropPrice,
 } from './helpers.js';
 
 const { CITY } = process.env;
@@ -25,6 +27,7 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await setTitle(postInfo.title);
   await setPrice(postInfo.price);
   await setCategory(postInfo.category);
+  await setDescription(postInfo.body);
   await setCondition(postInfo.condition);
   await setHideFromFriends(true);
   await clickNext();
@@ -33,16 +36,20 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await clickPublish();
 };
 
-export const relistAllActivePostings = async () => {
+export const relistAllActivePostings = async (priceDrop: number | string) => {
   await login();
   await driver.get(FACEBOOK_MARKETPLACE_SELLING_URL);
 
   const postsInfo = await extractAndDeleteActivePosts();
 
-  await driver.sleep(3000) // the post-sale popup goes away
-
   while (postsInfo.length) {
-    await createNewPosting(postsInfo.shift());
+    let postInfo = postsInfo.shift();
+
+    if (priceDrop) {
+      postInfo = dropPrice(postInfo, priceDrop);
+    }
+
+    await createNewPosting(postInfo);
   }
 
   cleanupImages(); // synchronous
