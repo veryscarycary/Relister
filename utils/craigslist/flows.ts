@@ -15,6 +15,7 @@ import {
 import { SD_CRAIGLIST_ACCOUNT_URL, SD_CRAIGLIST_HOME_URL } from '../../constants.js';
 import { PostInfo } from '../types.js';
 import { expect } from 'chai';
+import { dropPrice } from '../general.js';
 
 export const createNewPosting = async (postInfo: PostInfo) => {
   await driver.get(SD_CRAIGLIST_ACCOUNT_URL);
@@ -37,14 +38,20 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await clickSubmit();
 };
 
-export const relistAllActivePostings = async () => {
+export const relistAllActivePostings = async (priceDrop: number | string) => {
     await login();
     expect(await driver.getCurrentUrl()).to.equal(SD_CRAIGLIST_HOME_URL);
 
     const postsInfo = await extractAndDeleteActivePosts();
 
     while (postsInfo.length) {
-      await createNewPosting(postsInfo.shift());
+      let postInfo = postsInfo.shift();
+
+      if (priceDrop) {
+        postInfo = dropPrice(postInfo, priceDrop);
+      }
+
+      await createNewPosting(postInfo);
     }
 
     cleanupImages(); // synchronous

@@ -15,8 +15,8 @@ import {
   extractAndDeleteActivePosts,
   cleanupImages,
   setDescription,
-  dropPrice,
 } from './helpers.js';
+import { dropPrice } from '../general.js';
 
 const { CITY } = process.env;
 

@@ -3,6 +3,7 @@ import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 import fs from 'fs';
 import { By, WebElement } from 'selenium-webdriver';
 import { DEFAULT_ELEMENT_TIMEOUT } from '../constants.js';
+import { PostInfo } from './types.js';
 const promiseFs = fs.promises;
 
 export class NoActivePostingsFoundError extends Error {
@@ -164,6 +165,32 @@ const setInputField = async (by: By, value: string) => {
   await inputField.sendKeys(value);
 };
 
+const dropPrice = (post: PostInfo, priceDrop: number | string) => {
+  const roundToNearest5 = (num: number) => Math.ceil(num / 5) * 5;
+
+  let price;
+  let newPrice;
+
+  if (post.price.startsWith('$')) {
+    price = Number(post.price.slice(1));
+  } else {
+    price = Number(post.price);
+  }
+
+  if (typeof priceDrop === 'number') {
+    newPrice = price - priceDrop;
+  } else if (typeof priceDrop === 'string') {
+    // percent drop
+    const percentNum = Number(priceDrop.slice(0, priceDrop.length - 1)) / 100;
+    const unroundedNewPrice = price * (1 - percentNum);
+    newPrice = roundToNearest5(unroundedNewPrice);
+  }
+
+  const newPriceString = `${newPrice}`;
+
+  return { ...post, price: newPriceString };
+};
+
 export {
   createDirectory,
   downloadImage,
@@ -174,4 +201,5 @@ export {
   setInputField,
   waitForElement,
   waitForElements,
+  dropPrice,
 };

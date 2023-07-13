@@ -33,7 +33,7 @@ WebElement.prototype.click = async function (...args) {
 describe('Relister', async () => {
   // describe('CL', () => {
   //   it('should relist all active postings', async () => {
-  //     await relistAllActivePostings();
+  //     await relistAllActivePostings('10%');
 
   //     driver.quit();
   //   }).timeout(DEFAULT_TEST_TIMEOUT);
@@ -47,7 +47,7 @@ describe('Relister', async () => {
     // }).timeout(DEFAULT_TEST_TIMEOUT);
 
     it('should relist all active postings', async () => {
-      await relistAllActiveFBPostings('10%');
+      await relistAllActiveFBPostings(10);
       driver.quit();
     }).timeout(DEFAULT_TEST_TIMEOUT);
   });

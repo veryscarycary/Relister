@@ -375,23 +375,3 @@ export const viewFirstActivePosting = async () => {
 export const cleanupImages = () => {
   fs.rmSync(IMAGE_DIRECTORY_PATH, { recursive: true, force: true });
 };
-
-export const dropPrice = (post: PostInfo, priceDrop: number | string) => {
-  const roundToNearest5 = (num: number) => Math.ceil(num / 5) * 5;
-
-  const price = Number(post.price.slice(1));
-  let newPrice;
-
-  if (typeof priceDrop === 'number') {
-    newPrice = price - priceDrop;
-  } else if (typeof priceDrop === 'string') {
-    // percent drop
-    const percentNum = Number(priceDrop.slice(0, priceDrop.length - 1)) / 100;
-    const unroundedNewPrice = price * (1 - percentNum);
-    newPrice = roundToNearest5(unroundedNewPrice);
-  }
-
-  const newPriceString = `${newPrice}`;
-
-  return { ...post, price: newPriceString };
-};

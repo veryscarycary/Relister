@@ -19,7 +19,7 @@ import { PostInfo } from './../types';
 const {
   USERNAME_CL,
   PASSWORD_CL,
-  CITY,
+  SUBAREA,
   SELLER_NAME,
   PHONE_NUMBER,
   NEIGHBORHOOD,
@@ -103,7 +103,7 @@ export const getInfoAndDeleteFirstPost = async () => {
     category,
     title,
     imagePaths,
-    city: CITY,
+    city: SUBAREA,
     name: SELLER_NAME,
     phoneNumber: PHONE_NUMBER,
     neighborhood: NEIGHBORHOOD,
@@ -200,7 +200,7 @@ export const clickNewPostButton = async () => {
   await waitForPageLoad();
 };
 
-export const selectCity = async (cityLabel = CITY) => {
+export const selectCity = async (cityLabel = SUBAREA) => {
   await selectRadio(cityLabel);
 };
 
