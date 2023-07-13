@@ -34,7 +34,6 @@ describe('Relister', async () => {
   // describe('CL', () => {
   //   it('should relist all active postings', async () => {
   //     await relistAllActivePostings();
-  //     await relistAllActivePostings();
 
   //     driver.quit();
   //   }).timeout(DEFAULT_TEST_TIMEOUT);
