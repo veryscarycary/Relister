@@ -97,7 +97,7 @@ Currently, the project is setup to relist Facebook Marketplace postings. If you 
 describe('Relister', async () => {
   // describe('CL', () => {
   //   it('should relist all active postings', async () => {
-  //     await relistAllActivePostings('10%');
+  //     await relistAllActivePostings(PRICE_DROP);
 
   //     driver.quit();
   //   }).timeout(DEFAULT_TEST_TIMEOUT);
@@ -111,7 +111,7 @@ describe('Relister', async () => {
     // }).timeout(DEFAULT_TEST_TIMEOUT);
 
     it('should relist all active postings', async () => {
-      await relistAllActiveFBPostings(10);
+      await relistAllActiveFBPostings(PRICE_DROP);
       driver.quit();
     }).timeout(DEFAULT_TEST_TIMEOUT);
   });
