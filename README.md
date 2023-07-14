@@ -87,7 +87,7 @@ In your terminal, run:
 npm start
 ```
 
-Currently, the project is setup to relist only FB Marketplace posts and decrease the price by $10. If you want to change this, edit the index.ts file:
+Currently, the project is setup to relist FB Marketplace posts and decrease the price by $10. If you want to change this, edit the index.ts file:
 
 ```
 describe('Relister', async () => {
