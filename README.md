@@ -118,7 +118,7 @@ describe('Relister', async () => {
 });
 ```
 
-If you want to drop the price of the posting on the next repost, change the PRICE_DROP variable to a number to drop the price by a fixed amount, or a percentage to drop it by a percentage.
+If you want to drop the price of the posting on the next repost, change the PRICE_DROP variable in your .env file to a number to drop the price by a fixed amount, or a percentage to drop it by a percentage.
 
 e.g.
 ```
