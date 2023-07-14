@@ -2,11 +2,13 @@
   "name": "relister",
   "version": "1.0.0",
   "description": "Relisting items on peer selling sites",
-  "main": "index.js",
+  "main": "test/index.js",
   "type": "module",
   "scripts": {
     "start": "npm run test",
-    "test": "npm run build && mocha ./built/index.js",
+    "cl": "npm run build && mocha ./built/runCL.js",
+    "fb": "npm run build && mocha ./built/runFB.js",
+    "test": "npm run build && mocha ./built/test/index.js",
     "build": "tsc --pretty",
     "debug": "npm run build && mocha --inspect ./built/index.js && echo \"click 'open dedicated DevTools for node' in chrome from page chrome://inspect. In dedicated DevTools window add connection localhost:9229 to connect automatically.\""
   },
