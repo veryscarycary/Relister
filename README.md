@@ -79,3 +79,48 @@ PHONE_NUMBER="7141234567"
 ZIP_CODE="92111"
 ```
 
+## Usage
+
+In your terminal, run:
+
+```
+npm start
+```
+
+Currently, the project is setup to relist only FB Marketplace posts and decrease the price by $10. If you want to change this, edit the index.ts file:
+
+```
+describe('Relister', async () => {
+  // describe('CL', () => {
+  //   it('should relist all active postings', async () => {
+  //     await relistAllActivePostings('10%');
+
+  //     driver.quit();
+  //   }).timeout(DEFAULT_TEST_TIMEOUT);
+  // });
+
+  describe('FB', async () => {
+    // it('should create a new post', async () => {
+    //   const post = posts[0];
+    //   await createNewPosting(post);
+    //   driver.quit();
+    // }).timeout(DEFAULT_TEST_TIMEOUT);
+
+    it('should relist all active postings', async () => {
+      await relistAllActiveFBPostings(10);
+      driver.quit();
+    }).timeout(DEFAULT_TEST_TIMEOUT);
+  });
+});
+```
+
+Uncomment(read: remove the preceding // characters) on the first 6 lines to activate relisting for CL.
+
+### relistAllActivePostings / relistAllActiveFBPostings
+
+If you want to relist the postings as they are, then run them without arguments(e.g. relistAllActivePostings()). However, if you want to drop the price of the post on the next repost, provide a number to drop it by a fixed amount, or provide a percentage, like so:
+
+```
+await relistAllActiveFBPostings(25);
+await relistAllActivePostings('10%');
+```
