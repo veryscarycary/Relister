@@ -108,3 +108,29 @@ PRICE_DROP="20"
 PRICE_DROP="10%"
 PRICE_DROP=
 ```
+
+### Fields
+
+Currently, only the following fields are supported. If you complete other fields on your posts, they will not be automatically filled on the next repost.
+
+##### Craigslist
+- category
+- condition (optional)
+- description
+- location
+- manufacturer (optional)
+- name
+- neighborhood
+- phoneNumber
+- price
+- title
+- zipCode
+
+##### Facebook Marketplace
+- category
+- condition
+- description
+- isHiddenFromFriends
+- location
+- price
+- title
