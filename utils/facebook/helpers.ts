@@ -238,6 +238,12 @@ export const getInfoAndDeleteFirstPost = async () => {
   const isHiddenFromFriends = await getHideFromFriends();
   const imagePaths = await downloadPostingImages(title);
 
+  expect(title).not.to.be.empty;
+  expect(price).not.to.be.empty;
+  expect(body).not.to.be.empty;
+  expect(category).not.to.be.empty;
+  expect(imagePaths).not.to.be.empty;
+
   const postInfo: any = {
     body,
     price,
