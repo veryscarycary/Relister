@@ -2,7 +2,7 @@ export interface PostInfo {
     title: string;
     body: string;
     price: string;
-    city: string;
+    location: string;
     category: string;
     imagePaths: string[];
     name: string;

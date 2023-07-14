@@ -10,15 +10,13 @@ import {
   setCondition,
   setHideFromFriends,
   clickNext,
-  setCity,
+  setLocation,
   clickPublish,
   extractAndDeleteActivePosts,
   cleanupImages,
   setDescription,
 } from './helpers.js';
 import { dropPrice } from '../general.js';
-
-const { CITY } = process.env;
 
 export const createNewPosting = async (postInfo: PostInfo) => {
   await login();
@@ -31,7 +29,7 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await setCondition(postInfo.condition);
   await setHideFromFriends(true);
   await clickNext();
-  await setCity(CITY);
+  await setLocation(postInfo.location);
   await clickNext();
   await clickPublish();
 };

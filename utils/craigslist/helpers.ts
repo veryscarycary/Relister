@@ -12,6 +12,8 @@ import {
   getTextFromElement,
   setInputField,
   NoActivePostingsFoundError,
+  waitForElement,
+  getValueFromElement,
 } from '../general.js';
 import { IMAGE_DIRECTORY_PATH, FOR_SALE_BY_OWNER } from '../../constants.js';
 import { PostInfo } from './../types';
@@ -92,10 +94,18 @@ export const getInfoAndDeleteFirstPost = async () => {
   const title = await getPostingTitle();
   const price = await getPostingPrice();
   const body = await getPostingBody();
+  const location = await getLocation();
+  const neighborhood = await getNeighborhood();
   const manufacturer = await getManufacturer();
   const condition = await getCondition();
   const category = await getCategory();
   const imagePaths = await downloadPostingImages(title);
+
+  await goToEditPosting();
+
+  const name = await getSellerName();
+  const phoneNumber = await getPhoneNumber();
+  const zipCode = await getZipCode();
 
   const postInfo: PostInfo = {
     body,
@@ -103,15 +113,17 @@ export const getInfoAndDeleteFirstPost = async () => {
     category,
     title,
     imagePaths,
-    city: SUBAREA,
-    name: SELLER_NAME,
-    phoneNumber: PHONE_NUMBER,
-    neighborhood: NEIGHBORHOOD,
-    zipCode: ZIP_CODE,
+    location,
+    neighborhood,
+    phoneNumber,
+    name,
+    zipCode,
+    manufacturer,
+    condition,
   };
 
-  if (manufacturer) postInfo.manufacturer = manufacturer;
-  if (condition) postInfo.condition = condition;
+  // go back to manage page so we can delete the post
+  await driver.navigate().back();
 
   // delete old posting before making a new one
   await clickDeletePostingButton();
@@ -164,6 +176,11 @@ export const downloadPostingImages = async (postTitle: string) => {
   return localImagePaths;
 };
 
+export const goToEditPosting = async () => {
+  const editPostButton = await waitForElement(By.css("form[method='POST'] input[value='Edit this Posting']"));
+  await editPostButton.click();
+};
+
 export const getPostingBody = async () =>
   getTextFromElement(By.id('postingbody'));
 
@@ -173,6 +190,16 @@ export const getPostingTitle = async () =>
 export const getPostingPrice = async () => {
   const price = await getTextFromElement(By.css('.postingtitletext .price'));
   return price.slice(1); // remove the $ sign
+};
+
+export const getLocation = async () => {
+  const locationWithCaret = await getTextFromElement(By.css('.crumb.subarea'));
+  return locationWithCaret.replace('>', '').trim();
+};
+
+export const getNeighborhood = async () => {
+  const neighborhoodWithParens = await getTextFromElement(By.css('.postingtitletext span:last-of-type'));
+  return neighborhoodWithParens.slice(1, neighborhoodWithParens.length - 1); // remove the parenthesis
 };
 
 export const getManufacturer = async () =>
@@ -192,6 +219,12 @@ export const getCondition = async () =>
 export const getCategory = async () =>
   getTextFromElement(By.css('.crumb.category'));
 
+export const getSellerName = async () => getValueFromElement(By.css("input[name='contact_name']"));
+
+export const getPhoneNumber = async () => getValueFromElement(By.css("input[name='contact_phone']"));
+
+export const getZipCode = async () => getValueFromElement(By.css("input[name='postal']"));
+
 export const clickNewPostButton = async () => {
   const newPostButton = await driver.findElement(
     By.css("button[type='submit'][value='go']")
@@ -200,8 +233,8 @@ export const clickNewPostButton = async () => {
   await waitForPageLoad();
 };
 
-export const selectCity = async (cityLabel = SUBAREA) => {
-  await selectRadio(cityLabel);
+export const selectLocation = async (locationLabel: string) => {
+  await selectRadio(locationLabel);
 };
 
 export const selectForSaleByOwner = async (

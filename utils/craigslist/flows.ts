@@ -4,7 +4,7 @@ import {
   login,
   extractAndDeleteActivePosts,
   clickNewPostButton,
-  selectCity,
+  selectLocation,
   selectCategory,
   selectForSaleByOwner,
   completeDetailsForm,
@@ -21,7 +21,7 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await driver.get(SD_CRAIGLIST_ACCOUNT_URL);
 
   await clickNewPostButton();
-  await selectCity(postInfo.city);
+  await selectLocation(postInfo.location);
   await selectForSaleByOwner();
   await selectCategory(postInfo.category);
 

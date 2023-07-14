@@ -23,7 +23,7 @@ import {
 } from '../general.js';
 import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 
-const { USERNAME_FB, PASSWORD_FB } = process.env;
+const { USERNAME_FB, PASSWORD_FB, LOCATION } = process.env;
 
 export const login = async () => {
   await driver.get(FACEBOOK_URL);
@@ -168,7 +168,7 @@ export const clickConfirmDelete = async () => {
   await deleteButton.click();
 };
 
-export const setCity = async (city: string) => {
+export const setLocation = async (location: string = LOCATION) => {
   const input = await waitForElement(
     By.css("input[aria-label='Enter a city']")
   );
@@ -179,14 +179,14 @@ export const setCity = async (city: string) => {
     await input.sendKeys(Key.DELETE);
   }
 
-  await setInputField(By.css("input[aria-label='Enter a city']"), city);
+  await setInputField(By.css("input[aria-label='Enter a city']"), location);
 
-  const cityOption = await waitForElement(
+  const locationOption = await waitForElement(
     By.xpath(
-      `//ul/li//span[contains(text(), '${city}')]/ancestor::li[@role='option']`
+      `//ul/li//span[contains(text(), '${location}')]/ancestor::li[@role='option']`
     )
   );
-  await cityOption.click();
+  await locationOption.click();
 };
 
 export const clickPublish = async () => {
@@ -256,8 +256,7 @@ export const getInfoAndDeleteFirstPost = async () => {
 
   await clickNext();
 
-  const location = await getLocation();
-  postInfo.location = location;
+  postInfo.location = await getLocation();
 
   await clickClose();
   await clickLeavePage();
