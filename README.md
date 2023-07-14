@@ -13,7 +13,7 @@ Currently, Relister supports relisting active listings for the following listing
 
 Clone the project to your computer by running the following in your terminal:
 ```
-git clone https://github.com/veryscarycary/Relister
+git clone https://github.com/veryscarycary/Relister.git
 ```
 
 ## Dependencies
