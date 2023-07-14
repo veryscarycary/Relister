@@ -9,6 +9,12 @@ Currently, Relister supports relisting active listings for the following listing
 - Craigslist
 - Facebook Marketplace.
 
+## Download
+
+Clone the project to your computer by running the following in your terminal:
+```
+git clone https://github.com/veryscarycary/Relister
+```
 
 ## Dependencies
 ### Node
@@ -20,9 +26,11 @@ If you don't already have Node installed, download Node. I recommend using NVM(N
 #### Node Installation - Mac
 
 1. Download homebrew by pasting and running this in your terminal:
-`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
-2. Install NVM by pasting and running the following commands in your terminal: 
+3. Install NVM by pasting and running the following commands in your terminal: 
 ```
 brew update
 brew install nvm
@@ -44,7 +52,7 @@ nvm use 18
 
 e.g.
 ```
-cd ~/relister
+cd [path-where-you-ran-git-clone]/Relister
 npm install
 ```
 
