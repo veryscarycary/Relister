@@ -121,16 +121,16 @@ Currently, only the following fields are supported. If you complete other fields
 - manufacturer (optional)
 - name
 - neighborhood
-- phoneNumber
+- phone number
 - price
 - title
-- zipCode
+- zip code
 
 ##### Facebook Marketplace
 - category
 - condition
 - description
-- isHiddenFromFriends
+- hide from friends
 - location
 - price
 - title
