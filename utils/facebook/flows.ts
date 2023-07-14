@@ -36,7 +36,7 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await clickPublish();
 };
 
-export const relistAllActivePostings = async (priceDrop: number | string) => {
+export const relistAllActivePostings = async (priceDrop: string) => {
   await login();
   await driver.get(FACEBOOK_MARKETPLACE_SELLING_URL);
 

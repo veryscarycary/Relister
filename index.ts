@@ -7,6 +7,8 @@ import { relistAllActivePostings as relistAllActiveFBPostings } from './utils/fa
 import { createNewPosting } from './utils/facebook/flows.js';
 import posts from './posts.js';
 
+const { PRICE_DROP } = process.env;
+
 const chromeCapabilities = Capabilities.chrome();
 const chromeOptions = {
   args: ['--disable-notifications', '--disable-plugins', '--start-maximized'],
@@ -47,7 +49,7 @@ describe('Relister', async () => {
     // }).timeout(DEFAULT_TEST_TIMEOUT);
 
     it('should relist all active postings', async () => {
-      await relistAllActiveFBPostings(10);
+      await relistAllActiveFBPostings(PRICE_DROP);
       driver.quit();
     }).timeout(DEFAULT_TEST_TIMEOUT);
   });

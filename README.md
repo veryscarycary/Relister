@@ -61,6 +61,10 @@ npm install
 1. Create a .env file at the root of the project with the following values filled and tailored to you:
 
 ```
+# GENERAL
+
+PRICE_DROP="10"
+
 # FACEBOOK VALUES
 
 USERNAME_FB="example@yahoo.com"
@@ -87,7 +91,7 @@ In your terminal, run:
 npm start
 ```
 
-Currently, the project is setup to relist FB Marketplace posts and decrease the price by $10. If you want to change this, edit the index.ts file:
+Currently, the project is setup to relist Facebook Marketplace postings. If you want to activate Craigslist, go to the `Relister/index.ts` file and uncomment out the first 6 comments(read: remove the preceding // characters) that you see below:
 
 ```
 describe('Relister', async () => {
@@ -114,7 +118,13 @@ describe('Relister', async () => {
 });
 ```
 
-Uncomment(read: remove the preceding // characters) on the first 6 lines to activate relisting for CL.
+If you want to drop the price of the posting on the next repost, change the PRICE_DROP variable to a number to drop the price by a fixed amount, or a percentage to drop it by a percentage.
+
+e.g.
+```
+PRICE_DROP="20"
+PRICE_DROP="10%"
+```
 
 ### relistAllActivePostings / relistAllActiveFBPostings
 

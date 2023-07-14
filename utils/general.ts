@@ -165,7 +165,7 @@ const setInputField = async (by: By, value: string) => {
   await inputField.sendKeys(value);
 };
 
-const dropPrice = (post: PostInfo, priceDrop: number | string) => {
+const dropPrice = (post: PostInfo, priceDrop: string) => {
   const roundToNearest5 = (num: number) => Math.ceil(num / 5) * 5;
 
   let price;
@@ -177,13 +177,15 @@ const dropPrice = (post: PostInfo, priceDrop: number | string) => {
     price = Number(post.price);
   }
 
-  if (typeof priceDrop === 'number') {
-    newPrice = price - priceDrop;
-  } else if (typeof priceDrop === 'string') {
+  if (priceDrop.endsWith('%')) {
     // percent drop
     const percentNum = Number(priceDrop.slice(0, priceDrop.length - 1)) / 100;
     const unroundedNewPrice = price * (1 - percentNum);
     newPrice = roundToNearest5(unroundedNewPrice);
+  } else {
+    // fixed drop
+    const priceDropNum = Number(priceDrop);
+    newPrice = price - priceDropNum;
   }
 
   const newPriceString = `${newPrice}`;

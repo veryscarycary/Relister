@@ -38,7 +38,7 @@ export const createNewPosting = async (postInfo: PostInfo) => {
   await clickSubmit();
 };
 
-export const relistAllActivePostings = async (priceDrop: number | string) => {
+export const relistAllActivePostings = async (priceDrop: string) => {
     await login();
     expect(await driver.getCurrentUrl()).to.equal(SD_CRAIGLIST_HOME_URL);
 
