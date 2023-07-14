@@ -18,6 +18,10 @@ Clone the project to your computer by running the following in your terminal:
 git clone https://github.com/veryscarycary/Relister.git
 ```
 
+### zip
+
+Download the zip file from the green "Code" button on https://nodejs.org/en/download and unzip it somewhere. 
+
 ## Dependencies
 ### Node
 
@@ -36,7 +40,7 @@ Download Node via https://nodejs.org/en/download. Choose your operating system t
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-3. Install NVM: 
+2. Install NVM: 
 ```
 brew update
 brew install nvm
@@ -64,7 +68,7 @@ npm install
 
 ## Setup
 
-1. Create a .env file at the root of the project with the following values filled and tailored to you:
+Create a .env file at the root of the project with the following values filled and tailored to you:
 
 ```
 # GENERAL
