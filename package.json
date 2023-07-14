@@ -13,16 +13,16 @@
   "author": "Cary Meskell",
   "license": "ISC",
   "dependencies": {
-    "@types/selenium-webdriver": "^4.1.15",
-    "axios": "^1.4.0",
-    "dotenv": "^16.0.3",
-    "mocha": "^10.2.0",
-    "selenium-webdriver": "^4.9.0"
+    "@types/selenium-webdriver": "4.1.15",
+    "axios": "1.4.0",
+    "dotenv": "16.0.3",
+    "mocha": "10.2.0",
+    "selenium-webdriver": "4.9.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.5",
-    "@types/mocha": "^10.0.1",
-    "chai": "^4.3.7",
-    "typescript": "^5.0.4"
+    "@types/chai": "4.3.5",
+    "@types/mocha": "10.0.1",
+    "chai": "4.3.7",
+    "typescript": "5.0.4"
   }
 }
