@@ -85,52 +85,23 @@ ZIP_CODE="92111"
 
 ## Usage
 
-In your terminal, run:
+To automatically relist all active postings on Craigslist, run the following command:
 
 ```
-npm start
+npm run cl
 ```
 
-Currently, the project is setup to relist Facebook Marketplace postings. If you want to activate Craigslist, go to the `Relister/index.ts` file and uncomment out the first 6 comments(read: remove the preceding // characters) that you see below:
+To automatically relist all active postings on Facebook Marketplace, run the following command:
 
 ```
-describe('Relister', async () => {
-  // describe('CL', () => {
-  //   it('should relist all active postings', async () => {
-  //     await relistAllActivePostings(PRICE_DROP);
-
-  //     driver.quit();
-  //   }).timeout(DEFAULT_TEST_TIMEOUT);
-  // });
-
-  describe('FB', async () => {
-    // it('should create a new post', async () => {
-    //   const post = posts[0];
-    //   await createNewPosting(post);
-    //   driver.quit();
-    // }).timeout(DEFAULT_TEST_TIMEOUT);
-
-    it('should relist all active postings', async () => {
-      await relistAllActiveFBPostings(PRICE_DROP);
-      driver.quit();
-    }).timeout(DEFAULT_TEST_TIMEOUT);
-  });
-});
+npm run fb
 ```
 
-If you want to drop the price of the posting on the next repost, change the PRICE_DROP variable in your .env file to a number to drop the price by a fixed amount, or a percentage to drop it by a percentage.
+If you want to drop the price of the posting on the next repost, change the PRICE_DROP variable in your .env file to a number to drop the price by a fixed amount, or a percentage to drop it by a percentage. If you want to keep the price the same, leave the field empty or remove it altogether.
 
 e.g.
 ```
 PRICE_DROP="20"
 PRICE_DROP="10%"
-```
-
-### relistAllActivePostings / relistAllActiveFBPostings
-
-If you want to relist the postings as they are, then run them without arguments(e.g. relistAllActivePostings()). However, if you want to drop the price of the post on the next repost, provide a number to drop it by a fixed amount, or provide a percentage, like so:
-
-```
-await relistAllActiveFBPostings(25);
-await relistAllActivePostings('10%');
+PRICE_DROP=
 ```
