@@ -1,7 +1,7 @@
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-const { IMAGE_DIRECTORY } = process.env;
+const { IMAGE_DIRECTORY = 'tempImages' } = process.env;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
