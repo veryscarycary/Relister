@@ -84,13 +84,6 @@ PASSWORD_FB="password123"
 
 USERNAME_CL="example@yahoo.com"
 PASSWORD_CL="password123"
-# This is the value of the 'subarea' on the first screen of new post creation(Note: MUST MATCH CRAIGSLIST'S VALUE)
-SUBAREA="city of san diego"
-# Free-form fields on the posting
-NEIGHBORHOOD="Little Italy"
-SELLER_NAME="John"
-PHONE_NUMBER="7141234567"
-ZIP_CODE="92111"
 ```
 
 ## Usage
