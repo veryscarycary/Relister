@@ -35,7 +35,7 @@ WebElement.prototype.click = async function (...args) {
 describe('Relister', async () => {
   // describe('CL', () => {
   //   it('should relist all active postings', async () => {
-  //     await relistAllActivePostings('10%');
+  //     await relistAllActivePostings(PRICE_DROP);
 
   //     driver.quit();
   //   }).timeout(DEFAULT_TEST_TIMEOUT);
