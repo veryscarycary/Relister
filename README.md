@@ -23,30 +23,30 @@ If you don't already have Node installed, download Node. I recommend using NVM(N
 `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 
 2. Install NVM by pasting and running the following commands in your terminal: 
-brew update
+`brew update
 brew install nvm
 mkdir ~/.nvm
 echo "export NVM_DIR=~/.nvm" >> ~/.zshrc
 echo "source $(brew --prefix nvm)/nvm.sh" >> ~/.zshrc
-source ~/.zshrc
+source ~/.zshrc`
 
 3. Install Node version 18(paste/run the commands)
-nvm install 18
-nvm use 18
+`nvm install 18
+nvm use 18`
 
 ### Project Dependencies
 
 `cd` into the project directory(whereever you git cloned this project) and run `npm install` to install the project dependencies.
 
 e.g.
-cd ~/relister
-npm install
+`cd ~/relister
+npm install`
 
 ## Setup
 
 1. Create a .env file at the root of the project with the following values filled and tailored to you:
 
-# FACEBOOK VALUES
+`# FACEBOOK VALUES
 
 USERNAME_FB="example@yahoo.com"
 PASSWORD_FB="password123"
@@ -61,5 +61,5 @@ SUBAREA="city of san diego"
 NEIGHBORHOOD="Little Italy"
 SELLER_NAME="John"
 PHONE_NUMBER="7141234567"
-ZIP_CODE="92111"
+ZIP_CODE="92111"`
 
