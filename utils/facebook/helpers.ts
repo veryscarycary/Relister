@@ -1,4 +1,4 @@
-import { PostInfo } from './../types';
+import { PostInfoFB } from './../types';
 import { By, Key, WebElement } from 'selenium-webdriver';
 import { expect } from 'chai';
 import crypto from 'crypto';
@@ -227,6 +227,8 @@ export const extractAndDeleteActivePosts = async () => {
 };
 
 export const getInfoAndDeleteFirstPost = async () => {
+  const getExpectMessage = (field: string) =>
+    `${field.slice(0, 1).toUpperCase()}${field.slice(1)} should not be empty. Either you forgot to add a ${field}, or there was an issue getting the ${field}.`;
   // visit live post and gather info
   await viewFirstActivePosting();
 
@@ -238,13 +240,13 @@ export const getInfoAndDeleteFirstPost = async () => {
   const isHiddenFromFriends = await getHideFromFriends();
   const imagePaths = await downloadPostingImages(title);
 
-  expect(title).not.to.be.empty;
-  expect(price).not.to.be.empty;
-  expect(body).not.to.be.empty;
-  expect(category).not.to.be.empty;
-  expect(imagePaths).not.to.be.empty;
+  expect(title, getExpectMessage('title')).not.to.be.empty;
+  expect(price, getExpectMessage('price')).not.to.be.empty;
+  expect(body, getExpectMessage('description')).not.to.be.empty;
+  expect(category, getExpectMessage('category')).not.to.be.empty;
+  expect(imagePaths, 'Images were not downloaded from the posting. Encountered an issue downloading the images.').not.to.be.empty;
 
-  const postInfo: any = {
+  const partialPostInfo: Partial<PostInfoFB> = {
     body,
     price,
     category,
@@ -256,7 +258,8 @@ export const getInfoAndDeleteFirstPost = async () => {
 
   await clickNext();
 
-  postInfo.location = await getLocation();
+  partialPostInfo.location = await getLocation();
+  const postInfo = partialPostInfo as PostInfoFB;
 
   await clickClose();
   await clickLeavePage();

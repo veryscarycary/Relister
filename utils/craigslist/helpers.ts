@@ -16,7 +16,7 @@ import {
   getValueFromElement,
 } from '../general.js';
 import { IMAGE_DIRECTORY_PATH, FOR_SALE_BY_OWNER } from '../../constants.js';
-import { PostInfo } from './../types';
+import { PostInfoCL } from './../types';
 
 const {
   USERNAME_CL,
@@ -107,7 +107,7 @@ export const getInfoAndDeleteFirstPost = async () => {
   const phoneNumber = await getPhoneNumber();
   const zipCode = await getZipCode();
 
-  const postInfo: PostInfo = {
+  const postInfo: PostInfoCL = {
     body,
     price,
     category,
@@ -326,7 +326,7 @@ export const setPhoneNumber = async (phoneNumber: string, contactName: string) =
   await contactNameField.sendKeys(contactName);
 };
 
-export const completeDetailsForm = async (postInfo: PostInfo) => {
+export const completeDetailsForm = async (postInfo: PostInfoCL) => {
   const {
     body,
     price,
