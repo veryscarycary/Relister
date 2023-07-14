@@ -20,7 +20,7 @@ If you don't already have Node installed, download Node. I recommend using NVM(N
 #### Node Installation - Mac
 
 1. Download homebrew by pasting and running this in your terminal:
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 
 2. Install NVM by pasting and running the following commands in your terminal: 
 brew update
