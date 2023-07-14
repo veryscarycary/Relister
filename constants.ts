@@ -6,7 +6,7 @@ const { IMAGE_DIRECTORY = 'tempImages' } = process.env;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const IMAGE_DIRECTORY_PATH = path.join(__dirname, IMAGE_DIRECTORY);
-export const IMAGE_DOWNLOAD_ATTEMPT_LIMIT = 1;
+export const IMAGE_DOWNLOAD_ATTEMPT_LIMIT = 2;
 export const HUMAN_DELAY_TIME = 1000; // 1 Second
 export const IMAGE_LOADING_DELAY_TIME = 60000; // 1 Minute
 export const DEFAULT_ELEMENT_TIMEOUT = 10000; // 10 Seconds

@@ -33,25 +33,25 @@ WebElement.prototype.click = async function (...args) {
 };
 
 describe('Relister', async () => {
-  describe('CL', () => {
-    it('should relist all active postings', async () => {
-      await relistAllActivePostings(PRICE_DROP);
-
-      driver.quit();
-    }).timeout(DEFAULT_TEST_TIMEOUT);
-  });
-
-  // describe('FB', async () => {
-  //   // it('should create a new post', async () => {
-  //   //   const post = posts[0];
-  //   //   await createNewPosting(post);
-  //   //   driver.quit();
-  //   // }).timeout(DEFAULT_TEST_TIMEOUT);
-
+  // describe('CL', () => {
   //   it('should relist all active postings', async () => {
-  //     await relistAllActiveFBPostings(PRICE_DROP);
+  //     await relistAllActivePostings(PRICE_DROP);
+
   //     driver.quit();
   //   }).timeout(DEFAULT_TEST_TIMEOUT);
   // });
+
+  describe('FB', async () => {
+    // it('should create a new post', async () => {
+    //   const post = posts[0];
+    //   await createNewPosting(post);
+    //   driver.quit();
+    // }).timeout(DEFAULT_TEST_TIMEOUT);
+
+    it('should relist all active postings', async () => {
+      await relistAllActiveFBPostings(PRICE_DROP);
+      driver.quit();
+    }).timeout(DEFAULT_TEST_TIMEOUT);
+  });
 });
 

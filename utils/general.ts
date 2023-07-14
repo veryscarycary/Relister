@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 import fs from 'fs';
-import { By, WebElement } from 'selenium-webdriver';
+import { By, WebElement, until } from 'selenium-webdriver';
 import { DEFAULT_ELEMENT_TIMEOUT } from '../constants.js';
 import { PostInfo } from './types.js';
 const promiseFs = fs.promises;
@@ -18,9 +18,10 @@ async function createDirectory(directoryName = __dirname) {
     console.log(`Directory ${directoryName} created successfully`);
   } catch (err) {
     if (err.code === 'EEXIST')
-      console.info('Directory already exists. Will proceed using this directory...');
-    else
-      console.error(err);
+      console.info(
+        'Directory already exists. Will proceed using this directory...'
+      );
+    else console.error(err);
   }
 }
 
@@ -51,7 +52,7 @@ async function downloadImage(url: string, filepath: string) {
 async function downloadImages(
   sourceUrls: string[],
   filepath: string,
-  titleHash: string,
+  titleHash: string
 ) {
   const localImagePaths: string[] = [];
 
@@ -98,8 +99,7 @@ async function getTextFromElement(by: By) {
   try {
     element = await driver.findElement(by);
   } catch (error) {
-    if (error instanceof NoSuchElementError)
-      console.error(error.message);
+    if (error instanceof NoSuchElementError) console.error(error.message);
   }
 
   if (element) {
@@ -108,7 +108,7 @@ async function getTextFromElement(by: By) {
   }
 
   return null;
-};
+}
 
 async function getValueFromElement(by: By) {
   let element;
@@ -117,8 +117,7 @@ async function getValueFromElement(by: By) {
   try {
     element = await waitForElement(by);
   } catch (error) {
-    if (error instanceof NoSuchElementError)
-      console.error(error.message);
+    if (error instanceof NoSuchElementError) console.error(error.message);
   }
 
   if (element) {
@@ -127,36 +126,23 @@ async function getValueFromElement(by: By) {
   }
 
   return null;
-};
+}
 
-async function waitForElement(by: By, timeout: number = DEFAULT_ELEMENT_TIMEOUT): Promise<WebElement> {
-  let element;
-  const checkForOptions = async () => {
-    try {
-      element = await driver.findElement(by);
-    } catch (err) {
-      return false;
-    }
-    return true;
-  };
-  await driver.wait(checkForOptions, timeout);
-
-  if (!element) throw new NoSuchElementError(`The selector: ${by.toString()} did not locate an element within the time.`);
-
+async function waitForElement(
+  by: By,
+  timeout: number = DEFAULT_ELEMENT_TIMEOUT
+): Promise<WebElement> {
+  await driver.wait(until.elementLocated(by), timeout);
+  const element = await driver.findElement(by);
   return element;
 }
 
-async function waitForElements(by: By, timeout: number = DEFAULT_ELEMENT_TIMEOUT): Promise<WebElement[]> {
-  let elements;
-  const checkForOptions = async () => {
-    try {
-      elements = await driver.findElements(by);
-    } catch (err) {
-      return false;
-    }
-    return true;
-  };
-  await driver.wait(checkForOptions, timeout);
+async function waitForElements(
+  by: By,
+  timeout: number = DEFAULT_ELEMENT_TIMEOUT
+): Promise<WebElement[]> {
+  await driver.wait(until.elementsLocated(by), timeout);
+  const elements = await driver.findElements(by);
   return elements;
 }
 

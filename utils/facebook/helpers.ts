@@ -1,5 +1,5 @@
 import { PostInfo } from './../types';
-import { By, Key } from 'selenium-webdriver';
+import { By, Key, WebElement } from 'selenium-webdriver';
 import { expect } from 'chai';
 import crypto from 'crypto';
 import fs from 'fs';
@@ -315,15 +315,30 @@ export const getLocation = async () =>
 export const downloadPostingImages = async (postTitle: string) => {
   const titleHash = crypto.createHash('md5').update(postTitle).digest('hex');
 
-  const thumbnails = await waitForElements(
-    By.css("div[aria-label^='Thumbnail '][role='button']")
-  );
+  let thumbnails: WebElement[] = [];
+
+  try {
+    thumbnails = await waitForElements(
+      By.css("div[aria-label^='Thumbnail '][role='button']")
+    );
+  } catch (e) {
+    console.info("Didn't find any thumbnails. Proceeding with the assumption there is only one image on the post...");
+  }
 
   const sourceUrlDups = [];
 
-  for (const thumbnail of thumbnails) {
-    await thumbnail.click();
-
+  if (thumbnails.length) {
+    for (const thumbnail of thumbnails) {
+      await thumbnail.click();
+  
+      const imageElement = await waitForElement(
+        By.css("img[alt^='Product photo'][src^='https://scontent']")
+      );
+  
+      const url = await imageElement.getAttribute('src');
+      sourceUrlDups.push(url);
+    }
+  } else {
     const imageElement = await waitForElement(
       By.css("img[alt^='Product photo'][src^='https://scontent']")
     );
