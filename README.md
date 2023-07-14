@@ -1,36 +1,46 @@
 # Relister
 
-Automating relisting posts on secondhand seller sites
+Automate relisting your posts on secondhand seller sites
 
 ## Site Support
 
 Currently, Relister supports relisting active listings for the following listing sites:
 
 - Craigslist
-- Facebook Marketplace.
+- Facebook Marketplace
 
 ## Download
+
+### git
 
 Clone the project to your computer by running the following in your terminal:
 ```
 git clone https://github.com/veryscarycary/Relister.git
 ```
 
+### zip
+
+Download the zip file from the green "Code" button on https://nodejs.org/en/download and unzip it somewhere. 
+
 ## Dependencies
 ### Node
 
 Tested working with Node v18.16.1
 
-If you don't already have Node installed, download Node. I recommend using NVM(Node Version Manager) to enable you to switch between Node versions.
+If you don't already have Node installed, download Node. If you want to switch between Node versions with ease, I recommend installing NVM(Node Version Manager) to enable you to switch between Node versions.
 
-#### Node Installation - Mac
+#### Node Installation Option #1 Standard - Mac & Windows
+
+Download Node via https://nodejs.org/en/download. Choose your operating system to download the installer and follow the prompts.
+
+#### Node Installation Option #2 NVM - Mac
 
 1. Download homebrew by pasting and running this in your terminal:
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-3. Install NVM by pasting and running the following commands in your terminal: 
+2. Install NVM: 
 ```
 brew update
 brew install nvm
@@ -40,7 +50,7 @@ echo "source $(brew --prefix nvm)/nvm.sh" >> ~/.zshrc
 source ~/.zshrc
 ```
 
-3. Install Node version 18(paste/run the commands)
+3. Install Node version 18 via NVM:
 ```
 nvm install 18
 nvm use 18
@@ -58,7 +68,7 @@ npm install
 
 ## Setup
 
-1. Create a .env file at the root of the project with the following values filled and tailored to you:
+Create a .env file at the root of the project with the following values filled and tailored to you:
 
 ```
 # GENERAL
