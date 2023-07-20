@@ -1,7 +1,6 @@
 export interface PostInfoBase {
   body: string;
   category: string;
-  condition?: string;
   imagePaths: string[];
   location: string;
   price: string;
@@ -9,6 +8,7 @@ export interface PostInfoBase {
 }
 
 export interface PostInfoCL extends PostInfoBase {
+  condition?: string;
   manufacturer?: string;
   name: string;
   neighborhood: string;
@@ -18,5 +18,5 @@ export interface PostInfoCL extends PostInfoBase {
 
 export interface PostInfoFB extends PostInfoBase {
   condition: string;
-  isHiddenFromFriends?: boolean;
+  isHiddenFromFriends: boolean;
 }

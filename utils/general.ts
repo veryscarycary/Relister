@@ -3,7 +3,7 @@ import { NoSuchElementError } from 'selenium-webdriver/lib/error.js';
 import fs from 'fs';
 import { By, WebElement, until } from 'selenium-webdriver';
 import { DEFAULT_ELEMENT_TIMEOUT } from '../constants.js';
-import { PostInfo } from './types.js';
+import { PostInfoCL, PostInfoFB } from './types.js';
 const promiseFs = fs.promises;
 
 export class NoActivePostingsFoundError extends Error {
@@ -151,7 +151,9 @@ const setInputField = async (by: By, value: string) => {
   await inputField.sendKeys(value);
 };
 
-const dropPrice = (post: PostInfo, priceDrop: string) => {
+function dropPrice(post: PostInfoCL, priceDrop: string): PostInfoCL;
+function dropPrice(post: PostInfoFB, priceDrop: string): PostInfoFB;
+function dropPrice(post: PostInfoCL | PostInfoFB, priceDrop: string | undefined = ''): PostInfoCL | PostInfoFB {
   const roundToNearest5 = (num: number) => Math.ceil(num / 5) * 5;
 
   let price;

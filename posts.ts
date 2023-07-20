@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-import { PostInfo } from './utils/types';
+import { PostInfoFB } from './utils/types';
 
 export default [
   {
@@ -21,7 +21,7 @@ Asking $700
       (chunk) => path.resolve(__dirname + '/..', chunk)
     ),
   },
-] as PostInfo[];
+] as PostInfoFB[];
 
 // title: string;
 // body: string;
