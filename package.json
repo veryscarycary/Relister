@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "Relisting items on peer selling sites",
   "main": "test/index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "start": "npm run test",
     "cl": "npm run build && mocha ./built/runCL.js",
     "fb": "npm run build && mocha ./built/runFB.js",
     "test": "npm run build && mocha ./built/test/index.js",
-    "build": "tsc --pretty",
+    "build": "webpack --config ./webpack.config.js",
+    "start": "npm run build && electron ./dist/electron.js",
     "debug": "npm run build && mocha --inspect ./built/test/index.js && echo \"click 'open dedicated DevTools for node' in chrome from page chrome://inspect. In dedicated DevTools window add connection localhost:9229 to connect automatically.\""
   },
   "author": "Cary Meskell",
@@ -24,7 +24,16 @@
   "devDependencies": {
     "@types/chai": "4.3.5",
     "@types/mocha": "10.0.1",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
     "chai": "4.3.7",
-    "typescript": "5.0.4"
+    "electron": "^25.3.1",
+    "html-webpack-plugin": "^5.5.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "5.0.4",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }
