@@ -87,3 +87,8 @@ typings/
 
 # Electron-Forge
 out/
+
+node_modules/
+built/
+dist/
+.env

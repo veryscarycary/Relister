@@ -1,28 +1,31 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const fs = require('fs');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
 
-const filename = `${app.getPath('userData')}/content.txt`;
-const loadContent = () => {
-  return fs.existsSync(filename) ? fs.readFileSync(filename, 'utf8') : '';
-}
+// const filename = `${app.getPath('userData')}/content.txt`;
+// const loadContent = () => {
+//   return fs.existsSync(filename) ? fs.readFileSync(filename, 'utf8') : '';
+// }
 
-const saveContent = (content) => {
-  fs.writeFileSync(filename, content, 'utf8');
-}
+const createNewPosting = () => {
+  console.log('HIIII');
+};
 
-ipcMain.on("saveContent", (e, content) => {
-  saveContent(content);
+// const saveContent = (content) => {
+//   fs.writeFileSync(filename, content, 'utf8');
+// }
+
+ipcMain.on("createNewPosting", (e, ) => {
+  createNewPosting();
 });
 
-ipcMain.handle("loadContent", (e) => {
-  return loadContent();
-});
+// ipcMain.handle("loadContent", (e) => {
+//   return loadContent();
+// });
 
 const createWindow = () => {
   // Create the browser window.

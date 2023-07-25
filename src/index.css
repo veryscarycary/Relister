@@ -4,11 +4,14 @@ html, body {
   height:100vh;
   margin:0;
   background: #263238;
+  font-family: helvetica;
 }
 
-.ReactCodeMirror,
-.CodeMirror {
-  position: absolute;
-  height: 100vh;
-  inset: 0 0 0 0;
+body {
+  margin: 4rem 12rem;
+  color: white;
+}
+
+.text-align-center {
+  text-align: center;
 }

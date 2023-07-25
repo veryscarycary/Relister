@@ -4,12 +4,18 @@
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
+  "type": "module",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "build": "tsc --pretty",
+    "cl": "npm run build && mocha ./built/runCL.js",
+    "fb": "npm run build && mocha ./built/runFB.js",
+    "test": "npm run build && mocha ./built/test/index.js",
+    "debug": "npm run build && mocha --inspect ./built/test/index.js && echo \"click 'open dedicated DevTools for node' in chrome from page chrome://inspect. In dedicated DevTools window add connection localhost:9229 to connect automatically.\""
   },
   "keywords": [],
   "author": {
@@ -59,27 +65,36 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/preset-react": "^7.12.13",
-    "@electron-forge/cli": "^6.0.0-beta.54",
-    "@electron-forge/maker-deb": "^6.0.0-beta.54",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
-    "@electron-forge/maker-zip": "^6.0.0-beta.54",
+    "@babel/core": "7.13.10",
+    "@babel/preset-react": "7.12.13",
+    "@electron-forge/cli": "6.0.0-beta.54",
+    "@electron-forge/maker-deb": "6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "6.0.0-beta.54",
+    "@electron-forge/maker-zip": "6.0.0-beta.54",
     "@electron-forge/plugin-webpack": "6.0.0-beta.54",
-    "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
+    "@marshallofsound/webpack-asset-relocator-loader": "0.5.0",
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
+    "@types/react": "^18.2.16",
+    "@types/react-dom": "^18.2.7",
+    "@types/selenium-webdriver": "^4.1.15",
     "babel-loader": "^8.2.2",
     "css-loader": "^4.2.1",
     "electron": "12.0.1",
+    "html-webpack-plugin": "^5.5.3",
     "node-loader": "^1.0.1",
-    "style-loader": "^1.2.1"
+    "style-loader": "^1.2.1",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
-    "codemirror": "^5.59.4",
+    "axios": "^1.4.0",
+    "chai": "^4.3.7",
+    "dotenv": "^16.3.1",
     "electron-squirrel-startup": "^1.0.0",
+    "mocha": "^10.2.0",
     "react": "^17.0.1",
-    "react-codemirror": "^1.0.0",
-    "react-codemirror2": "^7.2.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "selenium-webdriver": "^4.10.0"
   }
 }
