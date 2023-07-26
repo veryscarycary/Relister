@@ -60,6 +60,8 @@ h1 {
   border-bottom: 0;
   background: #eeeeee;
   color: #444;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .pc-tab ul li label:hover {
@@ -79,7 +81,7 @@ h1 {
   clear: both;
 }
 
-.pc-tab section div {
+.form-section {
   padding: 20px;
   width: 100%;
   border: 1px solid #ddd;
@@ -89,7 +91,15 @@ h1 {
   color: #444;
 }
 
-.pc-tab section div h2 {
+#specific-fields .form-section {
+  border-left: 0;
+}
+
+#specific-fields .form-section:first-of-type {
+  border-left: 1px solid #ddd;
+}
+
+.form-section h2 {
   margin: 0;
   font-family: "Raleway";
   letter-spacing: 1px;

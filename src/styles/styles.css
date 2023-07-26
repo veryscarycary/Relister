@@ -1,10 +1,47 @@
-body {
-  margin: 4rem 12rem;
-  color: white;
-}
-
 .text-align-center {
   text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.field-header {
+  min-height: 4.8rem;
+}
+
+.button-primary {
+  display: inline-block;
+  outline: 0;
+  text-align: center;
+  cursor: pointer;
+  height: 34px;
+  padding: 0 13px;
+  color: #fff;
+  vertical-align: top;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  transition: all .3s ease;
+  background: #c13209;
+  border-color: #c13209;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 16px;
+  font-size: 11px;
+}
+
+.button-primary:hover {
+  background: #e4461b;
+  border-color: #e4461b;
+}
+
+label[required] {
+  position: relative;
+}
+
+label[required]:after {
+  position: absolute;
+  content: '*';
 }
 
 /* Utility classes */
@@ -24,6 +61,38 @@ body {
   margin-top: 1.6rem;
 }
 
+.mt-24 {
+  margin-top: 2.4rem;
+}
+
+.mt-32 {
+  margin-top: 3.2rem;
+}
+
+.mr-4 {
+  margin-right: .4rem;
+}
+
+.mr-8 {
+  margin-right: .8rem;
+}
+
+.mr-12 {
+  margin-right: 1.2rem;
+}
+
+.mr-16 {
+  margin-right: 1.6rem;
+}
+
+.mr-24 {
+  margin-right: 2.4rem;
+}
+
+.mr-32 {
+  margin-right: 3.2rem;
+}
+
 .mb-4 {
   margin-bottom: .4rem;
 }
@@ -38,4 +107,36 @@ body {
 
 .mb-16 {
   margin-bottom: 1.6rem;
+}
+
+.mb-24 {
+  margin-bottom: 2.4rem;
+}
+
+.mb-32 {
+  margin-bottom: 3.2rem;
+}
+
+.ml-4 {
+  margin-left: .4rem;
+}
+
+.ml-8 {
+  margin-left: .8rem;
+}
+
+.ml-12 {
+  margin-left: 1.2rem;
+}
+
+.ml-16 {
+  margin-left: 1.6rem;
+}
+
+.ml-24 {
+  margin-left: 2.4rem;
+}
+
+.ml-32 {
+  margin-left: 3.2rem;
 }
