@@ -1,21 +1,29 @@
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
 @import url(https://fonts.googleapis.com/css?family=Raleway:100,400,700);
 
-.pc-tab>input,
-.pc-tab section>div {
+.pc-tab>input {
   display: none;
 }
 
-#tab1:checked~section .tab1,
-#tab2:checked~section .tab2,
-#tab3:checked~section .tab3 {
-  display: block;
+.tab-li.selected {
+  color: red;
 }
 
-#tab1:checked~nav .tab1,
-#tab2:checked~nav .tab2,
-#tab3:checked~nav .tab3 {
-  color: red;
+.tab-li.selected label {
+  background: white;
+  color: #111;
+  position: relative;
+}
+
+.tab-li.selected label:after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: #ffffff;
+  left: 0;
+  bottom: -1px;
 }
 
 /* Visual Styles */
@@ -65,11 +73,11 @@ h1 {
 }
 
 .pc-tab ul li label:hover {
-  background: #dddddd;
+  cursor: pointer;
 }
 
 .pc-tab ul li label:active {
-  background: #ffffff;
+  background: #e2e1e1;
 }
 
 .pc-tab ul li:not(:last-child) label {
@@ -104,27 +112,6 @@ h1 {
   font-family: "Raleway";
   letter-spacing: 1px;
   color: #34495e;
-}
-
-#tab1:checked~nav .tab1 label,
-#tab2:checked~nav .tab2 label,
-#tab3:checked~nav .tab3 label {
-  background: white;
-  color: #111;
-  position: relative;
-}
-
-#tab1:checked~nav .tab1 label:after,
-#tab2:checked~nav .tab2 label:after,
-#tab3:checked~nav .tab3 label:after {
-  content: "";
-  display: block;
-  position: absolute;
-  height: 2px;
-  width: 100%;
-  background: #ffffff;
-  left: 0;
-  bottom: -1px;
 }
 
 footer {
