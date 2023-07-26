@@ -117,21 +117,21 @@ const App = () => {
       <div>
         <h1 className="mt-24 mb-24">Relister</h1>
 
-        <div class="pc-tab">
+        <div className="pc-tab">
           <input id="tab1" type="radio" name="pct" checked={selectedTab === 'create'} onChange={() => setSelectedTab('create')} />
           <input id="tab2" type="radio" name="pct" checked={selectedTab === 'relist'} onChange={() => setSelectedTab('relist')} />
           <nav>
             <ul>
-              <li class="tab1">
+              <li className="tab1">
                 <label for="tab1">Create New Posting</label>
               </li>
-              <li class="tab2">
+              <li className="tab2">
                 <label for="tab2">Relist</label>
               </li>
             </ul>
           </nav>
           <section>
-            <div class="form-section tab1">
+            <div className="form-section tab1">
               <SegmentedControl
                 className="mb-12"
                 mode={selectedApp}
@@ -246,12 +246,12 @@ const App = () => {
               </div>
 
               <div className="layout-row layout-align-end">
-                <button class="button-primary" onClick={createNewPosting}>
+                <button className="button-primary" onClick={createNewPosting}>
                   Create
                 </button>
               </div>
             </div>
-            <div class="tab2">
+            <div className="tab2">
               <h2>Second</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -264,7 +264,7 @@ const App = () => {
                 Perferendis, maiores.
               </p>
             </div>
-            <div class="tab3">
+            <div className="tab3">
               <h2>Third</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio,
