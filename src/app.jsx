@@ -3,24 +3,33 @@ import * as ReactDOM from 'react-dom';
 
 import { useState } from 'react';
 
-const InputField = ({ label, value, setValue }) => {
-  function handleValueChange(
-    e,
-    setFn
-  ) {
+const InputField = ({ label, value, setValue, className }) => {
+  function handleValueChange(e, setFn) {
     setFn(e.target.value);
   }
 
   return (
-    <div className="input-field layout-column">
-      <label>{label}</label>
+    <div className={`${className} layout-column`}>
+      <label className="mb-4">{label}</label>
       <input value={value} onChange={(e) => handleValueChange(e, setValue)} />
     </div>
   );
 };
 
-const createNewPosting = () => {
-  window.scratchpad.createNewPosting();
+const TextareaField = ({ label, value, setValue, className }) => {
+  function handleValueChange(e, setFn) {
+    setFn(e.target.value);
+  }
+
+  return (
+    <div className={`${className} layout-column`}>
+      <label className="mb-4">{label}</label>
+      <textarea
+        value={value}
+        onChange={(e) => handleValueChange(e, setValue)}
+      />
+    </div>
+  );
 };
 
 const App = () => {
@@ -41,64 +50,166 @@ const App = () => {
     setHideFromFriends(e.target.checked);
   }
 
+  const createNewPosting = async () => {
+    await window.scratchpad.createNewPosting({
+      title,
+      description,
+      price,
+      location,
+      conditionCL,
+      conditionFB,
+      manufacturer,
+      name,
+      neighborhood,
+      phoneNumber,
+      zipCode,
+      isHiddenFromFriends,
+    });
+  };
+
   return (
-    <div>
-      <h1 className="text-align-center">Relister</h1>
-      <h2 className="text-align-center">Create New Posting</h2>
-      <h3>Site Agnostic Fields</h3>
+    <>
+      <div>
+        <h1>Relister</h1>
 
-      <InputField label="Title" value={title} setValue={setTitle} />
-      <InputField
-        label="Description"
-        value={description}
-        setValue={setDescription}
-      />
-      <InputField label="Price" value={price} setValue={setPrice} />
-      <InputField label="Location" value={location} setValue={setLocation} />
+        <div class="pc-tab">
+          <input checked="checked" id="tab1" type="radio" name="pct" />
+          <input id="tab2" type="radio" name="pct" />
+          <input id="tab3" type="radio" name="pct" />
+          <nav>
+            <ul>
+              <li class="tab1">
+                <label for="tab1">Create New Posting</label>
+              </li>
+              <li class="tab2">
+                <label for="tab2">Second Tab</label>
+              </li>
+              <li class="tab3">
+                <label for="tab3">Third Tab</label>
+              </li>
+            </ul>
+          </nav>
+          <section>
+            <div class="tab1">
+              <div className="flex-50 mb-16">
+                <h3 className="mb-16">Site Agnostic Fields</h3>
 
-      {/* FB */}
-      <h3>Facebook Marketplace-specific Fields</h3>
+                <InputField
+                  className="mb-8"
+                  label="Title"
+                  value={title}
+                  setValue={setTitle}
+                />
+                <TextareaField
+                  className="mb-8"
+                  label="Description"
+                  value={description}
+                  setValue={setDescription}
+                />
+                <InputField
+                  className="mb-8"
+                  label="Price"
+                  value={price}
+                  setValue={setPrice}
+                />
+                <InputField
+                  className="mb-8"
+                  label="Location"
+                  value={location}
+                  setValue={setLocation}
+                />
+              </div>
 
-      <InputField
-        label="Condition"
-        value={conditionFB}
-        setValue={setConditionFB}
-      />
-      <label>Hide From Friends</label>
-      <input
-        type="checkbox"
-        checked={isHiddenFromFriends}
-        onChange={handleHideFromFriends}
-      />
+              <div id="specific-fields" className="layout-row">
+                <div className="flex-50 mb-12">
+                  {/* FB */}
+                  <h3 className="mb-16">
+                    Facebook Marketplace-specific Fields
+                  </h3>
 
-      {/* CL */}
-      <h3>Craigslist-specific Fields</h3>
+                  <InputField
+                    className="mb-8"
+                    label="Condition"
+                    value={conditionFB}
+                    setValue={setConditionFB}
+                  />
+                  <label>Hide From Friends</label>
+                  <input
+                    type="checkbox"
+                    checked={isHiddenFromFriends}
+                    onChange={handleHideFromFriends}
+                  />
+                </div>
 
-      <InputField
-        label="Condition"
-        value={conditionCL}
-        setValue={setConditionCL}
-      />
-      <InputField
-        label="Manufacturer"
-        value={manufacturer}
-        setValue={setManufacturer}
-      />
-      <InputField label="Name" value={name} setValue={setName} />
-      <InputField
-        label="Neighborhood"
-        value={neighborhood}
-        setValue={setNeighborhood}
-      />
-      <InputField
-        label="PhoneNumber"
-        value={phoneNumber}
-        setValue={setPhoneNumber}
-      />
-      <InputField label="ZipCode" value={zipCode} setValue={setZipCode} />
+                {/* CL */}
+                <div className="flex-50 mb-12">
+                  <h3 className="mb-16">Craigslist-specific Fields</h3>
 
-      <button onClick={createNewPosting}>Create</button>
-    </div>
+                  <InputField
+                    className="mb-8"
+                    label="Condition"
+                    value={conditionCL}
+                    setValue={setConditionCL}
+                  />
+                  <InputField
+                    className="mb-8"
+                    label="Manufacturer"
+                    value={manufacturer}
+                    setValue={setManufacturer}
+                  />
+                  <InputField
+                    className="mb-8"
+                    label="Name"
+                    value={name}
+                    setValue={setName}
+                  />
+                  <InputField
+                    className="mb-8"
+                    label="Neighborhood"
+                    value={neighborhood}
+                    setValue={setNeighborhood}
+                  />
+                  <InputField
+                    className="mb-8"
+                    label="PhoneNumber"
+                    value={phoneNumber}
+                    setValue={setPhoneNumber}
+                  />
+                  <InputField
+                    className="mb-8"
+                    label="ZipCode"
+                    value={zipCode}
+                    setValue={setZipCode}
+                  />
+                </div>
+              </div>
+
+              <button onClick={createNewPosting}>Create</button>
+            </div>
+            <div class="tab2">
+              <h2>Second</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Laborum nesciunt ipsum dolore error repellendus officiis aliquid
+                a, vitae reprehenderit, accusantium vero, ad. Obcaecati numquam
+                sapiente cupiditate. Praesentium eaque, quae error!
+              </p>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Perferendis, maiores.
+              </p>
+            </div>
+            <div class="tab3">
+              <h2>Third</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio,
+                nobis culpa rem, vitae earum aliquid.
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </>
   );
 };
 

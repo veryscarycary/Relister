@@ -1,5 +1,27 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+async function runCL() {
+  try {
+      const { stdout, stderr } = await exec(`(cd ${__dirname}/../.. && npm run cl)`);
+      console.log('stdout:', stdout);
+      console.log('stderr:', stderr);
+  } catch (err) {
+     console.error(err);
+  };
+};
+
+async function runFB() {
+  try {
+      const { stdout, stderr } = await exec(`(cd ${__dirname} && npm run fb)`);
+      console.log('stdout:', stdout);
+      console.log('stderr:', stderr);
+  } catch (err) {
+     console.error(err);
+  };
+};
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -11,16 +33,13 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 //   return fs.existsSync(filename) ? fs.readFileSync(filename, 'utf8') : '';
 // }
 
-const createNewPosting = () => {
-  console.log('HIIII');
-};
-
 // const saveContent = (content) => {
 //   fs.writeFileSync(filename, content, 'utf8');
 // }
 
-ipcMain.on("createNewPosting", (e, ) => {
-  createNewPosting();
+ipcMain.on("createNewPosting", async (e, postInfo) => {
+  console.log(postInfo);
+  // await runCL();
 });
 
 // ipcMain.handle("loadContent", (e) => {

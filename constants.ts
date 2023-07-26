@@ -3,7 +3,8 @@ import { fileURLToPath } from 'url';
 
 const { IMAGE_DIRECTORY = 'tempImages' } = process.env;
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// const __dirname = dirname(fileURLToPath(import.meta.url));
+
 
 export const IMAGE_DIRECTORY_PATH = path.join(__dirname, IMAGE_DIRECTORY);
 export const IMAGE_DOWNLOAD_ATTEMPT_LIMIT = 2;
