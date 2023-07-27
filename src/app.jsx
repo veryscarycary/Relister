@@ -3,6 +3,80 @@ import * as ReactDOM from 'react-dom';
 
 import { useState } from 'react';
 
+const clCategories = [
+  'antiques',
+  'appliances',
+  'arts & crafts',
+  'atvs, utvs, snowmobiles',
+  'auto parts',
+  'auto wheels & tires',
+  'aviation',
+  'baby & kid stuff',
+  'barter',
+  'bicycle parts',
+  'bicycles',
+  'boat parts',
+  'boats',
+  'books & magazines',
+  'business/commercial',
+  'cars & trucks',
+  'cds / dvds / vhs',
+  'cell phones',
+  'clothing & accessories',
+  'collectibles',
+  'computer parts',
+  'computers',
+  'electronics',
+  'farm & garden',
+  'free stuff',
+  'furniture',
+  'garage & moving sales',
+  'general for sale',
+  'health and beauty',
+  'heavy equipment',
+  'household items',
+  'jewelry',
+  'materials',
+  'motorcycle parts',
+  'motorcycles/scooters',
+  'musical instruments',
+  'photo/video',
+  'rvs',
+  'sporting goods',
+  'tickets',
+  'tools',
+  'toys & games',
+  'trailers',
+  'video gaming',
+  'wanted',
+];
+
+const clConditions = [
+  '-',
+  'new',
+  'like new',
+  'excellent',
+  'good',
+  'fair',
+  'salvage',
+];
+
+const fbCategoriesLevel1 = [
+  'Antiques & Collectibles',
+  'Antiques & Collectibles',
+  'Antiques & Collectibles',
+  'Antique & Collectible Appliances',
+  'Antique & Collectible Electronics',
+  'Antique & Collectible Furniture',
+  'Antique & Collectible Home Goods',
+  'Paper Ephemera',
+  'Sports Memorabilia',
+];
+
+
+
+const fbConditions = ['New', 'Used - Like New', 'Used - Good', 'Used - Fair'];
+
 const SegmentedControl = ({ className, mode, setMode }) => {
   return (
     <div class={`segmented-control ${className}`}>
