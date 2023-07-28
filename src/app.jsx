@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { clConditions, fbConditions } from './formData/conditions.js';
 import { clCategories, fbCategories } from './formData/categories.js';
 
 const SegmentedControl = ({ className, mode, setMode }) => {
   return (
-    <div class={`segmented-control ${className}`}>
+    <div className={`segmented-control ${className}`}>
       <input
         type="radio"
         name="mode"
@@ -43,33 +43,55 @@ const SelectField = ({ id, label, className, options, value, setValue }) => {
   return (
     <div className={`layout-column ${className}`}>
       <label htmlFor={id}>{label}</label>
-      <select id={id} value={value} onChange={e => setValue(e.target.value)}>
-        {options.map(option => (
-          <option value={option}>{option}</option>
+      <select id={id} value={value} onChange={(e) => setValue(e.target.value)}>
+        {options.map((option) => (
+          <option key={option} value={option}>{option}</option>
         ))}
       </select>
     </div>
   );
 };
-const SelectTreeField = ({ id, label, className, options, value, setValue }) => {
-  const emptyState = 'empty-state'
+const SelectTreeField = ({
+  id,
+  label,
+  className,
+  options,
+  value,
+  setValue,
+}) => {
+  const emptyState = 'empty-state';
   const [categoryAtDepth1, setCategoryAtDepth1] = useState(emptyState);
   const [categoryAtDepth2, setCategoryAtDepth2] = useState(emptyState);
   const [categoryAtDepth3, setCategoryAtDepth3] = useState(emptyState);
   const [categoryAtDepth4, setCategoryAtDepth4] = useState(emptyState);
 
+  useEffect(() => {
+    const finalCategorySelection = [
+      categoryAtDepth4,
+      categoryAtDepth3,
+      categoryAtDepth2,
+      categoryAtDepth1,
+    ].find((category) => category !== emptyState);
+
+    if (finalCategorySelection && finalCategorySelection.name) {
+      setValue(finalCategorySelection.name);
+    }
+  }, [categoryAtDepth1, categoryAtDepth2, categoryAtDepth3, categoryAtDepth4]);
+
   const handleCategorySelection = (e, setValue, categories) => {
     const optionName = e.target.value;
     const category = categories.find(
       (category) => category.name === optionName
-      );
+    );
     setValue(category);
 
     const selectElementId = e.target.id;
-    const selectNumber = Number(selectElementId.slice(selectElementId.length - 1));
+    const selectNumber = Number(
+      selectElementId.slice(selectElementId.length - 1)
+    );
 
     // reset lower depth select fields
-    for (const i = selectNumber + 1; i <= 4; i++) {
+    for (let i = selectNumber + 1; i <= 4; i++) {
       let stringVar = 'categoryAtDepth';
       let setStringVar = 'setCategoryAtDepth';
 
@@ -77,7 +99,7 @@ const SelectTreeField = ({ id, label, className, options, value, setValue }) => 
         eval(`${setStringVar}${i}('${emptyState}')`);
       }
     }
-  }
+  };
 
   return (
     <div className={`layout-column ${className}`}>
@@ -240,11 +262,28 @@ const App = () => {
   console.log(selectedTab);
 
   const createNewPosting = async () => {
-    await window.scratchpad.createNewPosting({
+    // await window.scratchpad.createNewPosting({
+    //   title,
+    //   description,
+    //   price,
+    //   location,
+    //   conditionCL,
+    //   conditionFB,
+    //   manufacturer,
+    //   name,
+    //   neighborhood,
+    //   phoneNumber,
+    //   zipCode,
+    //   isHiddenFromFriends,
+    // });
+
+    console.log({
       title,
       description,
       price,
       location,
+      categoryCL,
+      categoryFB,
       conditionCL,
       conditionFB,
       manufacturer,
