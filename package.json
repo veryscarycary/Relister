@@ -12,9 +12,11 @@
     "lint": "echo \"No linting configured\"",
     "build": "tsc --pretty",
     "cl": "npm run build && mocha ./built/runCL.js",
+    "create-cl": "npm run build && mocha ./built/createCL.js",
     "fb": "npm run build && mocha ./built/runFB.js",
     "test": "npm run build && mocha ./built/test/index.js",
-    "debug": "npm run build && mocha --inspect ./built/test/index.js && echo \"click 'open dedicated DevTools for node' in chrome from page chrome://inspect. In dedicated DevTools window add connection localhost:9229 to connect automatically.\""
+    "debug": "npm run build && mocha --inspect ./built/test/index.js && echo \"click 'open dedicated DevTools for node' in chrome from page chrome://inspect. In dedicated DevTools window add connection localhost:9229 to connect automatically.\"",
+    "debug-create": "npm run build && mocha --inspect ./built/createCL.js && echo \"click 'open dedicated DevTools for node' in chrome from page chrome://inspect. In dedicated DevTools window add connection localhost:9229 to connect automatically.\""
   },
   "keywords": [],
   "author": {

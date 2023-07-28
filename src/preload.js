@@ -3,7 +3,7 @@ const { ipcRenderer, contextBridge } = require("electron");
 contextBridge.exposeInMainWorld(
   'scratchpad',
   {
-    createNewPosting: (postInfo) => ipcRenderer.send('createNewPosting', postInfo),
+    createNewPostingCL: (postInfo) => ipcRenderer.send('createNewPostingCL', postInfo),
     // content: ipcRenderer.invoke("loadContent"),
   }
 )

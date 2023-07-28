@@ -262,11 +262,29 @@ const App = () => {
   console.log(selectedTab);
 
   const createNewPosting = async () => {
-    // await window.scratchpad.createNewPosting({
+    if (selectedApp === 'cl') {
+      await window.scratchpad.createNewPostingCL({
+        title,
+        body: description,
+        price,
+        location,
+        category: categoryCL,
+        condition: conditionCL,
+        manufacturer,
+        name,
+        neighborhood,
+        phoneNumber,
+        zipCode,
+      });
+    }
+
+    // console.log({
     //   title,
     //   description,
     //   price,
     //   location,
+    //   categoryCL,
+    //   categoryFB,
     //   conditionCL,
     //   conditionFB,
     //   manufacturer,
@@ -276,23 +294,6 @@ const App = () => {
     //   zipCode,
     //   isHiddenFromFriends,
     // });
-
-    console.log({
-      title,
-      description,
-      price,
-      location,
-      categoryCL,
-      categoryFB,
-      conditionCL,
-      conditionFB,
-      manufacturer,
-      name,
-      neighborhood,
-      phoneNumber,
-      zipCode,
-      isHiddenFromFriends,
-    });
   };
 
   return (

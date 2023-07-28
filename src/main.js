@@ -3,28 +3,34 @@ const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-async function runCL() {
+async function createCL(postInfo) {
+  console.log('INSIDE CREATE CL');
   try {
-      const { stdout, stderr } = await exec(`(cd ${__dirname}/../.. && npm run cl)`);
-      console.log('stdout:', stdout);
-      console.log('stderr:', stderr);
+    const { stdout, stderr } = await exec(
+      `(cd ${__dirname}/../.. && \
+          env POST_JSON='${JSON.stringify(postInfo)}' \
+          npm run debug-create)`
+    );
+    console.log('stdout:', stdout);
+    console.log('stderr:', stderr);
   } catch (err) {
-     console.error(err);
-  };
-};
+    console.error(err);
+  }
+}
 
 async function runFB() {
   try {
-      const { stdout, stderr } = await exec(`(cd ${__dirname} && npm run fb)`);
-      console.log('stdout:', stdout);
-      console.log('stderr:', stderr);
+    const { stdout, stderr } = await exec(`(cd ${__dirname} && npm run fb)`);
+    console.log('stdout:', stdout);
+    console.log('stderr:', stderr);
   } catch (err) {
-     console.error(err);
-  };
-};
+    console.error(err);
+  }
+}
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+if (require('electron-squirrel-startup')) {
+  // eslint-disable-line global-require
   app.quit();
 }
 
@@ -37,9 +43,9 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 //   fs.writeFileSync(filename, content, 'utf8');
 // }
 
-ipcMain.on("createNewPosting", async (e, postInfo) => {
+ipcMain.on('createNewPostingCL', async (e, postInfo) => {
   console.log(postInfo);
-  // await runCL();
+  await createCL(postInfo);
 });
 
 // ipcMain.handle("loadContent", (e) => {
@@ -51,11 +57,11 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1000,
     height: 800,
-    backgroundColor: "#263238",
+    backgroundColor: '#263238',
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-    }
+    },
   });
 
   mainWindow.once('ready-to-show', () => {
