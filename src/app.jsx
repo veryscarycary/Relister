@@ -3,79 +3,8 @@ import * as ReactDOM from 'react-dom';
 
 import { useState } from 'react';
 
-const clCategories = [
-  'antiques',
-  'appliances',
-  'arts & crafts',
-  'atvs, utvs, snowmobiles',
-  'auto parts',
-  'auto wheels & tires',
-  'aviation',
-  'baby & kid stuff',
-  'barter',
-  'bicycle parts',
-  'bicycles',
-  'boat parts',
-  'boats',
-  'books & magazines',
-  'business/commercial',
-  'cars & trucks',
-  'cds / dvds / vhs',
-  'cell phones',
-  'clothing & accessories',
-  'collectibles',
-  'computer parts',
-  'computers',
-  'electronics',
-  'farm & garden',
-  'free stuff',
-  'furniture',
-  'garage & moving sales',
-  'general for sale',
-  'health and beauty',
-  'heavy equipment',
-  'household items',
-  'jewelry',
-  'materials',
-  'motorcycle parts',
-  'motorcycles/scooters',
-  'musical instruments',
-  'photo/video',
-  'rvs',
-  'sporting goods',
-  'tickets',
-  'tools',
-  'toys & games',
-  'trailers',
-  'video gaming',
-  'wanted',
-];
-
-const clConditions = [
-  '-',
-  'new',
-  'like new',
-  'excellent',
-  'good',
-  'fair',
-  'salvage',
-];
-
-const fbCategoriesLevel1 = [
-  'Antiques & Collectibles',
-  'Antiques & Collectibles',
-  'Antiques & Collectibles',
-  'Antique & Collectible Appliances',
-  'Antique & Collectible Electronics',
-  'Antique & Collectible Furniture',
-  'Antique & Collectible Home Goods',
-  'Paper Ephemera',
-  'Sports Memorabilia',
-];
-
-
-
-const fbConditions = ['New', 'Used - Like New', 'Used - Good', 'Used - Fair'];
+import { clConditions, fbConditions } from './formData/conditions.js';
+import { clCategories, fbCategories } from './formData/categories.js';
 
 const SegmentedControl = ({ className, mode, setMode }) => {
   return (
@@ -87,7 +16,7 @@ const SegmentedControl = ({ className, mode, setMode }) => {
         checked={mode === 'both'}
         onChange={() => setMode('both')}
       />
-      <label for="both">Both</label>
+      <label htmlFor="both">Both</label>
 
       <input
         type="radio"
@@ -96,7 +25,7 @@ const SegmentedControl = ({ className, mode, setMode }) => {
         checked={mode === 'fbm'}
         onChange={() => setMode('fbm')}
       />
-      <label for="fbm">FBM</label>
+      <label htmlFor="fbm">FBM</label>
 
       <input
         type="radio"
@@ -105,7 +34,143 @@ const SegmentedControl = ({ className, mode, setMode }) => {
         checked={mode === 'cl'}
         onChange={() => setMode('cl')}
       />
-      <label for="cl">CL</label>
+      <label htmlFor="cl">CL</label>
+    </div>
+  );
+};
+
+const SelectField = ({ id, label, className, options, value, setValue }) => {
+  return (
+    <div className={`layout-column ${className}`}>
+      <label htmlFor={id}>{label}</label>
+      <select id={id} value={value} onChange={e => setValue(e.target.value)}>
+        {options.map(option => (
+          <option value={option}>{option}</option>
+        ))}
+      </select>
+    </div>
+  );
+};
+const SelectTreeField = ({ id, label, className, options, value, setValue }) => {
+  const emptyState = 'empty-state'
+  const [categoryAtDepth1, setCategoryAtDepth1] = useState(emptyState);
+  const [categoryAtDepth2, setCategoryAtDepth2] = useState(emptyState);
+  const [categoryAtDepth3, setCategoryAtDepth3] = useState(emptyState);
+  const [categoryAtDepth4, setCategoryAtDepth4] = useState(emptyState);
+
+  const handleCategorySelection = (e, setValue, categories) => {
+    const optionName = e.target.value;
+    const category = categories.find(
+      (category) => category.name === optionName
+      );
+    setValue(category);
+
+    const selectElementId = e.target.id;
+    const selectNumber = Number(selectElementId.slice(selectElementId.length - 1));
+
+    // reset lower depth select fields
+    for (const i = selectNumber + 1; i <= 4; i++) {
+      let stringVar = 'categoryAtDepth';
+      let setStringVar = 'setCategoryAtDepth';
+
+      if (eval(`${stringVar}${i}`) !== emptyState) {
+        eval(`${setStringVar}${i}('${emptyState}')`);
+      }
+    }
+  }
+
+  return (
+    <div className={`layout-column ${className}`}>
+      <label htmlFor={id}>{label}</label>
+      <select
+        id={`${id}-depth1`}
+        value={categoryAtDepth1.name || emptyState}
+        onChange={(e) =>
+          handleCategorySelection(e, setCategoryAtDepth1, options)
+        }
+      >
+        <option key={emptyState} disabled value={emptyState}>
+          {' '}
+          -- select a category --{' '}
+        </option>
+        {options.map((category) => (
+          <option key={category.name} value={category.name}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+
+      {categoryAtDepth1.type === 'container' && (
+        <select
+          id={`${id}-depth2`}
+          value={categoryAtDepth2.name || emptyState}
+          onChange={(e) =>
+            handleCategorySelection(
+              e,
+              setCategoryAtDepth2,
+              categoryAtDepth1.children
+            )
+          }
+        >
+          <option key={emptyState} disabled value={emptyState}>
+            {' '}
+            -- select an option --{' '}
+          </option>
+          {categoryAtDepth1.children.map((category) => (
+            <option key={category.name} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      )}
+
+      {categoryAtDepth2.type === 'container' && (
+        <select
+          id={`${id}-depth3`}
+          value={categoryAtDepth3.name || emptyState}
+          onChange={(e) =>
+            handleCategorySelection(
+              e,
+              setCategoryAtDepth3,
+              categoryAtDepth2.children
+            )
+          }
+        >
+          <option key={emptyState} disabled value={emptyState}>
+            {' '}
+            -- select an option --{' '}
+          </option>
+          {categoryAtDepth2.children.map((category) => (
+            <option key={category.name} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      )}
+
+      {categoryAtDepth3.type === 'container' && (
+        <select
+          id={`${id}-depth4`}
+          value={categoryAtDepth4.name || emptyState}
+          onChange={(e) =>
+            handleCategorySelection(
+              e,
+              setCategoryAtDepth4,
+              categoryAtDepth3.children
+            )
+          }
+        >
+          <option key={emptyState} disabled value={emptyState}>
+            {' '}
+            -- select an option --{' '}
+          </option>
+          {categoryAtDepth3.children.map((category) => (
+            <option key={category.name} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      )}
     </div>
   );
 };
@@ -156,8 +221,10 @@ const App = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [location, setLocation] = useState('');
-  const [conditionCL, setConditionCL] = useState('');
-  const [conditionFB, setConditionFB] = useState('');
+  const [categoryCL, setCategoryCL] = useState(clCategories[0]);
+  const [categoryFB, setCategoryFB] = useState(fbCategories[0].name);
+  const [conditionCL, setConditionCL] = useState(clConditions[0]);
+  const [conditionFB, setConditionFB] = useState(fbConditions[0]);
   const [manufacturer, setManufacturer] = useState('');
   const [name, setName] = useState('');
   const [neighborhood, setNeighborhood] = useState('');
@@ -218,14 +285,14 @@ const App = () => {
                   selectedTab === 'create' ? 'selected' : ''
                 }`}
               >
-                <label for="tab1">Create New Posting</label>
+                <label htmlFor="tab1">Create New Posting</label>
               </li>
               <li
                 className={`tab-li ${
                   selectedTab === 'relist' ? 'selected' : ''
                 }`}
               >
-                <label for="tab2">Relist</label>
+                <label htmlFor="tab2">Relist</label>
               </li>
             </ul>
           </nav>
@@ -279,13 +346,24 @@ const App = () => {
                         FB Marketplace Fields
                       </h3>
 
-                      <InputField
+                      <SelectTreeField
                         className="mb-8"
+                        id="fbCategory"
+                        label="Category"
+                        options={fbCategories}
+                        value={categoryFB}
+                        setValue={setCategoryFB}
+                      />
+
+                      <SelectField
+                        className="mb-8"
+                        id="fbCondition"
                         label="Condition"
+                        options={fbConditions}
                         value={conditionFB}
                         setValue={setConditionFB}
-                        required
                       />
+
                       <label className="mr-8">Hide From Friends</label>
                       <input
                         type="checkbox"
@@ -301,12 +379,24 @@ const App = () => {
                     <div className="form-section border-left-0 flex-50">
                       <h3 className="field-header mb-16">CL Fields</h3>
 
-                      <InputField
+                      <SelectField
                         className="mb-8"
+                        id="clCategory"
+                        label="Category"
+                        options={clCategories}
+                        value={categoryCL}
+                        setValue={setCategoryCL}
+                      />
+
+                      <SelectField
+                        className="mb-8"
+                        id="clCondition"
                         label="Condition"
+                        options={clConditions}
                         value={conditionCL}
                         setValue={setConditionCL}
                       />
+
                       <InputField
                         className="mb-8"
                         label="Manufacturer"
