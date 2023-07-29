@@ -3,13 +3,12 @@ const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-async function createCL(postInfo) {
-  console.log('INSIDE CREATE CL');
+async function createNewPosting(postInfo, selectedApp) {
   try {
     const { stdout, stderr } = await exec(
       `(cd ${__dirname}/../.. && \
           env POST_JSON='${JSON.stringify(postInfo)}' \
-          npm run debug-create)`
+          npm run create-${selectedApp})`
     );
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
@@ -45,7 +44,12 @@ if (require('electron-squirrel-startup')) {
 
 ipcMain.on('createNewPostingCL', async (e, postInfo) => {
   console.log(postInfo);
-  await createCL(postInfo);
+  await createNewPosting(postInfo, 'cl');
+});
+
+ipcMain.on('createNewPostingFB', async (e, postInfo) => {
+  console.log(postInfo);
+  await createNewPosting(postInfo, 'fb');
 });
 
 // ipcMain.handle("loadContent", (e) => {

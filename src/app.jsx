@@ -98,7 +98,7 @@ const ImagesSection = ({ imageDataUris }) => {
   return (
     <div className="layout-row flex-wrap">
       {imageDataUris.map((uri) => (
-          <img className="uploaded-img mr-8 mb-8" src={uri} />
+        <img className="uploaded-img mr-8 mb-8" src={uri} />
       ))}
     </div>
   );
@@ -330,42 +330,78 @@ const App = () => {
     setHideFromFriends(e.target.checked);
   }
 
-  console.log('selectedTab');
-  console.log(selectedTab);
+  const createNewPostingCL = async (postInfo) => {
+    const {
+      title,
+      description,
+      price,
+      location,
+      categoryCL,
+      conditionCL,
+      imagePaths,
+      manufacturer,
+      name,
+      neighborhood,
+      phoneNumber,
+      zipCode,
+    } = postInfo;
 
-  const createNewPosting = async () => {
-    if (selectedApp === 'cl') {
-      await window.scratchpad.createNewPostingCL({
-        title,
-        body: description,
-        price,
-        location,
-        category: categoryCL,
-        condition: conditionCL,
-        manufacturer,
-        name,
-        neighborhood,
-        phoneNumber,
-        zipCode,
-      });
+    const postInfoCL = {
+      title,
+      body: description,
+      price,
+      location,
+      imagePaths,
+      category: categoryCL,
+      condition: conditionCL,
+      manufacturer,
+      name,
+      neighborhood,
+      phoneNumber,
+      zipCode,
+    };
+
+    await window.scratchpad.createNewPostingCL(postInfoCL);
+  };
+
+  const createNewPostingFB = async (postInfo) => {
+    const {
+      title,
+      description,
+      price,
+      location,
+      imagePaths,
+      categoryFB,
+      conditionFB,
+    } = postInfo;
+
+    const postInfoFB = {
+      title,
+      body: description,
+      price,
+      location,
+      imagePaths,
+      category: categoryFB,
+      condition: conditionFB,
+    };
+
+    console.log('create new posting FBBBB, before scratchpad');
+
+    await window.scratchpad.createNewPostingFB(postInfoFB);
+  };
+
+  const createNewPosting = async (postInfo) => {
+    switch (selectedApp) {
+      case 'cl':
+        await createNewPostingCL(postInfo);
+        break;
+      case 'fbm':
+        await createNewPostingFB(postInfo);
+        break;
+      case 'both':
+        await Promise.all([createNewPostingCL(postInfo), createNewPostingFB(postInfo)]);
+        break;
     }
-
-    // console.log({
-    //   title,
-    //   description,
-    //   price,
-    //   location,
-    //   categoryCL,
-    //   categoryFB,
-    //   conditionCL,
-    //   conditionFB,
-    //   manufacturer,
-    //   name,
-    //   neighborhood,
-    //   phoneNumber,
-    //   zipCode,
-    //   isHiddenFromFriends,
-    // });
   };
 
   return (
@@ -468,9 +504,7 @@ const App = () => {
                   {/* FB */}
                   {(selectedApp === 'both' || selectedApp === 'fbm') && (
                     <div className="form-section flex-50">
-                      <h3 className="field-header">
-                        FB Marketplace Fields
-                      </h3>
+                      <h3 className="field-header">FB Marketplace Fields</h3>
 
                       <SelectTreeField
                         className="mb-8"
@@ -565,7 +599,25 @@ const App = () => {
                   {/* <button className="button-primary" onClick={createNewPosting}> */}
                   <button
                     className="button-primary"
-                    onClick={() => console.log(imagePaths)}
+                    onClick={() =>
+                      createNewPosting({
+                        title,
+                        description,
+                        price,
+                        location,
+                        imagePaths,
+                        categoryCL,
+                        categoryFB,
+                        conditionCL,
+                        conditionFB,
+                        manufacturer,
+                        name,
+                        neighborhood,
+                        phoneNumber,
+                        zipCode,
+                        isHiddenFromFriends,
+                      })
+                    }
                   >
                     Create
                   </button>
