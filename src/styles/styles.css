@@ -6,8 +6,19 @@
   text-align: right;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .field-header {
   min-height: 4.8rem;
+}
+
+.uploaded-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center
 }
 
 .button-primary {

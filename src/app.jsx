@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { clConditions, fbConditions } from './formData/conditions.js';
 import { clCategories, fbCategories } from './formData/categories.js';
@@ -39,13 +39,82 @@ const SegmentedControl = ({ className, mode, setMode }) => {
   );
 };
 
+const FileUploadField = ({
+  id,
+  label,
+  style,
+  className,
+  imagePaths,
+  setImagePaths,
+  imageDataUris,
+  setImageDataUris,
+}) => {
+  const handleUploadFiles = (e) => {
+    const chosenFilePaths = Array.prototype.map.call(
+      e.target.files,
+      (file) => file.path
+    );
+    Array.prototype.forEach.call(e.target.files, (file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImageDataUris([...imageDataUris, e.target.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+    const newPaths = chosenFilePaths.filter(
+      (chosenPath) => !imagePaths.includes(chosenPath)
+    );
+    const totalPaths = [...imagePaths, ...newPaths];
+    setImagePaths(totalPaths);
+  };
+  const resetFiles = () => {
+    setImagePaths([]);
+    setImageDataUris([]);
+    ref.current.value = '';
+  };
+  const ref = useRef(null);
+
+  return (
+    <div className={`layout-column ${className}`} style={style}>
+      <label className="mb-4" htmlFor={id}>
+        {label}
+      </label>
+      <div>
+        <input
+          ref={ref}
+          id={id}
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleUploadFiles}
+        />
+        <button onClick={resetFiles}>Clear</button>
+      </div>
+    </div>
+  );
+};
+
+const ImagesSection = ({ imageDataUris }) => {
+  return (
+    <div className="layout-row flex-wrap">
+      {imageDataUris.map((uri) => (
+          <img className="uploaded-img mr-8 mb-8" src={uri} />
+      ))}
+    </div>
+  );
+};
+
 const SelectField = ({ id, label, className, options, value, setValue }) => {
   return (
     <div className={`layout-column ${className}`}>
-      <label htmlFor={id}>{label}</label>
+      <label className="mb-4" htmlFor={id}>
+        {label}
+      </label>
       <select id={id} value={value} onChange={(e) => setValue(e.target.value)}>
         {options.map((option) => (
-          <option key={option} value={option}>{option}</option>
+          <option key={option} value={option}>
+            {option}
+          </option>
         ))}
       </select>
     </div>
@@ -105,6 +174,7 @@ const SelectTreeField = ({
     <div className={`layout-column ${className}`}>
       <label htmlFor={id}>{label}</label>
       <select
+        className="mb-4"
         id={`${id}-depth1`}
         value={categoryAtDepth1.name || emptyState}
         onChange={(e) =>
@@ -243,6 +313,8 @@ const App = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [location, setLocation] = useState('');
+  const [imagePaths, setImagePaths] = useState([]);
+  const [imageDataUris, setImageDataUris] = useState([]);
   const [categoryCL, setCategoryCL] = useState(clCategories[0]);
   const [categoryFB, setCategoryFB] = useState(fbCategories[0].name);
   const [conditionCL, setConditionCL] = useState(clConditions[0]);
@@ -345,44 +417,58 @@ const App = () => {
                   setMode={setSelectedApp}
                 />
 
-                <div className="form-section flex-50 mb-16">
-                  <h3 className="field-header mb-16">General Fields</h3>
+                <div id="general-fields" className="layout-row mb-16">
+                  <div className="form-section flex-50">
+                    <h3 className="field-header">General Fields</h3>
 
-                  <InputField
-                    className="mb-8"
-                    label="Title"
-                    value={title}
-                    setValue={setTitle}
-                    required
-                  />
-                  <TextareaField
-                    className="mb-8"
-                    label="Description"
-                    value={description}
-                    setValue={setDescription}
-                    required
-                  />
-                  <InputField
-                    className="mb-8"
-                    label="Price"
-                    value={price}
-                    setValue={setPrice}
-                    required
-                  />
-                  <InputField
-                    className="mb-8"
-                    label="Location"
-                    value={location}
-                    setValue={setLocation}
-                    required
-                  />
+                    <InputField
+                      className="mb-8"
+                      label="Title"
+                      value={title}
+                      setValue={setTitle}
+                      required
+                    />
+                    <TextareaField
+                      className="mb-8"
+                      label="Description"
+                      value={description}
+                      setValue={setDescription}
+                      required
+                    />
+                    <InputField
+                      className="mb-8"
+                      label="Price"
+                      value={price}
+                      setValue={setPrice}
+                      required
+                    />
+                    <InputField
+                      className="mb-8"
+                      label="Location"
+                      value={location}
+                      setValue={setLocation}
+                      required
+                    />
+                  </div>
+                  <div className="form-section flex-50">
+                    <FileUploadField
+                      style={{ marginTop: '4.8rem' }}
+                      label="Images"
+                      id="imageUpload"
+                      imagePaths={imagePaths}
+                      setImagePaths={setImagePaths}
+                      setImageDataUris={setImageDataUris}
+                      imageDataUris={imageDataUris}
+                    />
+                    <ImagesSection imageDataUris={imageDataUris} />
+                  </div>
                 </div>
 
                 <div id="specific-fields" className="layout-row mb-16">
                   {/* FB */}
                   {(selectedApp === 'both' || selectedApp === 'fbm') && (
                     <div className="form-section flex-50">
-                      <h3 className="field-header mb-16">
+                      <h3 className="field-header">
                         FB Marketplace Fields
                       </h3>
 
@@ -417,7 +503,7 @@ const App = () => {
                   {/* CL */}
                   {(selectedApp === 'both' || selectedApp === 'cl') && (
                     <div className="form-section border-left-0 flex-50">
-                      <h3 className="field-header mb-16">CL Fields</h3>
+                      <h3 className="field-header">CL Fields</h3>
 
                       <SelectField
                         className="mb-8"
@@ -476,7 +562,11 @@ const App = () => {
                 </div>
 
                 <div className="layout-row layout-align-end">
-                  <button className="button-primary" onClick={createNewPosting}>
+                  {/* <button className="button-primary" onClick={createNewPosting}> */}
+                  <button
+                    className="button-primary"
+                    onClick={() => console.log(imagePaths)}
+                  >
                     Create
                   </button>
                 </div>

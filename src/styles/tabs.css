@@ -50,7 +50,7 @@ h1 {
 
 .pc-tab {
   width: 100%;
-  max-width: 700px;
+  max-width: 80rem;
   margin: 0 auto;
 }
 
@@ -97,6 +97,14 @@ h1 {
   line-height: 1.5em;
   letter-spacing: 0.3px;
   color: #444;
+}
+
+#general-fields .form-section:first-of-type {
+    border-right: 0;
+}
+
+#general-fields .form-section:last-of-type {
+    border-left: 0;
 }
 
 #specific-fields .form-section {
