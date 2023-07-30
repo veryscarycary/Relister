@@ -267,7 +267,15 @@ const SelectTreeField = ({
   );
 };
 
-const InputField = ({ label, value, setValue, className, style, inputStyle, required }) => {
+const InputField = ({
+  label,
+  value,
+  setValue,
+  className,
+  style,
+  inputStyle,
+  required,
+}) => {
   function handleValueChange(e, setFn) {
     setFn(e.target.value);
   }
@@ -306,108 +314,112 @@ const TextareaField = ({ label, value, setValue, className, required }) => {
   );
 };
 
-  const createNewPostingCL = async (postInfo) => {
-    const {
-      title,
-      description,
-      price,
-      location,
-      categoryCL,
-      conditionCL,
-      imagePaths,
-      manufacturer,
-      name,
-      neighborhood,
-      phoneNumber,
-      zipCode,
-    } = postInfo;
+const createNewPostingCL = async (postInfo) => {
+  const {
+    title,
+    description,
+    price,
+    location,
+    categoryCL,
+    conditionCL,
+    imagePaths,
+    manufacturer,
+    name,
+    neighborhood,
+    phoneNumber,
+    zipCode,
+  } = postInfo;
 
-    const postInfoCL = {
-      title,
-      body: description,
-      price,
-      location,
-      imagePaths,
-      category: categoryCL,
-      condition: conditionCL,
-      manufacturer,
-      name,
-      neighborhood,
-      phoneNumber,
-      zipCode,
-    };
-
-    await window.scratchpad.createNewPostingCL(postInfoCL);
+  const postInfoCL = {
+    title,
+    body: description,
+    price,
+    location,
+    imagePaths,
+    category: categoryCL,
+    condition: conditionCL,
+    manufacturer,
+    name,
+    neighborhood,
+    phoneNumber,
+    zipCode,
   };
 
-  const createNewPostingFB = async (postInfo) => {
-    const {
-      title,
-      description,
-      price,
-      location,
-      imagePaths,
-      categoryFB,
-      conditionFB,
-    } = postInfo;
+  await window.scratchpad.createNewPostingCL(postInfoCL);
+};
 
-    const postInfoFB = {
-      title,
-      body: description,
-      price,
-      location,
-      imagePaths,
-      category: categoryFB,
-      condition: conditionFB,
-    };
+const createNewPostingFB = async (postInfo) => {
+  const {
+    title,
+    description,
+    price,
+    location,
+    imagePaths,
+    categoryFB,
+    conditionFB,
+  } = postInfo;
 
-    console.log('create new posting FBBBB, before scratchpad');
-
-    await window.scratchpad.createNewPostingFB(postInfoFB);
+  const postInfoFB = {
+    title,
+    body: description,
+    price,
+    location,
+    imagePaths,
+    category: categoryFB,
+    condition: conditionFB,
   };
 
-  const createNewPosting = async (postInfo, selectedApp) => {
-    switch (selectedApp) {
-      case 'cl':
-        await createNewPostingCL(postInfo);
-        break;
-      case 'fbm':
-        await createNewPostingFB(postInfo);
-        break;
-      case 'both':
-        await Promise.all([
-          createNewPostingCL(postInfo),
-          createNewPostingFB(postInfo),
-        ]);
-        break;
-    }
-  };
+  console.log('create new posting FBBBB, before scratchpad');
 
-  const relistActivePostingsCL = async (priceDrop) => {
-    await window.scratchpad.relistActivePostingsCL(priceDrop);
-  };
+  await window.scratchpad.createNewPostingFB(postInfoFB);
+};
 
-  const relistActivePostingsFB = async (priceDrop) => {
-    await window.scratchpad.relistActivePostingsFB(priceDrop);
-  };
+const createNewPosting = async (postInfo, selectedApp) => {
+  switch (selectedApp) {
+    case 'cl':
+      await createNewPostingCL(postInfo);
+      break;
+    case 'fbm':
+      await createNewPostingFB(postInfo);
+      break;
+    case 'both':
+      await Promise.all([
+        createNewPostingCL(postInfo),
+        createNewPostingFB(postInfo),
+      ]);
+      break;
+  }
+};
 
-  const relistActivePostings = async (priceDrop, selectedApp) => {
-    switch (selectedApp) {
-      case 'cl':
-        await relistActivePostingsCL(priceDrop);
-        break;
-      case 'fbm':
-        await relistActivePostingsFB(priceDrop);
-        break;
-      case 'both':
-        await Promise.all([relistActivePostingsCL(priceDrop), relistActivePostingsFB(priceDrop)]);
-        break;
-    }
-  };
+const relistActivePostingsCL = async (priceDrop) => {
+  await window.scratchpad.relistActivePostingsCL(priceDrop);
+};
+
+const relistActivePostingsFB = async (priceDrop) => {
+  await window.scratchpad.relistActivePostingsFB(priceDrop);
+};
+
+const relistActivePostings = async (priceDrop, selectedApp) => {
+  switch (selectedApp) {
+    case 'cl':
+      await relistActivePostingsCL(priceDrop);
+      break;
+    case 'fbm':
+      await relistActivePostingsFB(priceDrop);
+      break;
+    case 'both':
+      await Promise.all([
+        relistActivePostingsCL(priceDrop),
+        relistActivePostingsFB(priceDrop),
+      ]);
+      break;
+  }
+};
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState('create');
   const [selectedApp, setSelectedApp] = useState('both');
+  const [loading, setLoading] = useState(false);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -626,25 +638,31 @@ const App = () => {
                   {/* <button className="button-primary" onClick={createNewPosting}> */}
                   <button
                     className="button-primary"
-                    onClick={() =>
-                      createNewPosting({
-                        title,
-                        description,
-                        price,
-                        location,
-                        imagePaths,
-                        categoryCL,
-                        categoryFB,
-                        conditionCL,
-                        conditionFB,
-                        manufacturer,
-                        name,
-                        neighborhood,
-                        phoneNumber,
-                        zipCode,
-                        isHiddenFromFriends,
-                      }, selectedApp)
-                    }
+                    onClick={async () => {
+                      setLoading(true);
+                      createNewPosting(
+                        {
+                          title,
+                          description,
+                          price,
+                          location,
+                          imagePaths,
+                          categoryCL,
+                          categoryFB,
+                          conditionCL,
+                          conditionFB,
+                          manufacturer,
+                          name,
+                          neighborhood,
+                          phoneNumber,
+                          zipCode,
+                          isHiddenFromFriends,
+                        },
+                        selectedApp
+                      );
+                      setLoading(true);
+                      setTimeout(() => setLoading(false), 30000); // poor mans await
+                    }}
                   >
                     Create
                   </button>
@@ -667,10 +685,14 @@ const App = () => {
                     setValue={setPriceDrop}
                   />
                   <button
-                    className="button-primary"
-                    onClick={() => relistActivePostings(priceDrop, selectedApp)}
+                    className={`button-primary ${loading ? 'loading' : ''}`}
+                    onClick={async () => {
+                      setLoading(true);
+                      await relistActivePostings(priceDrop, selectedApp);
+                      setTimeout(() => setLoading(false), 30000); // poor mans await
+                    }}
                   >
-                    Relist Active Postings
+                    <span className="button-text">Relist Active Postings</span>
                   </button>
                 </div>
               </div>

@@ -3,12 +3,12 @@
   transition: all 0.2s;
 }
 
-.button--loading .button-text {
+.button-primary.loading .button-text {
   visibility: hidden;
   opacity: 0;
 }
 
-.button--loading::after {
+.button-primary.loading::after {
   content: "";
   position: absolute;
   width: 16px;

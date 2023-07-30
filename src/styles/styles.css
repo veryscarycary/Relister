@@ -23,6 +23,7 @@
 
 .button-primary {
   display: inline-block;
+  position: relative;
   outline: 0;
   text-align: center;
   cursor: pointer;
