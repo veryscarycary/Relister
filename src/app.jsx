@@ -375,6 +375,8 @@ const createNewPostingFB = async (postInfo) => {
 };
 
 const createNewPosting = async (postInfo, selectedApp) => {
+  setLoading(true);
+
   switch (selectedApp) {
     case 'cl':
       await createNewPostingCL(postInfo);
@@ -389,6 +391,8 @@ const createNewPosting = async (postInfo, selectedApp) => {
       ]);
       break;
   }
+
+  setLoading(false);
 };
 
 const relistActivePostingsCL = async (priceDrop) => {
@@ -400,6 +404,8 @@ const relistActivePostingsFB = async (priceDrop) => {
 };
 
 const relistActivePostings = async (priceDrop, selectedApp) => {
+  setLoading(true);
+
   switch (selectedApp) {
     case 'cl':
       await relistActivePostingsCL(priceDrop);
@@ -414,6 +420,8 @@ const relistActivePostings = async (priceDrop, selectedApp) => {
       ]);
       break;
   }
+
+  setLoading(false);
 };
 
 const App = async () => {
@@ -441,12 +449,6 @@ const App = async () => {
 
   function handleHideFromFriends(e) {
     setHideFromFriends(e.target.checked);
-  }
-
-  async function handleClick(fn) {
-    setLoading(true);
-    await fn();
-    setLoading(false);
   }
 
   return (
@@ -646,29 +648,28 @@ const App = async () => {
                     className={`button-primary ${
                       loading ? 'button--loading' : ''
                     }`}
-                    onClick={handleClick(
-                      async () =>
-                        await createNewPosting(
-                          {
-                            title,
-                            description,
-                            price,
-                            location,
-                            imagePaths,
-                            categoryCL,
-                            categoryFB,
-                            conditionCL,
-                            conditionFB,
-                            manufacturer,
-                            name,
-                            neighborhood,
-                            phoneNumber,
-                            zipCode,
-                            isHiddenFromFriends,
-                          },
-                          selectedApp
-                        )
-                    )}
+                    onClick={async () =>
+                      await createNewPosting(
+                        {
+                          title,
+                          description,
+                          price,
+                          location,
+                          imagePaths,
+                          categoryCL,
+                          categoryFB,
+                          conditionCL,
+                          conditionFB,
+                          manufacturer,
+                          name,
+                          neighborhood,
+                          phoneNumber,
+                          zipCode,
+                          isHiddenFromFriends,
+                        },
+                        selectedApp
+                      )
+                    }
                   >
                     <span className="button-text">Create</span>
                   </button>
@@ -694,10 +695,9 @@ const App = async () => {
                     className={`button-primary ${
                       loading ? 'button--loading' : ''
                     }`}
-                    onClick={handleClick(
-                      async () =>
-                        await relistActivePostings(priceDrop, selectedApp)
-                    )}
+                    onClick={async () =>
+                      await relistActivePostings(priceDrop, selectedApp)
+                    }
                   >
                     <span>Relist Active Postings</span>
                   </button>
