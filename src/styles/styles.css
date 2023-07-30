@@ -46,6 +46,11 @@
   border-color: #e4461b;
 }
 
+.button-primary:active {
+  background: #8b1e00;
+  border-color: #8b1e00;
+}
+
 label[required] {
   position: relative;
 }

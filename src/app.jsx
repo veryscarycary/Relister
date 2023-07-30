@@ -267,17 +267,26 @@ const SelectTreeField = ({
   );
 };
 
-const InputField = ({ label, value, setValue, className, required }) => {
+const InputField = ({
+  label,
+  value,
+  setValue,
+  className,
+  style,
+  inputStyle,
+  required,
+}) => {
   function handleValueChange(e, setFn) {
     setFn(e.target.value);
   }
 
   return (
-    <div className={`${className} layout-column`}>
+    <div className={`${className} layout-column`} style={style}>
       <label className="mb-4" required={required}>
         {label}
       </label>
       <input
+        style={inputStyle}
         value={value}
         onChange={(e) => handleValueChange(e, setValue)}
         required={required}
@@ -305,9 +314,112 @@ const TextareaField = ({ label, value, setValue, className, required }) => {
   );
 };
 
-const App = () => {
+const createNewPostingCL = async (postInfo) => {
+  const {
+    title,
+    description,
+    price,
+    location,
+    categoryCL,
+    conditionCL,
+    imagePaths,
+    manufacturer,
+    name,
+    neighborhood,
+    phoneNumber,
+    zipCode,
+  } = postInfo;
+
+  const postInfoCL = {
+    title,
+    body: description,
+    price,
+    location,
+    imagePaths,
+    category: categoryCL,
+    condition: conditionCL,
+    manufacturer,
+    name,
+    neighborhood,
+    phoneNumber,
+    zipCode,
+  };
+
+  await window.scratchpad.createNewPostingCL(postInfoCL);
+};
+
+const createNewPostingFB = async (postInfo) => {
+  const {
+    title,
+    description,
+    price,
+    location,
+    imagePaths,
+    categoryFB,
+    conditionFB,
+  } = postInfo;
+
+  const postInfoFB = {
+    title,
+    body: description,
+    price,
+    location,
+    imagePaths,
+    category: categoryFB,
+    condition: conditionFB,
+  };
+
+  console.log('create new posting FBBBB, before scratchpad');
+
+  await window.scratchpad.createNewPostingFB(postInfoFB);
+};
+
+const createNewPosting = async (postInfo, selectedApp) => {
+  switch (selectedApp) {
+    case 'cl':
+      await createNewPostingCL(postInfo);
+      break;
+    case 'fbm':
+      await createNewPostingFB(postInfo);
+      break;
+    case 'both':
+      await Promise.all([
+        createNewPostingCL(postInfo),
+        createNewPostingFB(postInfo),
+      ]);
+      break;
+  }
+};
+
+const relistActivePostingsCL = async (priceDrop) => {
+  await window.scratchpad.relistActivePostingsCL(priceDrop);
+};
+
+const relistActivePostingsFB = async (priceDrop) => {
+  await window.scratchpad.relistActivePostingsFB(priceDrop);
+};
+
+const relistActivePostings = async (priceDrop, selectedApp) => {
+  switch (selectedApp) {
+    case 'cl':
+      await relistActivePostingsCL(priceDrop);
+      break;
+    case 'fbm':
+      await relistActivePostingsFB(priceDrop);
+      break;
+    case 'both':
+      await Promise.all([
+        relistActivePostingsCL(priceDrop),
+        relistActivePostingsFB(priceDrop),
+      ]);
+      break;
+  }
+};
+
+const App = async () => {
   const [selectedTab, setSelectedTab] = useState('create');
   const [selectedApp, setSelectedApp] = useState('both');
+  const [loading, setLoading] = useState(false);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -325,84 +437,17 @@ const App = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [isHiddenFromFriends, setHideFromFriends] = useState(true);
+  const [priceDrop, setPriceDrop] = useState('');
 
   function handleHideFromFriends(e) {
     setHideFromFriends(e.target.checked);
   }
 
-  const createNewPostingCL = async (postInfo) => {
-    const {
-      title,
-      description,
-      price,
-      location,
-      categoryCL,
-      conditionCL,
-      imagePaths,
-      manufacturer,
-      name,
-      neighborhood,
-      phoneNumber,
-      zipCode,
-    } = postInfo;
-
-    const postInfoCL = {
-      title,
-      body: description,
-      price,
-      location,
-      imagePaths,
-      category: categoryCL,
-      condition: conditionCL,
-      manufacturer,
-      name,
-      neighborhood,
-      phoneNumber,
-      zipCode,
-    };
-
-    await window.scratchpad.createNewPostingCL(postInfoCL);
-  };
-
-  const createNewPostingFB = async (postInfo) => {
-    const {
-      title,
-      description,
-      price,
-      location,
-      imagePaths,
-      categoryFB,
-      conditionFB,
-    } = postInfo;
-
-    const postInfoFB = {
-      title,
-      body: description,
-      price,
-      location,
-      imagePaths,
-      category: categoryFB,
-      condition: conditionFB,
-    };
-
-    console.log('create new posting FBBBB, before scratchpad');
-
-    await window.scratchpad.createNewPostingFB(postInfoFB);
-  };
-
-  const createNewPosting = async (postInfo) => {
-    switch (selectedApp) {
-      case 'cl':
-        await createNewPostingCL(postInfo);
-        break;
-      case 'fbm':
-        await createNewPostingFB(postInfo);
-        break;
-      case 'both':
-        await Promise.all([createNewPostingCL(postInfo), createNewPostingFB(postInfo)]);
-        break;
-    }
-  };
+  async function handleClick(fn) {
+    setLoading(true);
+    await fn();
+    setLoading(false);
+  }
 
   return (
     <>
@@ -598,46 +643,65 @@ const App = () => {
                 <div className="layout-row layout-align-end">
                   {/* <button className="button-primary" onClick={createNewPosting}> */}
                   <button
-                    className="button-primary"
-                    onClick={() =>
-                      createNewPosting({
-                        title,
-                        description,
-                        price,
-                        location,
-                        imagePaths,
-                        categoryCL,
-                        categoryFB,
-                        conditionCL,
-                        conditionFB,
-                        manufacturer,
-                        name,
-                        neighborhood,
-                        phoneNumber,
-                        zipCode,
-                        isHiddenFromFriends,
-                      })
-                    }
+                    className={`button-primary ${
+                      loading ? 'button--loading' : ''
+                    }`}
+                    onClick={handleClick(
+                      async () =>
+                        await createNewPosting(
+                          {
+                            title,
+                            description,
+                            price,
+                            location,
+                            imagePaths,
+                            categoryCL,
+                            categoryFB,
+                            conditionCL,
+                            conditionFB,
+                            manufacturer,
+                            name,
+                            neighborhood,
+                            phoneNumber,
+                            zipCode,
+                            isHiddenFromFriends,
+                          },
+                          selectedApp
+                        )
+                    )}
                   >
-                    Create
+                    <span className="button-text">Create</span>
                   </button>
                 </div>
               </div>
             )}
             {selectedTab === 'relist' && (
               <div className="form-section tab-section">
-                <h2>Second</h2>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Laborum nesciunt ipsum dolore error repellendus officiis
-                  aliquid a, vitae reprehenderit, accusantium vero, ad.
-                  Obcaecati numquam sapiente cupiditate. Praesentium eaque, quae
-                  error!
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Perferendis, maiores.
-                </p>
+                <SegmentedControl
+                  className="mb-32"
+                  mode={selectedApp}
+                  setMode={setSelectedApp}
+                />
+
+                <div className="form-section layout-row layout-align-center-end">
+                  <InputField
+                    className="mr-32"
+                    label="Price Drop"
+                    value={priceDrop}
+                    setValue={setPriceDrop}
+                  />
+                  <button
+                    className={`button-primary ${
+                      loading ? 'button--loading' : ''
+                    }`}
+                    onClick={handleClick(
+                      async () =>
+                        await relistActivePostings(priceDrop, selectedApp)
+                    )}
+                  >
+                    <span>Relist Active Postings</span>
+                  </button>
+                </div>
               </div>
             )}
           </section>

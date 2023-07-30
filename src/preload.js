@@ -5,6 +5,8 @@ contextBridge.exposeInMainWorld(
   {
     createNewPostingCL: (postInfo) => ipcRenderer.send('createNewPostingCL', postInfo),
     createNewPostingFB: (postInfo) => ipcRenderer.send('createNewPostingFB', postInfo),
+    relistActivePostingsCL: (priceDrop) => ipcRenderer.send('relistActivePostingsCL', priceDrop),
+    relistActivePostingsFB: (priceDrop) => ipcRenderer.send('relistActivePostingsFB', priceDrop),
     // content: ipcRenderer.invoke("loadContent"),
   }
 )

@@ -1,8 +1,8 @@
 {
-  "name": "scratchpad",
-  "productName": "scratchpad",
+  "name": "Relister",
+  "productName": "Relister",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "An app for automatically relisting postings",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -11,8 +11,8 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\"",
     "build": "tsc --pretty",
-    "cl": "npm run build && mocha ./built/runCL.js",
-    "fb": "npm run build && mocha ./built/runFB.js",
+    "relist-cl": "npm run build && mocha ./built/relistCL.js",
+    "relist-fb": "npm run build && mocha ./built/relistFB.js",
     "create-cl": "npm run build && mocha ./built/createCL.js",
     "create-fb": "npm run build && mocha ./built/createFB.js",
     "test": "npm run build && mocha ./built/test/index.js",
@@ -22,8 +22,8 @@
   },
   "keywords": [],
   "author": {
-    "name": "Kilian Valkhof",
-    "email": "kilian@kilianvalkhof.com"
+    "name": "Cary Meskell",
+    "email": "carymeskell@yahoo.com"
   },
   "license": "MIT",
   "config": {

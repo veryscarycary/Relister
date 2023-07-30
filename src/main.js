@@ -7,7 +7,7 @@ async function createNewPosting(postInfo, selectedApp) {
   try {
     const { stdout, stderr } = await exec(
       `(cd ${__dirname}/../.. && \
-          env POST_JSON='${JSON.stringify(postInfo)}' \
+          env POST_JSON="${JSON.stringify(postInfo)}" \
           npm run create-${selectedApp})`
     );
     console.log('stdout:', stdout);
@@ -17,9 +17,13 @@ async function createNewPosting(postInfo, selectedApp) {
   }
 }
 
-async function runFB() {
+async function relistActivePostings(priceDrop, selectedApp) {
   try {
-    const { stdout, stderr } = await exec(`(cd ${__dirname} && npm run fb)`);
+    const { stdout, stderr } = await exec(
+      `(cd ${__dirname}/../.. && \
+          env PRICE_DROP="${priceDrop}" \
+          npm run relist-${selectedApp})`
+    );
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
   } catch (err) {
@@ -50,6 +54,16 @@ ipcMain.on('createNewPostingCL', async (e, postInfo) => {
 ipcMain.on('createNewPostingFB', async (e, postInfo) => {
   console.log(postInfo);
   await createNewPosting(postInfo, 'fb');
+});
+
+ipcMain.on('relistActivePostingsCL', async (e, priceDrop) => {
+  console.log(priceDrop);
+  await relistActivePostings(priceDrop, 'cl');
+});
+
+ipcMain.on('relistActivePostingsFB', async (e, priceDrop) => {
+  console.log(priceDrop);
+  await relistActivePostings(priceDrop, 'fb');
 });
 
 // ipcMain.handle("loadContent", (e) => {

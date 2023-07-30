@@ -4,7 +4,10 @@ import { expect } from 'chai';
 import crypto from 'crypto';
 import fs from 'fs';
 
-import { IMAGE_LOADING_DELAY_TIME, SD_CRAIGLIST_ACCOUNT_URL } from '../../constants.js';
+import {
+  IMAGE_LOADING_DELAY_TIME,
+  SD_CRAIGLIST_ACCOUNT_URL,
+} from '../../constants.js';
 import {
   downloadImage,
   createDirectory,
@@ -74,7 +77,10 @@ export const extractAndDeleteActivePosts = async () => {
     )
   );
   const numActivePosts = activePosts.length;
-  expect(numActivePosts).to.be.greaterThan(0, "There weren't any active postings found! Check your account to see if you have any postings that are active.");
+  expect(numActivePosts).to.be.greaterThan(
+    0,
+    "There weren't any active postings found! Check your account to see if you have any postings that are active."
+  );
 
   while (posts.length < numActivePosts) {
     const postInfo = await getInfoAndDeleteFirstPost();
@@ -156,7 +162,9 @@ export const downloadPostingImages = async (postTitle: string) => {
   Promise.all(
     sourceUrls.map(async (url, i) => {
       try {
-        const localImagePath = `${IMAGE_DIRECTORY_PATH}/${titleHash}/image_${i + 1}.jpg`;
+        const localImagePath = `${IMAGE_DIRECTORY_PATH}/${titleHash}/image_${
+          i + 1
+        }.jpg`;
         await downloadImage(url, localImagePath);
         localImagePaths.push(localImagePath);
         console.log(
@@ -177,7 +185,9 @@ export const downloadPostingImages = async (postTitle: string) => {
 };
 
 export const goToEditPosting = async () => {
-  const editPostButton = await waitForElement(By.css("form[method='POST'] input[value='Edit this Posting']"));
+  const editPostButton = await waitForElement(
+    By.css("form[method='POST'] input[value='Edit this Posting']")
+  );
   await editPostButton.click();
 };
 
@@ -198,7 +208,9 @@ export const getLocation = async () => {
 };
 
 export const getNeighborhood = async () => {
-  const neighborhoodWithParens = await getTextFromElement(By.css('.postingtitletext span:last-of-type'));
+  const neighborhoodWithParens = await getTextFromElement(
+    By.css('.postingtitletext span:last-of-type')
+  );
   return neighborhoodWithParens.slice(1, neighborhoodWithParens.length - 1); // remove the parenthesis
 };
 
@@ -216,14 +228,25 @@ export const getCondition = async () =>
     )
   );
 
-export const getCategory = async () =>
-  getTextFromElement(By.css('.crumb.category'));
+export const getCategory = async () => {
+  let category = await getTextFromElement(By.css('.crumb.category'));
+  const dashIndex = category.indexOf('-');
 
-export const getSellerName = async () => getValueFromElement(By.css("input[name='contact_name']"));
+  if (dashIndex > -1) {
+    category = category.slice(0, dashIndex).trim();
+  }
 
-export const getPhoneNumber = async () => getValueFromElement(By.css("input[name='contact_phone']"));
+  return category;
+};
 
-export const getZipCode = async () => getValueFromElement(By.css("input[name='postal']"));
+export const getSellerName = async () =>
+  getValueFromElement(By.css("input[name='contact_name']"));
+
+export const getPhoneNumber = async () =>
+  getValueFromElement(By.css("input[name='contact_phone']"));
+
+export const getZipCode = async () =>
+  getValueFromElement(By.css("input[name='postal']"));
 
 export const clickNewPostButton = async () => {
   const newPostButton = await driver.findElement(
@@ -302,7 +325,10 @@ export const setCondition = async (condition: string) => {
   await conditionOption.click();
 };
 
-export const setPhoneNumber = async (phoneNumber: string, contactName: string) => {
+export const setPhoneNumber = async (
+  phoneNumber: string,
+  contactName: string
+) => {
   if (!phoneNumber || !contactName) return;
 
   const phoneNumberCheckbox = await driver.findElement(
