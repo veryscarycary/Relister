@@ -1,9 +1,32 @@
+.relister-body {
+  padding-top: 24px;
+}
+
+.heading {
+  position: relative;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.login-container {
+  width: 22rem;
+}
+
+.main-section {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
 .text-align-center {
   text-align: center;
 }
 
 .text-align-right {
   text-align: right;
+}
+
+.text-align-left {
+  text-align: left;
 }
 
 .flex-wrap {
@@ -40,6 +63,24 @@
   text-transform: uppercase;
   line-height: 16px;
   font-size: 11px;
+}
+
+.button-settings {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 26px;
+}
+
+.button-back {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 26px;
 }
 
 .button-primary:hover {

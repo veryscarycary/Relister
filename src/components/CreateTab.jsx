@@ -193,7 +193,7 @@ const CreateTab = () => {
       <div className="layout-row layout-align-end">
         {/* <button className="button-primary" onClick={createNewPosting}> */}
         <button
-          className="button-primary"
+          className={`button-primary ${loading ? 'loading' : ''}`}
           onClick={async () => {
             setLoading(true);
             createNewPosting(
