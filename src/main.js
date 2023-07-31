@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const { getEnvValue } = require('setEnvValue.js');
 
 async function createNewPosting(postInfo, selectedApp) {
   try {
@@ -26,6 +27,19 @@ async function relistActivePostings(priceDrop, selectedApp) {
     );
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function saveCredentials(credentials, app) {
+  const { username, password } = credentials;
+
+  try {
+   const usernameFb = getEnvValue('USERNAME_FB');
+   const usernameCl = getEnvValue('USERNAME_CL');
+    console.log('stdout:', usernameFb);
+    console.log('stderr:', usernameCl);
   } catch (err) {
     console.error(err);
   }
@@ -64,6 +78,16 @@ ipcMain.on('relistActivePostingsCL', async (e, priceDrop) => {
 ipcMain.on('relistActivePostingsFB', async (e, priceDrop) => {
   console.log(priceDrop);
   await relistActivePostings(priceDrop, 'fb');
+});
+
+ipcMain.on('saveCredentialsCL', async (e, credentials) => {
+  console.log(credentials);
+  await saveCredentials(credentials, 'cl');
+});
+
+ipcMain.on('saveCredentialsFB', async (e, credentials) => {
+  console.log(credentials);
+  await saveCredentials(credentials, 'fb');
 });
 
 // ipcMain.handle("loadContent", (e) => {
