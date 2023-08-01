@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
-const { getEnvValue } = require('setEnvValue.js');
+const { setEnvValue } = require('./setEnvValue.js');
 
 async function createNewPosting(postInfo, selectedApp) {
   try {
@@ -35,13 +35,15 @@ async function relistActivePostings(priceDrop, selectedApp) {
 async function saveCredentials(credentials, app) {
   const { username, password } = credentials;
 
-  try {
-   const usernameFb = getEnvValue('USERNAME_FB');
-   const usernameCl = getEnvValue('USERNAME_CL');
-    console.log('stdout:', usernameFb);
-    console.log('stderr:', usernameCl);
-  } catch (err) {
-    console.error(err);
+  switch (app) {
+    case 'cl':
+      setEnvValue('USERNAME_CL', username);      
+      setEnvValue('PASSWORD_CL', password);      
+      break;
+    case 'fb':
+      setEnvValue('USERNAME_FB', username);      
+      setEnvValue('PASSWORD_FB', password);      
+      break;
   }
 }
 

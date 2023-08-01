@@ -8,6 +8,7 @@ const InputField = ({
   style,
   inputStyle,
   required,
+  type,
 }) => {
   function handleValueChange(e, setFn) {
     setFn(e.target.value);
@@ -23,6 +24,7 @@ const InputField = ({
         value={value}
         onChange={(e) => handleValueChange(e, setValue)}
         required={required}
+        type={type}
       />
     </div>
   );

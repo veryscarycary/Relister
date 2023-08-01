@@ -2,7 +2,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const envFilePath = path.resolve(__dirname, '.env');
+const envFilePath = path.resolve(__dirname, '../..', '.env');
 
 // read .env file & convert to array
 const readEnvVars = () => fs.readFileSync(envFilePath, 'utf-8').split(os.EOL);
