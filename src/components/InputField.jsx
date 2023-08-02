@@ -10,16 +10,28 @@ const InputField = ({
   required,
   type,
   isInvalid,
+  tooltipText,
 }) => {
   function handleValueChange(e, setFn) {
     setFn(e.target.value);
   }
 
   return (
-    <div className={`${className} layout-column ${isInvalid ? 'invalid' : ''}`} style={style}>
-      <label className="mb-4" required={required}>
-        {label}
-      </label>
+    <div
+      className={`${className} layout-column ${isInvalid ? 'invalid' : ''}`}
+      style={style}
+    >
+      <div className="layout-row layout-align-start-center">
+        <label className="mb-4 layout-row" required={required}>
+          {label}
+        </label>
+
+        {tooltipText && (
+          <div className="ml-8 tooltip tooltip-circle">
+            i<span className="tooltip-text">{tooltipText}</span>
+          </div>
+        )}
+      </div>
       <input
         style={inputStyle}
         value={value}

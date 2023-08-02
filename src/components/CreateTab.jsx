@@ -19,13 +19,14 @@ const CreateTab = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [location, setLocation] = useState('');
   const [imagePaths, setImagePaths] = useState([]);
   const [imageDataUris, setImageDataUris] = useState([]);
   const [categoryCL, setCategoryCL] = useState('');
   const [categoryFB, setCategoryFB] = useState('');
   const [conditionCL, setConditionCL] = useState('');
   const [conditionFB, setConditionFB] = useState('');
+  const [locationCL, setLocationCL] = useState('');
+  const [locationFB, setLocationFB] = useState('');
   const [manufacturer, setManufacturer] = useState('');
   const [name, setName] = useState('');
   const [neighborhood, setNeighborhood] = useState('');
@@ -41,11 +42,12 @@ const CreateTab = () => {
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [isDescriptionValid, setIsDescriptionValid] = useState(true);
   const [isPriceValid, setIsPriceValid] = useState(true);
-  const [isLocationValid, setIsLocationValid] = useState(true);
   const [areImagePathsValid, setAreImagePathsValid] = useState(true);
   const [isCategoryCLValid, setIsCategoryCLValid] = useState(true);
   const [isCategoryFBValid, setIsCategoryFBValid] = useState(true);
   const [isConditionFBValid, setIsConditionFBValid] = useState(true);
+  const [isLocationCLValid, setIsLocationCLValid] = useState(true);
+  const [isLocationFBValid, setIsLocationFBValid] = useState(true);
   const [isNameValid, setIsNameValid] = useState(true);
   const [isNeighborhoodValid, setIsNeighborhoodValid] = useState(true);
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
@@ -61,11 +63,12 @@ const CreateTab = () => {
         setIsTitleValid,
         setIsDescriptionValid,
         setIsPriceValid,
-        setIsLocationValid,
         setAreImagePathsValid,
         setIsCategoryCLValid,
         setIsCategoryFBValid,
         setIsConditionFBValid,
+        setIsLocationCLValid,
+        setIsLocationFBValid,
         setIsNameValid,
         setIsNeighborhoodValid,
         setIsPhoneNumberValid,
@@ -79,10 +82,12 @@ const CreateTab = () => {
     if (selectedApp === 'both' || selectedApp === 'fb') {
       if (!categoryFB) setIsCategoryFBValid(false);
       if (!conditionFB) setIsConditionFBValid(false);
+      if (!locationFB) setIsLocationFBValid(false);
     }
 
     if (selectedApp === 'both' || selectedApp === 'cl') {
       if (!categoryCL) setIsCategoryCLValid(false);
+      if (!locationCL) setIsLocationCLValid(false);
       if (!name) setIsNameValid(false);
       if (!neighborhood) setIsNeighborhoodValid(false);
       if (!phoneNumber) setIsPhoneNumberValid(false);
@@ -97,7 +102,6 @@ const CreateTab = () => {
       if (!title) setIsTitleValid(false);
       if (!description) setIsDescriptionValid(false);
       if (!price) setIsPriceValid(false);
-      if (!location) setIsLocationValid(false);
       if (!imagePaths.length) setAreImagePathsValid(false);
     }
 
@@ -112,7 +116,8 @@ const CreateTab = () => {
       title &&
       description &&
       price &&
-      location &&
+      locationFB &&
+      locationCL &&
       imagePaths.length
     );
   }
@@ -151,14 +156,6 @@ const CreateTab = () => {
             value={price}
             setValue={setPrice}
             isInvalid={!isPriceValid}
-            required
-          />
-          <InputField
-            className="mb-8"
-            label="Location"
-            value={location}
-            setValue={setLocation}
-            isInvalid={!isLocationValid}
             required
           />
         </div>
@@ -208,6 +205,15 @@ const CreateTab = () => {
               required
             />
 
+            <InputField
+              className="mb-8"
+              label="Location"
+              value={locationFB}
+              setValue={setLocationFB}
+              isInvalid={!isLocationFBValid}
+              required
+            />
+
             <label className="mr-8">Hide From Friends</label>
             <input
               type="checkbox"
@@ -242,6 +248,16 @@ const CreateTab = () => {
               value={conditionCL}
               setValue={setConditionCL}
               emptyStateMessage="-- Select a condition --"
+            />
+
+            <InputField
+              className="mb-8"
+              label="Location"
+              value={locationCL}
+              setValue={setLocationCL}
+              isInvalid={!isLocationCLValid}
+              tooltipText="This is a field specific to CL. You need to input the location/subarea found on the first page of creating a posting"
+              required
             />
 
             <InputField
@@ -298,7 +314,8 @@ const CreateTab = () => {
                   title,
                   description,
                   price,
-                  location,
+                  locationCL,
+                  locationFB,
                   imagePaths,
                   categoryCL,
                   categoryFB,

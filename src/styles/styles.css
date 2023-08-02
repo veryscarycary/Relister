@@ -102,6 +102,12 @@ label[required]:after {
   content: '*';
 }
 
+.layout-row > label[required]:after {
+  position: absolute;
+  right: -9px;
+  content: '*';
+}
+
 .invalid label[required]:after {
   color: #e4461b;
 }

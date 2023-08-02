@@ -5,4 +5,5 @@ import './styles/angular-material.min.css';
 import './styles/tabs.css';
 import './styles/segmented-control.css';
 import './styles/spinner-button.css';
+import './styles/tooltip.css';
 import './styles/styles.css';
