@@ -192,6 +192,7 @@ const CreateTab = () => {
               value={categoryFB}
               setValue={setCategoryFB}
               isInvalid={!isCategoryFBValid}
+              emptyStateMessage="-- Select a category --"
               required
             />
 
@@ -203,6 +204,7 @@ const CreateTab = () => {
               value={conditionFB}
               setValue={setConditionFB}
               isInvalid={!isConditionFBValid}
+              emptyStateMessage="-- Select a condition --"
               required
             />
 
@@ -228,6 +230,7 @@ const CreateTab = () => {
               value={categoryCL}
               setValue={setCategoryCL}
               isInvalid={!isCategoryCLValid}
+              emptyStateMessage="-- Select a category --"
               required
             />
 
@@ -238,6 +241,7 @@ const CreateTab = () => {
               options={clConditions}
               value={conditionCL}
               setValue={setConditionCL}
+              emptyStateMessage="-- Select a condition --"
             />
 
             <InputField
@@ -313,6 +317,7 @@ const CreateTab = () => {
               setTimeout(() => setLoading(false), 30000); // poor mans await
             }
           }}
+          disabled={loading}
         >
           Create
         </button>

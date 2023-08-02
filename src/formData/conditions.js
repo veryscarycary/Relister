@@ -1,5 +1,4 @@
 export const clConditions = [
-  '-',
   'new',
   'like new',
   'excellent',

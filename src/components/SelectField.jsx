@@ -9,6 +9,7 @@ const SelectField = ({
   setValue,
   required,
   isInvalid,
+  emptyStateMessage,
 }) => {
   return (
     <div className={`layout-column ${className} ${isInvalid ? 'invalid' : ''}`}>
@@ -21,6 +22,9 @@ const SelectField = ({
         onChange={(e) => setValue(e.target.value)}
         required={required}
       >
+        <option key="" disabled value="">
+          {emptyStateMessage}
+        </option>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}

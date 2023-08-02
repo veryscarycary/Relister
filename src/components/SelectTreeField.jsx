@@ -10,6 +10,7 @@ const SelectTreeField = ({
   setValue,
   required,
   isInvalid,
+  emptyStateMessage,
 }) => {
   const emptyState = 'empty-state';
   const [categoryAtDepth1, setCategoryAtDepth1] = useState(emptyState);
@@ -54,10 +55,10 @@ const SelectTreeField = ({
   };
 
   return (
-    <div
-      className={`layout-column ${className} ${isInvalid ? 'invalid' : ''}`}
-    >
-      <label htmlFor={id} required={required}>{label}</label>
+    <div className={`layout-column ${className} ${isInvalid ? 'invalid' : ''}`}>
+      <label className="mb-4" htmlFor={id} required={required}>
+        {label}
+      </label>
       <select
         className="mb-4"
         id={`${id}-depth1`}
@@ -68,8 +69,7 @@ const SelectTreeField = ({
         required={required}
       >
         <option key={emptyState} disabled value={emptyState}>
-          {' '}
-          -- select a category --{' '}
+          {emptyStateMessage}
         </option>
         {options.map((category) => (
           <option key={category.name} value={category.name}>
@@ -92,8 +92,7 @@ const SelectTreeField = ({
           required={required}
         >
           <option key={emptyState} disabled value={emptyState}>
-            {' '}
-            -- select an option --{' '}
+            {emptyStateMessage}
           </option>
           {categoryAtDepth1.children.map((category) => (
             <option key={category.name} value={category.name}>
@@ -117,8 +116,7 @@ const SelectTreeField = ({
           required={required}
         >
           <option key={emptyState} disabled value={emptyState}>
-            {' '}
-            -- select an option --{' '}
+            {emptyStateMessage}
           </option>
           {categoryAtDepth2.children.map((category) => (
             <option key={category.name} value={category.name}>
@@ -142,8 +140,7 @@ const SelectTreeField = ({
           required={required}
         >
           <option key={emptyState} disabled value={emptyState}>
-            {' '}
-            -- select an option --{' '}
+            {emptyStateMessage}
           </option>
           {categoryAtDepth3.children.map((category) => (
             <option key={category.name} value={category.name}>
