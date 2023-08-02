@@ -11,6 +11,8 @@ const FileUploadField = ({
   setImagePaths,
   imageDataUris,
   setImageDataUris,
+  isInvalid,
+  required,
 }) => {
   const handleUploadFiles = (e) => {
     const chosenFilePaths = Array.prototype.map.call(
@@ -38,8 +40,11 @@ const FileUploadField = ({
   const ref = useRef(null);
 
   return (
-    <div className={`layout-column ${className}`} style={style}>
-      <label className="mb-4" htmlFor={id}>
+    <div
+      className={`layout-column ${className} ${isInvalid ? 'invalid' : ''}`}
+      style={style}
+    >
+      <label className="mb-4" htmlFor={id} required={required}>
         {label}
       </label>
       <div>
@@ -50,6 +55,7 @@ const FileUploadField = ({
           multiple
           accept="image/*"
           onChange={handleUploadFiles}
+          required={required}
         />
         <button onClick={resetFiles}>Clear</button>
       </div>

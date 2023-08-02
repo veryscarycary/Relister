@@ -102,6 +102,16 @@ label[required]:after {
   content: '*';
 }
 
+.invalid label[required]:after {
+  color: #e4461b;
+}
+
+.invalid input[required],
+.invalid select[required],
+.invalid textarea[required] {
+  border: 2px solid #e4461b;
+}
+
 /* Utility classes */
 .mt-4 {
   margin-top: .4rem;

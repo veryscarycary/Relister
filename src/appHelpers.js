@@ -53,8 +53,6 @@ const createNewPostingFB = async (postInfo) => {
     condition: conditionFB,
   };
 
-  console.log('create new posting FBBBB, before scratchpad');
-
   await window.scratchpad.createNewPostingFB(postInfoFB);
 };
 

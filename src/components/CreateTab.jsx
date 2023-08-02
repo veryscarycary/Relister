@@ -22,10 +22,10 @@ const CreateTab = () => {
   const [location, setLocation] = useState('');
   const [imagePaths, setImagePaths] = useState([]);
   const [imageDataUris, setImageDataUris] = useState([]);
-  const [categoryCL, setCategoryCL] = useState(clCategories[0]);
-  const [categoryFB, setCategoryFB] = useState(fbCategories[0].name);
-  const [conditionCL, setConditionCL] = useState(clConditions[0]);
-  const [conditionFB, setConditionFB] = useState(fbConditions[0]);
+  const [categoryCL, setCategoryCL] = useState('');
+  const [categoryFB, setCategoryFB] = useState('');
+  const [conditionCL, setConditionCL] = useState('');
+  const [conditionFB, setConditionFB] = useState('');
   const [manufacturer, setManufacturer] = useState('');
   const [name, setName] = useState('');
   const [neighborhood, setNeighborhood] = useState('');
@@ -36,8 +36,85 @@ const CreateTab = () => {
   const [selectedApp, setSelectedApp] = useState('both');
   const [loading, setLoading] = useState(false);
 
+  // validation states
+
+  const [isTitleValid, setIsTitleValid] = useState(true);
+  const [isDescriptionValid, setIsDescriptionValid] = useState(true);
+  const [isPriceValid, setIsPriceValid] = useState(true);
+  const [isLocationValid, setIsLocationValid] = useState(true);
+  const [areImagePathsValid, setAreImagePathsValid] = useState(true);
+  const [isCategoryCLValid, setIsCategoryCLValid] = useState(true);
+  const [isCategoryFBValid, setIsCategoryFBValid] = useState(true);
+  const [isConditionFBValid, setIsConditionFBValid] = useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
+  const [isNeighborhoodValid, setIsNeighborhoodValid] = useState(true);
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
+  const [isZipCodeValid, setIsZipCodeValid] = useState(true);
+
   function handleHideFromFriends(e) {
     setHideFromFriends(e.target.checked);
+  }
+
+  function handleValidation() {
+    const resetValidationStates = () => {
+      const validationFns = [
+        setIsTitleValid,
+        setIsDescriptionValid,
+        setIsPriceValid,
+        setIsLocationValid,
+        setAreImagePathsValid,
+        setIsCategoryCLValid,
+        setIsCategoryFBValid,
+        setIsConditionFBValid,
+        setIsNameValid,
+        setIsNeighborhoodValid,
+        setIsPhoneNumberValid,
+        setIsZipCodeValid,
+      ];
+      validationFns.forEach((fn) => fn(true));
+    };
+
+    resetValidationStates();
+
+    if (selectedApp === 'both' || selectedApp === 'fb') {
+      if (!categoryFB) setIsCategoryFBValid(false);
+      if (!conditionFB) setIsConditionFBValid(false);
+    }
+
+    if (selectedApp === 'both' || selectedApp === 'cl') {
+      if (!categoryCL) setIsCategoryCLValid(false);
+      if (!name) setIsNameValid(false);
+      if (!neighborhood) setIsNeighborhoodValid(false);
+      if (!phoneNumber) setIsPhoneNumberValid(false);
+      if (!zipCode) setIsZipCodeValid(false);
+    }
+
+    if (
+      selectedApp === 'both' ||
+      selectedApp === 'fb' ||
+      selectedApp === 'cl'
+    ) {
+      if (!title) setIsTitleValid(false);
+      if (!description) setIsDescriptionValid(false);
+      if (!price) setIsPriceValid(false);
+      if (!location) setIsLocationValid(false);
+      if (!imagePaths.length) setAreImagePathsValid(false);
+    }
+
+    return (
+      categoryFB &&
+      conditionFB &&
+      categoryCL &&
+      name &&
+      neighborhood &&
+      phoneNumber &&
+      zipCode &&
+      title &&
+      description &&
+      price &&
+      location &&
+      imagePaths.length
+    );
   }
 
   return (
@@ -57,6 +134,7 @@ const CreateTab = () => {
             label="Title"
             value={title}
             setValue={setTitle}
+            isInvalid={!isTitleValid}
             required
           />
           <TextareaField
@@ -64,6 +142,7 @@ const CreateTab = () => {
             label="Description"
             value={description}
             setValue={setDescription}
+            isInvalid={!isDescriptionValid}
             required
           />
           <InputField
@@ -71,6 +150,7 @@ const CreateTab = () => {
             label="Price"
             value={price}
             setValue={setPrice}
+            isInvalid={!isPriceValid}
             required
           />
           <InputField
@@ -78,6 +158,7 @@ const CreateTab = () => {
             label="Location"
             value={location}
             setValue={setLocation}
+            isInvalid={!isLocationValid}
             required
           />
         </div>
@@ -90,6 +171,8 @@ const CreateTab = () => {
             setImagePaths={setImagePaths}
             setImageDataUris={setImageDataUris}
             imageDataUris={imageDataUris}
+            isInvalid={!areImagePathsValid}
+            required
           />
           <ImagesSection imageDataUris={imageDataUris} />
         </div>
@@ -108,6 +191,8 @@ const CreateTab = () => {
               options={fbCategories}
               value={categoryFB}
               setValue={setCategoryFB}
+              isInvalid={!isCategoryFBValid}
+              required
             />
 
             <SelectField
@@ -117,6 +202,8 @@ const CreateTab = () => {
               options={fbConditions}
               value={conditionFB}
               setValue={setConditionFB}
+              isInvalid={!isConditionFBValid}
+              required
             />
 
             <label className="mr-8">Hide From Friends</label>
@@ -124,7 +211,6 @@ const CreateTab = () => {
               type="checkbox"
               checked={isHiddenFromFriends}
               onChange={handleHideFromFriends}
-              required
             />
           </div>
         )}
@@ -141,6 +227,8 @@ const CreateTab = () => {
               options={clCategories}
               value={categoryCL}
               setValue={setCategoryCL}
+              isInvalid={!isCategoryCLValid}
+              required
             />
 
             <SelectField
@@ -163,6 +251,7 @@ const CreateTab = () => {
               label="Name"
               value={name}
               setValue={setName}
+              isInvalid={!isNameValid}
               required
             />
             <InputField
@@ -170,6 +259,7 @@ const CreateTab = () => {
               label="Neighborhood"
               value={neighborhood}
               setValue={setNeighborhood}
+              isInvalid={!isNeighborhoodValid}
               required
             />
             <InputField
@@ -177,6 +267,7 @@ const CreateTab = () => {
               label="PhoneNumber"
               value={phoneNumber}
               setValue={setPhoneNumber}
+              isInvalid={!isPhoneNumberValid}
               required
             />
             <InputField
@@ -184,6 +275,7 @@ const CreateTab = () => {
               label="ZipCode"
               value={zipCode}
               setValue={setZipCode}
+              isInvalid={!isZipCodeValid}
               required
             />
           </div>
@@ -195,29 +287,31 @@ const CreateTab = () => {
         <button
           className={`button-primary ${loading ? 'loading' : ''}`}
           onClick={async () => {
-            setLoading(true);
-            createNewPosting(
-              {
-                title,
-                description,
-                price,
-                location,
-                imagePaths,
-                categoryCL,
-                categoryFB,
-                conditionCL,
-                conditionFB,
-                manufacturer,
-                name,
-                neighborhood,
-                phoneNumber,
-                zipCode,
-                isHiddenFromFriends,
-              },
-              selectedApp
-            );
-            setLoading(true);
-            setTimeout(() => setLoading(false), 30000); // poor mans await
+            if (handleValidation()) {
+              setLoading(true);
+              createNewPosting(
+                {
+                  title,
+                  description,
+                  price,
+                  location,
+                  imagePaths,
+                  categoryCL,
+                  categoryFB,
+                  conditionCL,
+                  conditionFB,
+                  manufacturer,
+                  name,
+                  neighborhood,
+                  phoneNumber,
+                  zipCode,
+                  isHiddenFromFriends,
+                },
+                selectedApp
+              );
+              setLoading(true);
+              setTimeout(() => setLoading(false), 30000); // poor mans await
+            }
           }}
         >
           Create

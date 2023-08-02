@@ -8,6 +8,8 @@ const SelectTreeField = ({
   className,
   options,
   setValue,
+  required,
+  isInvalid,
 }) => {
   const emptyState = 'empty-state';
   const [categoryAtDepth1, setCategoryAtDepth1] = useState(emptyState);
@@ -52,8 +54,10 @@ const SelectTreeField = ({
   };
 
   return (
-    <div className={`layout-column ${className}`}>
-      <label htmlFor={id}>{label}</label>
+    <div
+      className={`layout-column ${className} ${isInvalid ? 'invalid' : ''}`}
+    >
+      <label htmlFor={id} required={required}>{label}</label>
       <select
         className="mb-4"
         id={`${id}-depth1`}
@@ -61,6 +65,7 @@ const SelectTreeField = ({
         onChange={(e) =>
           handleCategorySelection(e, setCategoryAtDepth1, options)
         }
+        required={required}
       >
         <option key={emptyState} disabled value={emptyState}>
           {' '}
@@ -84,6 +89,7 @@ const SelectTreeField = ({
               categoryAtDepth1.children
             )
           }
+          required={required}
         >
           <option key={emptyState} disabled value={emptyState}>
             {' '}
@@ -108,6 +114,7 @@ const SelectTreeField = ({
               categoryAtDepth2.children
             )
           }
+          required={required}
         >
           <option key={emptyState} disabled value={emptyState}>
             {' '}
@@ -132,6 +139,7 @@ const SelectTreeField = ({
               categoryAtDepth3.children
             )
           }
+          required={required}
         >
           <option key={emptyState} disabled value={emptyState}>
             {' '}

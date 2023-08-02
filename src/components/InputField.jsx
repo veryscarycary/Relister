@@ -9,13 +9,14 @@ const InputField = ({
   inputStyle,
   required,
   type,
+  isInvalid,
 }) => {
   function handleValueChange(e, setFn) {
     setFn(e.target.value);
   }
 
   return (
-    <div className={`${className} layout-column`} style={style}>
+    <div className={`${className} layout-column ${isInvalid ? 'invalid' : ''}`} style={style}>
       <label className="mb-4" required={required}>
         {label}
       </label>
