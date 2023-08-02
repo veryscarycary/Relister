@@ -8,6 +8,8 @@ const Settings = () => {
   const [passwordFB, setPasswordFB] = useState('');
   const [usernameCL, setUsernameCL] = useState('');
   const [passwordCL, setPasswordCL] = useState('');
+  const [wasSavedFB, setWasSavedFB] = useState(false);
+  const [wasSavedCL, setWasSavedCL] = useState(false);
 
   return (
     <section className="main-section form-section layout-row layout-align-center">
@@ -26,15 +28,16 @@ const Settings = () => {
         />
         <div className="layout-row layout-align-end-end">
           <button
-            className="button-primary mt-16"
-            onClick={async () =>
+            className={`button-primary mt-16 ${wasSavedFB ? 'checked' : ''}`}
+            onClick={async () => {
               window.scratchpad.saveCredentialsFB({
                 username: usernameFB,
                 password: passwordFB,
-              })
-            }
+              });
+              setWasSavedFB(true);
+            }}
           >
-            Save
+            <span className="button-text">Save</span>
           </button>
         </div>
 
@@ -52,15 +55,16 @@ const Settings = () => {
         />
         <div className="layout-row layout-align-end-end">
           <button
-            className="button-primary mt-16"
+            className={`button-primary mt-16 ${wasSavedCL ? 'checked' : ''}`}
             onClick={async () => {
               window.scratchpad.saveCredentialsCL({
                 username: usernameCL,
                 password: passwordCL,
               });
+              setWasSavedCL(true);
             }}
           >
-            Save
+            <span className="button-text">Save</span>
           </button>
         </div>
       </div>

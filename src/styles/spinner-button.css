@@ -1,9 +1,10 @@
 .button-text {
   color: #ffffff;
-  transition: all 0.2s;
+  transition: visibility 0.2s, opacity 0.2s;
 }
 
-.button-primary.loading .button-text {
+.button-primary.loading .button-text,
+.button-primary.checked .button-text  {
   visibility: hidden;
   opacity: 0;
 }
@@ -27,6 +28,32 @@
 @keyframes button-loading-spinner {
   from {
     transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.button-primary.checked::after {
+  content: "\f00c";
+  position: absolute;
+  font-family: FontAwesome;
+    /*content: "\f00c"; default icon state here if you have one*/
+  font-size: 1.5rem;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  animation: button-checked 0.5s ease 0.2s;
+}
+
+@keyframes button-checked {
+  from {
+    transform: rotate(.6turn);
   }
 
   to {
