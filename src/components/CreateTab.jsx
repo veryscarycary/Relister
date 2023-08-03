@@ -256,7 +256,7 @@ const CreateTab = () => {
               value={locationCL}
               setValue={setLocationCL}
               isInvalid={!isLocationCLValid}
-              tooltipText="This is a field specific to CL. You need to input the location/subarea found on the first page of creating a posting"
+              tooltipText="Specific to Craigslist -- location/subarea found on the first page of creating a posting"
               required
             />
 
@@ -284,7 +284,7 @@ const CreateTab = () => {
             />
             <InputField
               className="mb-8"
-              label="PhoneNumber"
+              label="Phone Number"
               value={phoneNumber}
               setValue={setPhoneNumber}
               isInvalid={!isPhoneNumberValid}
@@ -292,7 +292,7 @@ const CreateTab = () => {
             />
             <InputField
               className="mb-8"
-              label="ZipCode"
+              label="Zip Code"
               value={zipCode}
               setValue={setZipCode}
               isInvalid={!isZipCodeValid}

@@ -27,7 +27,7 @@ const InputField = ({
         </label>
 
         {tooltipText && (
-          <div className="ml-8 tooltip tooltip-circle">
+          <div className="tooltip tooltip-circle">
             i<span className="tooltip-text">{tooltipText}</span>
           </div>
         )}
