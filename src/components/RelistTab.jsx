@@ -31,8 +31,13 @@ const RelistTab = () => {
           className={`button-primary ${loading ? 'loading' : ''}`}
           onClick={async () => {
             setLoading(true);
-            await relistActivePostings(priceDrop, selectedApp);
-            setTimeout(() => setLoading(false), 30000); // poor mans await
+            try {
+              const response = await relistActivePostings(priceDrop, selectedApp);
+              console.log(`RESPONSE: ${response}`);
+            } catch (e) {
+              console.log(`ERROR during relisting: ${e}`);
+            }
+            setLoading(false);
           }}
           disabled={loading}
         >

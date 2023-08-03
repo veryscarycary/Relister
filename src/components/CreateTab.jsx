@@ -313,29 +313,33 @@ const CreateTab = () => {
           onClick={async () => {
             if (handleValidation()) {
               setLoading(true);
-              createNewPosting(
-                {
-                  title,
-                  description,
-                  price,
-                  locationCL,
-                  locationFB,
-                  imagePaths,
-                  categoryCL,
-                  categoryFB,
-                  conditionCL,
-                  conditionFB,
-                  manufacturer,
-                  name,
-                  neighborhood,
-                  phoneNumber,
-                  zipCode,
-                  isHiddenFromFriends,
-                },
-                selectedApp
-              );
-              setLoading(true);
-              setTimeout(() => setLoading(false), 30000); // poor mans await
+              try {
+                const response = await createNewPosting(
+                  {
+                    title,
+                    description,
+                    price,
+                    locationCL,
+                    locationFB,
+                    imagePaths,
+                    categoryCL,
+                    categoryFB,
+                    conditionCL,
+                    conditionFB,
+                    manufacturer,
+                    name,
+                    neighborhood,
+                    phoneNumber,
+                    zipCode,
+                    isHiddenFromFriends,
+                  },
+                  selectedApp
+                );
+                console.log(`RESPONSE: ${response}`);
+              } catch (e) {
+                console.log(`ERROR during post creation: ${e}`);
+              }
+              setLoading(false);
             }
           }}
           disabled={!isFormValid || loading}

@@ -11,10 +11,12 @@ async function createNewPosting(postInfo, selectedApp) {
           env POST_JSON="${JSON.stringify(postInfo)}" \
           npm run create-${selectedApp})`
     );
-    console.log('stdout:', stdout);
-    console.log('stderr:', stderr);
+    console.log('CARYS stdout:', stdout);
+    console.log('CARYS stderr:', stderr);
+    return { stdout, stderr };
   } catch (err) {
-    console.error(err);
+    console.error('CARYS err:', err);
+    return err;
   }
 }
 
@@ -27,8 +29,10 @@ async function relistActivePostings(priceDrop, selectedApp) {
     );
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
+    return { stdout, stderr };
   } catch (err) {
-    console.error(err);
+    console.error('CARYS err:', err);
+      return err
   }
 }
 
@@ -62,34 +66,32 @@ if (require('electron-squirrel-startup')) {
 //   fs.writeFileSync(filename, content, 'utf8');
 // }
 
-ipcMain.on('createNewPostingCL', async (e, postInfo) => {
+ipcMain.handle('createNewPostingCL', async (e, postInfo) => {
   console.log(postInfo);
-  await createNewPosting(postInfo, 'cl');
+  return createNewPosting(postInfo, 'cl');
 });
 
-ipcMain.on('createNewPostingFB', async (e, postInfo) => {
+ipcMain.handle('createNewPostingFB', async (e, postInfo) => {
   console.log(postInfo);
-  await createNewPosting(postInfo, 'fb');
+  return createNewPosting(postInfo, 'fb');
 });
 
-ipcMain.on('relistActivePostingsCL', async (e, priceDrop) => {
-  console.log(priceDrop);
-  await relistActivePostings(priceDrop, 'cl');
+ipcMain.handle('relistActivePostingsCL', async (e, priceDrop) => {
+  console.log(`Dropping price by ${priceDrop}`);
+  return relistActivePostings(priceDrop, 'cl');
 });
 
-ipcMain.on('relistActivePostingsFB', async (e, priceDrop) => {
-  console.log(priceDrop);
-  await relistActivePostings(priceDrop, 'fb');
+ipcMain.handle('relistActivePostingsFB', async (e, priceDrop) => {
+  console.log(`Dropping price by ${priceDrop}`);
+  return relistActivePostings(priceDrop, 'fb');
 });
 
 ipcMain.on('saveCredentialsCL', async (e, credentials) => {
-  console.log(credentials);
-  await saveCredentials(credentials, 'cl');
+  return saveCredentials(credentials, 'cl');
 });
 
 ipcMain.on('saveCredentialsFB', async (e, credentials) => {
-  console.log(credentials);
-  await saveCredentials(credentials, 'fb');
+  return saveCredentials(credentials, 'fb');
 });
 
 // ipcMain.handle("loadContent", (e) => {

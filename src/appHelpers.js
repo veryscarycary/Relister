@@ -56,44 +56,49 @@ const createNewPostingFB = async (postInfo) => {
   await window.electronAPI.createNewPostingFB(postInfoFB);
 };
 
-const relistActivePostingsCL = async (priceDrop) => {
-  await window.electronAPI.relistActivePostingsCL(priceDrop);
-};
+const relistActivePostingsCL = async (priceDrop) => window.electronAPI.relistActivePostingsCL(priceDrop);
 
-const relistActivePostingsFB = async (priceDrop) => {
-  await window.electronAPI.relistActivePostingsFB(priceDrop);
-};
+const relistActivePostingsFB = async (priceDrop) => window.electronAPI.relistActivePostingsFB(priceDrop);
 
 export const createNewPosting = async (postInfo, selectedApp) => {
+  let resp;
+
   switch (selectedApp) {
     case 'cl':
-      await createNewPostingCL(postInfo);
+      resp = await createNewPostingCL(postInfo);
       break;
     case 'fbm':
-      await createNewPostingFB(postInfo);
+      resp = await createNewPostingFB(postInfo);
       break;
     case 'both':
-      await Promise.all([
+      resp = await Promise.all([
         createNewPostingCL(postInfo),
         createNewPostingFB(postInfo),
       ]);
       break;
   }
+
+  return resp;
 };
 
 export const relistActivePostings = async (priceDrop, selectedApp) => {
+  let resp;
+
+  console.log('inside relist');
   switch (selectedApp) {
     case 'cl':
-      await relistActivePostingsCL(priceDrop);
+      resp = await relistActivePostingsCL(priceDrop);
       break;
     case 'fbm':
-      await relistActivePostingsFB(priceDrop);
+      resp = await relistActivePostingsFB(priceDrop);
       break;
     case 'both':
-      await Promise.all([
+      resp = await Promise.all([
         relistActivePostingsCL(priceDrop),
         relistActivePostingsFB(priceDrop),
       ]);
       break;
   }
+
+  return resp;
 };
