@@ -30,7 +30,7 @@ const Settings = () => {
           <button
             className={`button-primary mt-16 ${wasSavedFB ? 'checked' : ''}`}
             onClick={async () => {
-              window.scratchpad.saveCredentialsFB({
+              window.electronAPI.saveCredentialsFB({
                 username: usernameFB,
                 password: passwordFB,
               });
@@ -57,7 +57,7 @@ const Settings = () => {
           <button
             className={`button-primary mt-16 ${wasSavedCL ? 'checked' : ''}`}
             onClick={async () => {
-              window.scratchpad.saveCredentialsCL({
+              window.electronAPI.saveCredentialsCL({
                 username: usernameCL,
                 password: passwordCL,
               });

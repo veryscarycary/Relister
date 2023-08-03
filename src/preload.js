@@ -1,14 +1,14 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
-contextBridge.exposeInMainWorld('scratchpad', {
+contextBridge.exposeInMainWorld('electronAPI', {
   createNewPostingCL: (postInfo) =>
-    ipcRenderer.send('createNewPostingCL', postInfo),
+    ipcRenderer.invoke('createNewPostingCL', postInfo),
   createNewPostingFB: (postInfo) =>
-    ipcRenderer.send('createNewPostingFB', postInfo),
+    ipcRenderer.invoke('createNewPostingFB', postInfo),
   relistActivePostingsCL: (priceDrop) =>
-    ipcRenderer.send('relistActivePostingsCL', priceDrop),
+    ipcRenderer.invoke('relistActivePostingsCL', priceDrop),
   relistActivePostingsFB: (priceDrop) =>
-    ipcRenderer.send('relistActivePostingsFB', priceDrop),
+    ipcRenderer.invoke('relistActivePostingsFB', priceDrop),
   saveCredentialsCL: (credentials) =>
     ipcRenderer.send('saveCredentialsCL', credentials),
   saveCredentialsFB: (credentials) =>

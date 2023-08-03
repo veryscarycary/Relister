@@ -29,7 +29,7 @@ const createNewPostingCL = async (postInfo) => {
     zipCode,
   };
 
-  await window.scratchpad.createNewPostingCL(postInfoCL);
+  await window.electronAPI.createNewPostingCL(postInfoCL);
 };
 
 const createNewPostingFB = async (postInfo) => {
@@ -53,15 +53,15 @@ const createNewPostingFB = async (postInfo) => {
     condition: conditionFB,
   };
 
-  await window.scratchpad.createNewPostingFB(postInfoFB);
+  await window.electronAPI.createNewPostingFB(postInfoFB);
 };
 
 const relistActivePostingsCL = async (priceDrop) => {
-  await window.scratchpad.relistActivePostingsCL(priceDrop);
+  await window.electronAPI.relistActivePostingsCL(priceDrop);
 };
 
 const relistActivePostingsFB = async (priceDrop) => {
-  await window.scratchpad.relistActivePostingsFB(priceDrop);
+  await window.electronAPI.relistActivePostingsFB(priceDrop);
 };
 
 export const createNewPosting = async (postInfo, selectedApp) => {

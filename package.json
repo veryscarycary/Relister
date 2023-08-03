@@ -1,6 +1,6 @@
 {
-  "name": "Relister",
-  "productName": "Relister",
+  "name": "relister",
+  "productName": "relister",
   "version": "1.0.0",
   "description": "An app for automatically relisting postings",
   "main": ".webpack/main",
