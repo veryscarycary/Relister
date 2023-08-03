@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
-const { setEnvValue } = require('./setEnvValue.js');
+const { setEnvValue, getEnvValue } = require('./setEnvValue.js');
 
 async function createNewPosting(postInfo, selectedApp) {
   try {
@@ -32,7 +32,7 @@ async function relistActivePostings(priceDrop, selectedApp) {
     return { stdout, stderr };
   } catch (err) {
     console.error('CARYS err:', err);
-      return err
+    return err;
   }
 }
 
@@ -41,12 +41,38 @@ async function saveCredentials(credentials, app) {
 
   switch (app) {
     case 'cl':
-      setEnvValue('USERNAME_CL', username);      
-      setEnvValue('PASSWORD_CL', password);      
+      setEnvValue('USERNAME_CL', username);
+      setEnvValue('PASSWORD_CL', password);
       break;
     case 'fb':
-      setEnvValue('USERNAME_FB', username);      
-      setEnvValue('PASSWORD_FB', password);      
+      setEnvValue('USERNAME_FB', username);
+      setEnvValue('PASSWORD_FB', password);
+      break;
+  }
+}
+
+async function saveFormValue(fieldName, fieldValue) {
+  switch (fieldName) {
+    case 'locationCL':
+      setEnvValue('RELISTER_LOCATION_CL', fieldValue);
+      break;
+    case 'locationFB':
+      setEnvValue('RELISTER_LOCATION_FB', fieldValue);
+      break;
+    case 'manufacturer':
+      setEnvValue('RELISTER_MANUFACTURER', fieldValue);
+      break;
+    case 'name':
+      setEnvValue('RELISTER_NAME', fieldValue);
+      break;
+    case 'neighborhood':
+      setEnvValue('RELISTER_NEIGHBORHOOD', fieldValue);
+      break;
+    case 'phoneNumber':
+      setEnvValue('RELISTER_PHONE_NUMBER', fieldValue);
+      break;
+    case 'zipCode':
+      setEnvValue('RELISTER_ZIP_CODE', fieldValue);
       break;
   }
 }
@@ -92,6 +118,22 @@ ipcMain.on('saveCredentialsCL', async (e, credentials) => {
 
 ipcMain.on('saveCredentialsFB', async (e, credentials) => {
   return saveCredentials(credentials, 'fb');
+});
+
+ipcMain.on('saveEnvValue', async (e, envName, envValue) => {
+  return saveFormValue(envName, envValue);
+});
+
+ipcMain.handle('getSavedFormValues', async (e) => {
+  return {
+    RELISTER_LOCATION_CL: getEnvValue('RELISTER_LOCATION_CL'),
+    RELISTER_LOCATION_FB: getEnvValue('RELISTER_LOCATION_FB'),
+    RELISTER_MANUFACTURER: getEnvValue('RELISTER_MANUFACTURER'),
+    RELISTER_NAME: getEnvValue('RELISTER_NAME'),
+    RELISTER_NEIGHBORHOOD: getEnvValue('RELISTER_NEIGHBORHOOD'),
+    RELISTER_PHONE_NUMBER: getEnvValue('RELISTER_PHONE_NUMBER'),
+    RELISTER_ZIP_CODE: getEnvValue('RELISTER_ZIP_CODE'),
+  };
 });
 
 // ipcMain.handle("loadContent", (e) => {

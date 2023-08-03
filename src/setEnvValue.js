@@ -17,7 +17,9 @@ export const getEnvValue = (key) => {
   // find the line that contains the key (exact match)
   const matchedLine = readEnvVars().find((line) => line.split('=')[0] === key);
   // split the line (delimiter is '=') and return the item at index 2
-  return matchedLine !== undefined ? matchedLine.split('=')[1] : null;
+  const value = matchedLine !== undefined ? matchedLine.split('=')[1] : '';
+  const quoteRemovedValue = value.startsWith('"') && value.endsWith('"') ? value.slice(1, value.length - 1) : value;
+  return quoteRemovedValue;
 };
 
 /**

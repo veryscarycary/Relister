@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import SegmentedControl from './SegmentedControl.jsx';
 import FileUploadField from './FileUploadField.jsx';
@@ -53,6 +53,24 @@ const CreateTab = () => {
   const [isNeighborhoodValid, setIsNeighborhoodValid] = useState(true);
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
   const [isZipCodeValid, setIsZipCodeValid] = useState(true);
+
+  useEffect(async () => {
+    const formValuesObj = await window.electronAPI.getSavedFormValues();
+
+    if (formValuesObj.RELISTER_LOCATION_CL)
+      setLocationCL(formValuesObj.RELISTER_LOCATION_CL);
+    if (formValuesObj.RELISTER_LOCATION_FB)
+      setLocationFB(formValuesObj.RELISTER_LOCATION_FB);
+    if (formValuesObj.RELISTER_MANUFACTURER)
+      setManufacturer(formValuesObj.RELISTER_MANUFACTURER);
+    if (formValuesObj.RELISTER_NAME) setName(formValuesObj.RELISTER_NAME);
+    if (formValuesObj.RELISTER_NEIGHBORHOOD)
+      setNeighborhood(formValuesObj.RELISTER_NEIGHBORHOOD);
+    if (formValuesObj.RELISTER_PHONE_NUMBER)
+      setPhoneNumber(formValuesObj.RELISTER_PHONE_NUMBER);
+    if (formValuesObj.RELISTER_ZIP_CODE)
+      setZipCode(formValuesObj.RELISTER_ZIP_CODE);
+  }, []);
 
   function handleHideFromFriends(e) {
     setHideFromFriends(e.target.checked);
@@ -186,8 +204,8 @@ const CreateTab = () => {
             <h3 className="field-header">FB Marketplace Fields</h3>
 
             <SelectTreeField
+              id="categoryFB"
               className="mb-8"
-              id="fbCategory"
               label="Category"
               options={fbCategories}
               value={categoryFB}
@@ -199,7 +217,7 @@ const CreateTab = () => {
 
             <SelectField
               className="mb-8"
-              id="fbCondition"
+              id="conditionFB"
               label="Condition"
               options={fbConditions}
               value={conditionFB}
@@ -210,12 +228,14 @@ const CreateTab = () => {
             />
 
             <InputField
+              id="locationFB"
               className="mb-8"
               label="Location"
               value={locationFB}
               setValue={setLocationFB}
               isInvalid={!isLocationFBValid}
               required
+              canSave
             />
 
             <label className="mr-8">Hide From Friends</label>
@@ -234,7 +254,7 @@ const CreateTab = () => {
 
             <SelectField
               className="mb-8"
-              id="clCategory"
+              id="categoryCL"
               label="Category"
               options={clCategories}
               value={categoryCL}
@@ -246,7 +266,7 @@ const CreateTab = () => {
 
             <SelectField
               className="mb-8"
-              id="clCondition"
+              id="conditionCL"
               label="Condition"
               options={clConditions}
               value={conditionCL}
@@ -256,51 +276,63 @@ const CreateTab = () => {
 
             <InputField
               className="mb-8"
+              id="locationCL"
               label="Location"
               value={locationCL}
               setValue={setLocationCL}
               isInvalid={!isLocationCLValid}
               tooltipText="Specific to Craigslist -- location/subarea found on the first page of creating a posting"
               required
+              canSave
             />
 
             <InputField
+              id="manufacturer"
               className="mb-8"
               label="Manufacturer"
               value={manufacturer}
               setValue={setManufacturer}
+              canSave
             />
             <InputField
+              id="name"
               className="mb-8"
               label="Name"
               value={name}
               setValue={setName}
               isInvalid={!isNameValid}
               required
+              canSave
             />
             <InputField
               className="mb-8"
+              id="neighborhood"
               label="Neighborhood"
               value={neighborhood}
               setValue={setNeighborhood}
               isInvalid={!isNeighborhoodValid}
               required
+              canSave
             />
             <InputField
+              id="phoneNumber"
               className="mb-8"
               label="Phone Number"
               value={phoneNumber}
               setValue={setPhoneNumber}
               isInvalid={!isPhoneNumberValid}
               required
+              canSave
             />
             <InputField
+              id="zipCode"
               className="mb-8"
               label="Zip Code"
               value={zipCode}
               setValue={setZipCode}
               isInvalid={!isZipCodeValid}
               required
+              canSave
             />
           </div>
         )}

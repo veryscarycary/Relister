@@ -1,4 +1,4 @@
-const { ipcRenderer, contextBridge } = require("electron");
+const { ipcRenderer, contextBridge } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
   createNewPostingCL: (postInfo) =>
@@ -13,5 +13,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.send('saveCredentialsCL', credentials),
   saveCredentialsFB: (credentials) =>
     ipcRenderer.send('saveCredentialsFB', credentials),
-  // content: ipcRenderer.invoke("loadContent"),
+  saveFormValue: (fieldName, fieldValue) => ipcRenderer.send('saveEnvValue', fieldName, fieldValue),
+  getSavedFormValues: () => ipcRenderer.invoke('getSavedFormValues'),
 });

@@ -1,6 +1,8 @@
 import React from 'react';
+import { useState } from 'react';
 
 const InputField = ({
+  id,
   label,
   value,
   setValue,
@@ -11,7 +13,10 @@ const InputField = ({
   type,
   isInvalid,
   tooltipText,
+  canSave,
 }) => {
+  const [wasSaved, setWasSaved] = useState(false);
+
   function handleValueChange(e, setFn) {
     setFn(e.target.value);
   }
@@ -29,6 +34,22 @@ const InputField = ({
         {tooltipText && (
           <div className="tooltip tooltip-circle">
             i<span className="tooltip-text">{tooltipText}</span>
+          </div>
+        )}
+
+        {canSave && (
+          <div className="flex layout-row layout-align-end">
+            <button
+              className={`mb-4 button-primary small ${
+                wasSaved ? 'checked' : ''
+              }`}
+              onClick={async () => {
+                window.electronAPI.saveFormValue(id, value);
+                setWasSaved(true);
+              }}
+            >
+              <span className="button-text">Save</span>
+            </button>
           </div>
         )}
       </div>
