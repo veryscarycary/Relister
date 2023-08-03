@@ -34,6 +34,7 @@ const RelistTab = () => {
             await relistActivePostings(priceDrop, selectedApp);
             setTimeout(() => setLoading(false), 30000); // poor mans await
           }}
+          disabled={loading}
         >
           <span className="button-text">Relist Active Postings</span>
         </button>

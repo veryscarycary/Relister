@@ -38,6 +38,7 @@ const CreateTab = () => {
   const [loading, setLoading] = useState(false);
 
   // validation states
+  const [isFormValid, setIsFormValid] = useState(true);
 
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [isDescriptionValid, setIsDescriptionValid] = useState(true);
@@ -105,7 +106,7 @@ const CreateTab = () => {
       if (!imagePaths.length) setAreImagePathsValid(false);
     }
 
-    return (
+    const isFormValid =
       categoryFB &&
       conditionFB &&
       categoryCL &&
@@ -118,8 +119,11 @@ const CreateTab = () => {
       price &&
       locationFB &&
       locationCL &&
-      imagePaths.length
-    );
+      imagePaths.length;
+
+    setIsFormValid(isFormValid);
+
+    return isFormValid;
   }
 
   return (
@@ -334,9 +338,9 @@ const CreateTab = () => {
               setTimeout(() => setLoading(false), 30000); // poor mans await
             }
           }}
-          disabled={loading}
+          disabled={!isFormValid || loading}
         >
-          Create
+          <span className="button-text">Create</span>
         </button>
       </div>
     </div>
