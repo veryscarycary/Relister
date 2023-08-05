@@ -53,7 +53,7 @@ const FileUploadField = ({
           id={id}
           type="file"
           multiple
-          accept="image/*"
+          accept="image/*, .heic"
           onChange={handleUploadFiles}
           required={required}
         />

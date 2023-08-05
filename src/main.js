@@ -8,8 +8,11 @@ async function createNewPosting(postInfo, selectedApp) {
   try {
     const { stdout, stderr } = await exec(
       `(cd ${__dirname}/../.. && \
-          env POST_JSON="${JSON.stringify(postInfo)}" \
-          npm run create-${selectedApp})`
+          POST_JSON=$(
+            cat <<'END_HEREDOC'
+            ${JSON.stringify(postInfo)}
+          END_HEREDOC
+          ) && npm run create-${selectedApp})`
     );
     console.log('CARYS stdout:', stdout);
     console.log('CARYS stderr:', stderr);

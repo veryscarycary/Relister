@@ -124,20 +124,49 @@ const CreateTab = () => {
       if (!imagePaths.length) setAreImagePathsValid(false);
     }
 
-    const isFormValid =
-      categoryFB &&
-      conditionFB &&
-      categoryCL &&
-      name &&
-      neighborhood &&
-      phoneNumber &&
-      zipCode &&
-      title &&
-      description &&
-      price &&
-      locationFB &&
-      locationCL &&
-      imagePaths.length;
+    let isFormValid;
+
+    switch (selectedApp) {
+      case 'cl':
+        isFormValid =
+          categoryCL &&
+          name &&
+          neighborhood &&
+          phoneNumber &&
+          zipCode &&
+          title &&
+          description &&
+          price &&
+          locationCL &&
+          imagePaths.length;
+        break;
+      case 'fb':
+        isFormValid =
+          categoryFB &&
+          conditionFB &&
+          title &&
+          description &&
+          price &&
+          locationFB &&
+          imagePaths.length;
+        break;
+      case 'both':
+        isFormValid =
+          categoryFB &&
+          conditionFB &&
+          categoryCL &&
+          name &&
+          neighborhood &&
+          phoneNumber &&
+          zipCode &&
+          title &&
+          description &&
+          price &&
+          locationFB &&
+          locationCL &&
+          imagePaths.length;
+        break;
+    }
 
     setIsFormValid(isFormValid);
 
