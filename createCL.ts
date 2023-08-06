@@ -42,7 +42,7 @@ describe('CL Post Creator', () => {
     try {
        postInfo = JSON.parse(POST_JSON) as PostInfoCL;
     } catch(e) {
-      const message = 'There was an error parsing the new post info JSON!';
+      const message = `There was an error parsing the new post info JSON! JSON input => ${POST_JSON}`;
       console.error(message);
       throw new Error(message);
     }
