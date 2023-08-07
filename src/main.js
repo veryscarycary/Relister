@@ -8,7 +8,7 @@ async function createNewPosting(postInfo, selectedApp) {
   try {
     const { stdout, stderr } = await exec(
       `(cd ${__dirname}/../.. && \
-          POST_JSON=$(cat <<EOF
+          POST_JSON=$(cat <<'EOF'
 ${JSON.stringify(postInfo)}
 EOF
 ) npm run create-${selectedApp})` // the whitespace is important for the EOF here

@@ -41,6 +41,7 @@ const createNewPostingFB = async (postInfo) => {
     imagePaths,
     categoryFB,
     conditionFB,
+    isHiddenFromFriends,
   } = postInfo;
 
   const postInfoFB = {
@@ -51,6 +52,7 @@ const createNewPostingFB = async (postInfo) => {
     location: locationFB,
     category: categoryFB,
     condition: conditionFB,
+    isHiddenFromFriends,
   };
 
   await window.electronAPI.createNewPostingFB(postInfoFB);

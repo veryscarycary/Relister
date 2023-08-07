@@ -98,7 +98,7 @@ const CreateTab = () => {
 
     resetValidationStates();
 
-    if (selectedApp === 'both' || selectedApp === 'fb') {
+    if (selectedApp === 'both' || selectedApp === 'fbm') {
       if (!categoryFB) setIsCategoryFBValid(false);
       if (!conditionFB) setIsConditionFBValid(false);
       if (!locationFB) setIsLocationFBValid(false);
@@ -115,7 +115,7 @@ const CreateTab = () => {
 
     if (
       selectedApp === 'both' ||
-      selectedApp === 'fb' ||
+      selectedApp === 'fbm' ||
       selectedApp === 'cl'
     ) {
       if (!title) setIsTitleValid(false);
@@ -140,7 +140,7 @@ const CreateTab = () => {
           locationCL &&
           imagePaths.length;
         break;
-      case 'fb':
+      case 'fbm':
         isFormValid =
           categoryFB &&
           conditionFB &&
