@@ -39,6 +39,7 @@ const CreateTab = () => {
 
   // validation states
   const [isFormValid, setIsFormValid] = useState(true);
+  const [wasSubmitClicked, setWasSubmitClicked] = useState(false);
 
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [isDescriptionValid, setIsDescriptionValid] = useState(true);
@@ -71,6 +72,28 @@ const CreateTab = () => {
     if (formValuesObj.RELISTER_ZIP_CODE)
       setZipCode(formValuesObj.RELISTER_ZIP_CODE);
   }, []);
+
+  useEffect(() => {
+    if (wasSubmitClicked) {
+      handleValidation();
+    }
+  }, [
+    selectedApp,
+    title,
+    description,
+    price,
+    imagePaths,
+    categoryCL,
+    categoryFB,
+    conditionCL,
+    conditionFB,
+    locationCL,
+    locationFB,
+    name,
+    neighborhood,
+    phoneNumber,
+    zipCode,
+  ]);
 
   function handleHideFromFriends(e) {
     setHideFromFriends(e.target.checked);
@@ -372,6 +395,8 @@ const CreateTab = () => {
         <button
           className={`button-primary ${loading ? 'loading' : ''}`}
           onClick={async () => {
+            setWasSubmitClicked(true);
+
             if (handleValidation()) {
               setLoading(true);
               try {
