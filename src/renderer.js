@@ -6,4 +6,5 @@ import './styles/tabs.css';
 import './styles/segmented-control.css';
 import './styles/spinner-button.css';
 import './styles/tooltip.css';
+import './styles/modal.css';
 import './styles/styles.css';

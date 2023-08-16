@@ -7,10 +7,8 @@ import InputField from './InputField.jsx';
 
 import { relistActivePostings } from '../appHelpers.js';
 
-const RelistTab = () => {
+const RelistTab = ({ selectedApp, setSelectedApp, loading, setLoading }) => {
   const [priceDrop, setPriceDrop] = useState('');
-  const [selectedApp, setSelectedApp] = useState('both');
-  const [loading, setLoading] = useState(false);
 
   return (
     <div className="form-section tab-section">

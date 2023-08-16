@@ -1,19 +1,33 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CreateTab from './components/CreateTab.jsx';
 import RelistTab from './components/RelistTab.jsx';
 import Settings from './components/Settings.jsx';
+import Modal from './components/Modal.jsx';
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState('create');
+  const [selectedApp, setSelectedApp] = useState('both');
   const [isSettingsSelected, setIsSettingSelected] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (loading) {
+      if (!document.body.classList.contains('noscroll')) {
+        document.body.classList.add('noscroll');
+      }
+    } else {
+      document.body.classList.remove('noscroll');
+    }
+  }, [loading]);
 
   return (
     <>
-      <div className="relister-body">
+      <div className={`relister-body ${loading ? 'noscroll' : ''}`}>
         <div className="heading mb-24">
           {isSettingsSelected && (
             <button
@@ -71,11 +85,27 @@ const App = () => {
               </ul>
             </nav>
             <section id="main-section">
-              {selectedTab === 'create' && <CreateTab />}
-              {selectedTab === 'relist' && <RelistTab />}
+              {selectedTab === 'create' && (
+                <CreateTab
+                  selectedApp={selectedApp}
+                  setSelectedApp={setSelectedApp}
+                  loading={loading}
+                  setLoading={setLoading}
+                />
+              )}
+              {selectedTab === 'relist' && (
+                <RelistTab
+                  selectedApp={selectedApp}
+                  setSelectedApp={setSelectedApp}
+                  loading={loading}
+                  setLoading={setLoading}
+                />
+              )}
             </section>
           </div>
         )}
+
+        <Modal selectedTab={selectedTab} selectedApp={selectedApp} />
       </div>
     </>
   );

@@ -15,7 +15,7 @@ import { createNewPosting } from '../appHelpers.js';
 import { clConditions, fbConditions } from '../formData/conditions.js';
 import { clCategories, fbCategories } from '../formData/categories.js';
 
-const CreateTab = () => {
+const CreateTab = ({ selectedApp, setSelectedApp, loading, setLoading }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -33,10 +33,6 @@ const CreateTab = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [isHiddenFromFriends, setHideFromFriends] = useState(true);
-
-  const [selectedApp, setSelectedApp] = useState('both');
-  const [loading, setLoading] = useState(false);
-
   // validation states
   const [isFormValid, setIsFormValid] = useState(true);
   const [wasSubmitClicked, setWasSubmitClicked] = useState(false);
