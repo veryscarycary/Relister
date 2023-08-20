@@ -9,7 +9,7 @@
   opacity: 0;
 }
 
-.button-primary.loading::after {
+.button-primary.loading::after, .spinner::after {
   content: "";
   position: absolute;
   width: 16px;
@@ -23,6 +23,16 @@
   border-top-color: #ffffff;
   border-radius: 50%;
   animation: button-loading-spinner 1s ease infinite;
+}
+
+.spinner {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+}
+
+.spinner::after {
+  border-top-color: #333;
 }
 
 @keyframes button-loading-spinner {

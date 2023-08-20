@@ -15,7 +15,15 @@ import { createNewPosting } from '../appHelpers.js';
 import { clConditions, fbConditions } from '../formData/conditions.js';
 import { clCategories, fbCategories } from '../formData/categories.js';
 
-const CreateTab = ({ selectedApp, setSelectedApp, loading, setLoading }) => {
+const CreateTab = ({
+  selectedApp,
+  setSelectedApp,
+  loading,
+  setLoading,
+  setIsModalOpen,
+  setErrorCL,
+  setErrorFB,
+}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -394,6 +402,7 @@ const CreateTab = ({ selectedApp, setSelectedApp, loading, setLoading }) => {
             setWasSubmitClicked(true);
 
             if (handleValidation()) {
+              setIsModalOpen(true);
               setLoading(true);
               try {
                 const response = await createNewPosting(
@@ -419,6 +428,8 @@ const CreateTab = ({ selectedApp, setSelectedApp, loading, setLoading }) => {
                 );
                 console.log(`RESPONSE: ${response}`);
               } catch (e) {
+                setErrorCL(e.message);
+                setErrorFB(e.message);
                 console.log(`ERROR during post creation: ${e}`);
               }
               setLoading(false);

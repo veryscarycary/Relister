@@ -7,7 +7,15 @@ import InputField from './InputField.jsx';
 
 import { relistActivePostings } from '../appHelpers.js';
 
-const RelistTab = ({ selectedApp, setSelectedApp, loading, setLoading }) => {
+const RelistTab = ({
+  selectedApp,
+  setSelectedApp,
+  loading,
+  setLoading,
+  setIsModalOpen,
+  setErrorCL,
+  setErrorFB,
+}) => {
   const [priceDrop, setPriceDrop] = useState('');
 
   return (
@@ -28,11 +36,17 @@ const RelistTab = ({ selectedApp, setSelectedApp, loading, setLoading }) => {
         <button
           className={`button-primary ${loading ? 'loading' : ''}`}
           onClick={async () => {
+            setIsModalOpen(true);
             setLoading(true);
             try {
-              const response = await relistActivePostings(priceDrop, selectedApp);
+              const response = await relistActivePostings(
+                priceDrop,
+                selectedApp
+              );
               console.log(`RESPONSE: ${response}`);
             } catch (e) {
+              setErrorCL(e.message);
+              setErrorFB(e.message);
               console.log(`ERROR during relisting: ${e}`);
             }
             setLoading(false);

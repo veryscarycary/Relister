@@ -12,18 +12,20 @@ const App = () => {
   const [selectedTab, setSelectedTab] = useState('create');
   const [selectedApp, setSelectedApp] = useState('both');
   const [isSettingsSelected, setIsSettingSelected] = useState(false);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorCL, setErrorCL] = useState('');
+  const [errorFB, setErrorFB] = useState('');
 
   useEffect(() => {
-    if (loading) {
+    if (isModalOpen) {
       if (!document.body.classList.contains('noscroll')) {
         document.body.classList.add('noscroll');
       }
     } else {
       document.body.classList.remove('noscroll');
     }
-  }, [loading]);
+  }, [isModalOpen]);
 
   return (
     <>
@@ -91,6 +93,9 @@ const App = () => {
                   setSelectedApp={setSelectedApp}
                   loading={loading}
                   setLoading={setLoading}
+                  setIsModalOpen={setIsModalOpen}
+                  setErrorCL={setErrorCL}
+                  setErrorFB={setErrorFB}
                 />
               )}
               {selectedTab === 'relist' && (
@@ -99,13 +104,27 @@ const App = () => {
                   setSelectedApp={setSelectedApp}
                   loading={loading}
                   setLoading={setLoading}
+                  setIsModalOpen={setIsModalOpen}
+                  setErrorCL={setErrorCL}
+                  setErrorFB={setErrorFB}
                 />
               )}
             </section>
           </div>
         )}
 
-        <Modal selectedTab={selectedTab} selectedApp={selectedApp} />
+        {isModalOpen && (
+          <Modal
+            selectedTab={selectedTab}
+            selectedApp={selectedApp}
+            setIsModalOpen={setIsModalOpen}
+            loading={loading}
+            errorCL={errorCL}
+            errorFB={errorFB}
+            setErrorCL={setErrorCL}
+            setErrorFB={setErrorFB}
+          />
+        )}
       </div>
     </>
   );

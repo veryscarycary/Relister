@@ -13,15 +13,33 @@
 }
 
 .modal {
-  padding: 20px;
+  position: relative;
   width: 700px;
   height: 400px;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 0.8rem;
   background: #fff;
   line-height: 1.5em;
   letter-spacing: 0.3px;
   color: #444;
+}
+
+.modal-close {
+  position: absolute;
+  font-size: 2.5rem;
+  top: 2rem;
+  right: 2rem;
+  background-color: transparent;
+  border: none;
+}
+
+.fa-check.green {
+  color: green;
+}
+
+.fa-close.red {
+  color: #c13209;
 }
 
 .noscroll {
@@ -42,7 +60,12 @@
   margin-left: 3.2rem;
 }
 
-.logo {
+.logo-container {
+  height: 125px;
+  width: 125px;
+}
+
+.logo.animate {
   animation: logo-animation 8s ease-in-out infinite;
 }
 
