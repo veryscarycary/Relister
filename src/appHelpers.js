@@ -58,9 +58,11 @@ const createNewPostingFB = async (postInfo) => {
   await window.electronAPI.createNewPostingFB(postInfoFB);
 };
 
-const relistActivePostingsCL = async (priceDrop) => window.electronAPI.relistActivePostingsCL(priceDrop);
+const relistActivePostingsCL = async (priceDrop) =>
+  window.electronAPI.relistActivePostingsCL(priceDrop);
 
-const relistActivePostingsFB = async (priceDrop) => window.electronAPI.relistActivePostingsFB(priceDrop);
+const relistActivePostingsFB = async (priceDrop) =>
+  window.electronAPI.relistActivePostingsFB(priceDrop);
 
 export const createNewPosting = async (postInfo, selectedApp) => {
   let resp;
@@ -86,7 +88,6 @@ export const createNewPosting = async (postInfo, selectedApp) => {
 export const relistActivePostings = async (priceDrop, selectedApp) => {
   let resp;
 
-  console.log('inside relist');
   switch (selectedApp) {
     case 'cl':
       resp = await relistActivePostingsCL(priceDrop);

@@ -45,8 +45,8 @@ const RelistTab = ({
               );
               console.log(`RESPONSE: ${response}`);
             } catch (e) {
-              setErrorCL(e.message);
-              setErrorFB(e.message);
+              if (e.message.includes('cl:')) setErrorCL(e.message);
+              if (e.message.includes('fb:')) setErrorFB(e.message);
               console.log(`ERROR during relisting: ${e}`);
             }
             setLoading(false);

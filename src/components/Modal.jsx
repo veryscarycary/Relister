@@ -1,4 +1,6 @@
 import React from 'react';
+import ModalLogo from './ModalLogo.jsx';
+import ErrorOutput from './ErrorOutput.jsx';
 
 const Modal = ({
   selectedTab,
@@ -23,7 +25,7 @@ const Modal = ({
         className={`modal layout-column layout-align-space-between ${
           loading ? '' : 'can-close'
         }`}
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
       >
         {!loading && (
@@ -49,49 +51,31 @@ const Modal = ({
         <div className="layout-row layout-align-center-center">
           <div className="layout-column layout-align-center-center">
             {(selectedApp === 'both' || selectedApp === 'fbm') && (
-              <div>
-                <div className="logo-container layout-row layout-align-center-center">
-                  <img
-                    src="https://www.transparentpng.com/thumb/facebook-logo/facebook-icon-transparent-background-20.png"
-                    alt="facebook icon"
-                    className={`logo fb-logo ${loading ? 'animate' : ''}`}
-                  />
-                </div>
-                <div className={`mt-24 ${loading ? 'spinner' : ''}`}>
-                  {!loading && (
-                    <span
-                      className={`fa fa-${
-                        errorFB ? 'close red' : 'check green'
-                      }`}
-                    ></span>
-                  )}
-                </div>
-              </div>
+              <ModalLogo
+                logoClass="fb-logo"
+                src="https://www.transparentpng.com/thumb/facebook-logo/facebook-icon-transparent-background-20.png"
+                loading={loading}
+                error={errorFB}
+              />
             )}
           </div>
           <div className="layout-column layout-align-center-center">
             {(selectedApp === 'both' || selectedApp === 'cl') && (
-              <div>
-                <div className="logo-container layout-row layout-align-center-center">
-                  <img
-                    src="https://play-lh.googleusercontent.com/L2Vc0eKN2ZOcXDiLItPT2orUACTjfcBNNb9X5nY_EuhUlohYXU5adX8GRTjpPiwt2Mnh"
-                    alt="craigslist logo"
-                    className={`logo cl-logo ${loading ? 'animate' : ''}`}
-                  />
-                </div>
-                <div className={`mt-24 ${loading ? 'spinner' : ''}`}>
-                  {!loading && (
-                    <span
-                      className={`fa fa-${
-                        errorCL ? 'close red' : 'check green'
-                      }`}
-                    ></span>
-                  )}
-                </div>
-              </div>
+              <ModalLogo
+                logoClass="cl-logo"
+                src="https://play-lh.googleusercontent.com/L2Vc0eKN2ZOcXDiLItPT2orUACTjfcBNNb9X5nY_EuhUlohYXU5adX8GRTjpPiwt2Mnh"
+                loading={loading}
+                error={errorCL}
+              />
             )}
           </div>
         </div>
+        {(errorFB || errorCL) && (
+          <div className="mt-24 mb-24">
+            {errorFB && <ErrorOutput errorMessage={errorFB} />}
+            {errorCL && <ErrorOutput errorMessage={errorCL} />}
+          </div>
+        )}
         <div className="mb-12 mr-12 layout-row layout-align-end-center">
           {!loading && (
             <button className="button-primary" onClick={closeModal}>

@@ -13,12 +13,12 @@ ${JSON.stringify(postInfo)}
 EOF
 ) npm run create-${selectedApp})` // the whitespace is important for the EOF here
     );
-    console.log('CARYS stdout:', stdout);
-    console.log('CARYS stderr:', stderr);
+    console.log(`${selectedApp} createNewPosting STDOUT: ${stdout}`);
+    console.log(`${selectedApp} createNewPosting STDERR: ${stderr}`);
     return { stdout, stderr };
   } catch (err) {
-    console.error('CARYS err:', err);
-    return err;
+    console.error(`${selectedApp} createNewPosting ERR: ${err}`);
+    throw new Error(`${selectedApp}: ${err.message}`);
   }
 }
 
@@ -29,12 +29,12 @@ async function relistActivePostings(priceDrop, selectedApp) {
           env PRICE_DROP="${priceDrop}" \
           npm run relist-${selectedApp})`
     );
-    console.log('stdout:', stdout);
-    console.log('stderr:', stderr);
+    console.log(`${selectedApp} relistActivePostings STDOUT: ${stdout}`);
+    console.log(`${selectedApp} relistActivePostings STDERR: ${stderr}`);
     return { stdout, stderr };
   } catch (err) {
-    console.error('CARYS err:', err);
-    return err;
+    console.error(`${selectedApp} relistActivePostings ERR: ${err}`);
+    throw new Error(`${selectedApp}: ${err.message}`);
   }
 }
 
