@@ -28,23 +28,35 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "./src/assets/icons/mac/icon.icns"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "scratchpad"
+            "setupIcon": "./src/assets/icons/win/icon.ico"
           }
         },
         {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
+          "name": "@electron-forge/maker-deb",
+          "config": {
+            "options": {
+              "icon": "./src/assets/icons/png/1024x1024.png"
+            }
+          }
         },
         {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
+          "name": "@electron-forge/maker-dmg",
+          "config": {
+            "icon": "./src/assets/icons/mac/icon.icns"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-wix",
+          "config": {
+            "icon": "./src/assets/icons/win/icon.ico"
+          }
         }
       ],
       "plugins": [
@@ -91,6 +103,8 @@
     "typescript": "5.1.6"
   },
   "dependencies": {
+    "@electron-forge/maker-dmg": "^6.4.2",
+    "@electron-forge/maker-wix": "^6.4.2",
     "axios": "1.4.0",
     "chai": "4.3.7",
     "dotenv": "16.3.1",
