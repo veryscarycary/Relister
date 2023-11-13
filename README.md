@@ -1,4 +1,6 @@
-![image](https://github.com/veryscarycary/Relister/assets/16945851/06a9f81c-752c-4c76-926c-9b96453fd0d6)
+<p align="center">
+  <img src="https://github.com/veryscarycary/Relister/assets/16945851/06a9f81c-752c-4c76-926c-9b96453fd0d6" />
+</p>
 
 Automate relisting your posts on secondhand seller sites
 
