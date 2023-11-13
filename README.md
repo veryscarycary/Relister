@@ -104,6 +104,10 @@ After running the final command, the electron app should launch on your screen:
   <img src="https://github.com/veryscarycary/Relister/assets/16945851/9e486f80-66e7-4ecf-8888-827e1abb5422" />
 </p>
 
+### Notes on Electron Forge
+
+Currently, the app cannot be built and packaged as a .app file due to its reliance on .env variables. The app will need to be rearchitected to make use of AppData instead in order to function correctly. Until then, you can use `npm start` to run the application normally, or please feel free to make a pull request to complete its transition into a standalone app!
+
 ## CLI
 
 The earliest version of this app was designed without a GUI and was intended to be used only through the command line. The benefit of the command line interface is that so you can set up the commands to be run on a consistent cadence, via cron for example, and continuously relist your postings without any direct interaction. You are still able to use this app in this fashion if you so choose.
