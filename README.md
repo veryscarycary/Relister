@@ -145,17 +145,35 @@ RELISTER_ZIP_CODE="92111"
 
 ## CLI Usage
 
+### Relist
+
 To automatically relist all active postings on Craigslist, run the following command:
 
 ```
-npm run cl
+npm run relist-cl
 ```
 
 To automatically relist all active postings on Facebook Marketplace, run the following command:
 
 ```
-npm run fb
+npm run relist-fb
 ```
+
+### Create New Posting
+
+To automatically create a posting on Craigslist, set the respective fields in the .env and run the following command:
+
+```
+npm run create-cl
+```
+
+To automatically create a posting on Facebook Marketplace, set the respective fields in the .env and run the following command:
+
+```
+npm run create-fb
+```
+
+### General
 
 If you want to drop the price of the posting on the next repost, change the PRICE_DROP variable in your .env file to a number to drop the price by a fixed amount, or a percentage to drop it by a percentage. If you want to keep the price the same, leave the field empty or remove it altogether.
 
@@ -165,3 +183,7 @@ PRICE_DROP="20"
 PRICE_DROP="10%"
 PRICE_DROP=
 ```
+
+## Disclaimer
+
+ Relister is not affiliated with Craigslist nor Facebook Marketplace. Their sites and/or their APIs may change at any time, which may cause Relister to break. There is no warranty of any kind, express or implied, regarding the usage of this software.
