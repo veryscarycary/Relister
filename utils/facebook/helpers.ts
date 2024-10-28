@@ -110,7 +110,7 @@ export const setCondition = async (condition: string) => {
 export const setDescription = async (description: string) =>
   await setInputField(
     By.xpath(
-      "//span[contains(text(), 'Description')]/following-sibling::textarea"
+      "//span[contains(text(), 'Description')]/following-sibling::*//textarea"
     ),
     description
   );
@@ -170,7 +170,7 @@ export const clickConfirmDelete = async () => {
 
 export const setLocation = async (location: string = LOCATION) => {
   const input = await waitForElement(
-    By.css("input[aria-label='Enter a city']")
+    By.css("input[aria-label='Location']")
   );
   const inputValue = await input.getAttribute('value');
 
@@ -179,7 +179,7 @@ export const setLocation = async (location: string = LOCATION) => {
     await input.sendKeys(Key.DELETE);
   }
 
-  await setInputField(By.css("input[aria-label='Enter a city']"), location);
+  await setInputField(By.css("input[aria-label='Location']"), location);
 
   const locationOption = await waitForElement(
     By.xpath(
